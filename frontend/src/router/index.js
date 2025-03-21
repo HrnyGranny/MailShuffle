@@ -14,7 +14,7 @@ import InputAreasForms from "../layouts/sections/input-areas/forms/FormsView.vue
 import ACAlerts from "../layouts/sections/attention-catchers/alerts/AlertsView.vue";
 import ACModals from "../layouts/sections/attention-catchers/modals/ModalsView.vue";
 import ACTooltipsPopovers from "../layouts/sections/attention-catchers/tooltips-popovers/TooltipsPopoversView.vue";
-import ElAvatars from "../layouts/sections/elements/avatars/AvatarsView.vue";
+
 import ElBadges from "../layouts/sections/elements/badges/BadgesView.vue";
 import ElBreadcrumbs from "../layouts/sections/elements/breadcrumbs/BreadcrumbsView.vue";
 import ElButtons from "../layouts/sections/elements/buttons/ButtonsView.vue";
@@ -102,11 +102,6 @@ const router = createRouter({
       component: ACTooltipsPopovers,
     },
     {
-      path: "/sections/elements/avatars",
-      name: "el-avatars",
-      component: ElAvatars,
-    },
-    {
       path: "/sections/elements/badges",
       name: "el-badges",
       component: ElBadges,
@@ -145,6 +140,10 @@ const router = createRouter({
       path: "/sections/elements/typography",
       name: "el-typography",
       component: ElTypography,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "/",
     },
   ],
 });

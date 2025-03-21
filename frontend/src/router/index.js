@@ -2,16 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import PresentationView from "../views/Presentation/PresentationView.vue";
 import AboutView from "../views/LandingPages/AboutUs/AboutView.vue";
 
-import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
-import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
 import NavigationNavbars from "../layouts/sections/navigation/navbars/NavbarsView.vue";
 import NavigationNavTabs from "../layouts/sections/navigation/nav-tabs/NavTabsView.vue";
 import NavigationPagination from "../layouts/sections/navigation/pagination/PaginationView.vue";
-import InputAreasInputs from "../layouts/sections/input-areas/inputs/InputsView.vue";
-import InputAreasForms from "../layouts/sections/input-areas/forms/FormsView.vue";
-import ACAlerts from "../layouts/sections/attention-catchers/alerts/AlertsView.vue";
-import ACModals from "../layouts/sections/attention-catchers/modals/ModalsView.vue";
-import ACTooltipsPopovers from "../layouts/sections/attention-catchers/tooltips-popovers/TooltipsPopoversView.vue";
 
 import ElBreadcrumbs from "../layouts/sections/elements/breadcrumbs/BreadcrumbsView.vue";
 import ElButtons from "../layouts/sections/elements/buttons/ButtonsView.vue";
@@ -34,16 +27,6 @@ const router = createRouter({
       component: AboutView,
     },
     {
-      path: "/sections/page-sections/page-headers",
-      name: "page-headers",
-      component: PageHeaders,
-    },
-    {
-      path: "/sections/page-sections/features",
-      name: "page-features",
-      component: PageFeatures,
-    },
-    {
       path: "/sections/navigation/navbars",
       name: "navigation-navbars",
       component: NavigationNavbars,
@@ -57,31 +40,6 @@ const router = createRouter({
       path: "/sections/navigation/pagination",
       name: "navigation-pagination",
       component: NavigationPagination,
-    },
-    {
-      path: "/sections/input-areas/inputs",
-      name: "inputareas-inputs",
-      component: InputAreasInputs,
-    },
-    {
-      path: "/sections/input-areas/forms",
-      name: "inputareas-forms",
-      component: InputAreasForms,
-    },
-    {
-      path: "/sections/attention-catchers/alerts",
-      name: "ac-alerts",
-      component: ACAlerts,
-    },
-    {
-      path: "/sections/attention-catchers/modals",
-      name: "ac-modals",
-      component: ACModals,
-    },
-    {
-      path: "/sections/attention-catchers/tooltips-popovers",
-      name: "ac-tooltips-popovers",
-      component: ACTooltipsPopovers,
     },
     {
       path: "/sections/elements/breadcrumbs",

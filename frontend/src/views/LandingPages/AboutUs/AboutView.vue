@@ -10,11 +10,7 @@ import bg0 from "@/assets/img/bg9.jpg";
 //dep
 import Typed from "typed.js";
 
-//sections
-import Information from "./Sections/AboutInformation.vue";
-import AboutTeam from "./Sections/AboutTeam.vue";
-import Featuring from "./Sections/AboutFeaturing.vue";
-import Newsletter from "./Sections/AboutNewsletter.vue";
+
 
 const body = document.getElementsByTagName("body")[0];
 //hooks

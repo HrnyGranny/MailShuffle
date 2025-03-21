@@ -5,13 +5,12 @@ import { onMounted, onUnmounted } from "vue";
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
 import DefaultFooter from "../../examples/footers/FooterCentered.vue";
 import Header from "../../examples/Header.vue";
-import FilledInfoCard from "../../examples/cards/infoCards/FilledInfoCard.vue";
+import FilledInfoCard from "../../examples/cards/FilledInfoCard.vue";
 
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 
 // sections
-
 
 //images
 import vueMkHeader from "@/assets/img/vue-mk-header.jpg";

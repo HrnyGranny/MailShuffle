@@ -2,13 +2,13 @@
 import { onMounted } from "vue";
 
 // example components
-import DefaultNavbar from "@/examples/Navbar.vue";
-import Header from "@/examples/Header.vue";
+import DefaultNavbar from "@/components/Navbar.vue";
+import Header from "@/components/Header.vue";
 
 //Vue Material Kit 2 components
-import MaterialInput from "@/components/MaterialInput.vue";
-import MaterialSwitch from "@/components/MaterialSwitch.vue";
-import MaterialButton from "@/components/MaterialButton.vue";
+import MaterialInput from "@/material_components/MaterialInput.vue";
+import MaterialSwitch from "@/material_components/MaterialSwitch.vue";
+import MaterialButton from "@/material_components/MaterialButton.vue";
 
 // material-input
 import setMaterialInput from "@/assets/js/material-input";

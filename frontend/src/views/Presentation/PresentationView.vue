@@ -13,12 +13,6 @@ import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 //images
 import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
 import wavesWhite from "@/assets/img/waves-white.svg";
-import logoBootstrap from "@/assets/img/logos/bootstrap5.jpg";
-import logoTailwind from "@/assets/img/logos/icon-tailwind.jpg";
-import logoVue from "@/assets/img/logos/vue.jpg";
-import logoAngular from "@/assets/img/logos/angular.jpg";
-import logoReact from "@/assets/img/logos/react.jpg";
-import logoSketch from "@/assets/img/logos/sketch.jpg";
 
 //hooks
 const body = document.getElementsByTagName("body")[0];
@@ -40,6 +34,7 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+  <!-- Header -->
   <Header>
     <div
       class="page-header min-vh-75"
@@ -64,7 +59,7 @@ onUnmounted(() => {
       </div>
     </div>
   </Header>
-
+  <!-- Box -->
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
     <div class="container">
       <div class="row">
@@ -113,7 +108,7 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-
+    <!-- Container -->
     <div
       class="container-fluid mt-sm-5 border-radius-xl"
       :style="{
@@ -180,5 +175,6 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+  <!-- Footer -->
   <DefaultFooter />
 </template>

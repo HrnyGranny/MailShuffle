@@ -273,13 +273,6 @@ export default [
         pro: false,
       },
       {
-        image: `${imagesPrefix}/badges.jpg`,
-        title: "Badges",
-        subtitle: "3 Examples",
-        route: "el-badges",
-        pro: false,
-      },
-      {
         image: `${imagesPrefix}/progress.jpg`,
         title: "Progress Bars",
         subtitle: "4 Examples",

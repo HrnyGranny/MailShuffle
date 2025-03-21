@@ -2,10 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import PresentationView from "../views/Presentation/PresentationView.vue";
 import AboutView from "../views/LandingPages/AboutUs/AboutView.vue";
 
-import NavigationNavbars from "../layouts/sections/navigation/navbars/NavbarsView.vue";
-import NavigationNavTabs from "../layouts/sections/navigation/nav-tabs/NavTabsView.vue";
-import NavigationPagination from "../layouts/sections/navigation/pagination/PaginationView.vue";
-
 import ElBreadcrumbs from "../layouts/sections/elements/breadcrumbs/BreadcrumbsView.vue";
 import ElButtons from "../layouts/sections/elements/buttons/ButtonsView.vue";
 import ElButtonGroups from "../layouts/sections/elements/button-groups/ButtonGroupsView.vue";
@@ -25,21 +21,6 @@ const router = createRouter({
       path: "/pages/landing-pages/about-us",
       name: "about",
       component: AboutView,
-    },
-    {
-      path: "/sections/navigation/navbars",
-      name: "navigation-navbars",
-      component: NavigationNavbars,
-    },
-    {
-      path: "/sections/navigation/nav-tabs",
-      name: "navigation-navtabs",
-      component: NavigationNavTabs,
-    },
-    {
-      path: "/sections/navigation/pagination",
-      name: "navigation-pagination",
-      component: NavigationPagination,
     },
     {
       path: "/sections/elements/breadcrumbs",

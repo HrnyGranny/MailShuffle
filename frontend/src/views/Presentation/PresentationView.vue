@@ -2,10 +2,10 @@
 import { onMounted, onUnmounted } from "vue";
 
 //example components
-import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
-import DefaultFooter from "../../examples/footers/FooterCentered.vue";
+import NavbarDefault from "../../examples/Navbar.vue";
+import DefaultFooter from "../../examples/Footer.vue";
 import Header from "../../examples/Header.vue";
-import FilledInfoCard from "../../examples/cards/FilledInfoCard.vue";
+import FilledInfoCard from "../../examples/FilledInfoCard.vue";
 
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";

@@ -11,13 +11,12 @@ import FilledInfoCard from "../../examples/cards/infoCards/FilledInfoCard.vue";
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 
 // sections
-import PresentationCounter from "./Sections/PresentationCounter.vue";
-import PresentationPages from "./Sections/PresentationPages.vue";
-import PresentationExample from "./Sections/PresentationExample.vue";
-import data from "./Sections/Data/designBlocksData";
-import BuiltByDevelopers from "./Components/BuiltByDevelopers.vue";
-import PresentationTestimonials from "./Sections/PresentationTestimonials.vue";
-import PresentationInformation from "./Sections/PresentationInformation.vue";
+
+
+
+
+
+
 
 //images
 import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
@@ -75,12 +74,6 @@ onUnmounted(() => {
   </Header>
 
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
-    <PresentationCounter />
-    <PresentationInformation />
-    <PresentationExample :data="data" />
-    <PresentationPages />
-    <BuiltByDevelopers />
-
     <div class="container">
       <div class="row">
         <div class="col-lg-4">
@@ -128,7 +121,6 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <PresentationTestimonials />
 
     <div
       class="container-fluid mt-sm-5 border-radius-xl"

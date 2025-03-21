@@ -13,11 +13,6 @@ import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 // sections
 
 
-
-
-
-
-
 //images
 import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
 import wavesWhite from "@/assets/img/waves-white.svg";

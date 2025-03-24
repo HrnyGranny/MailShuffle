@@ -1,4 +1,5 @@
 const express = require('express');
+const { faker } = require('@faker-js/faker');
 const Email = require('../models/email');
 
 const router = express.Router();

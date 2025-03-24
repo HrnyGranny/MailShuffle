@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const Emails = require('./routes/emails');
 const Users = require('./routes/users');
 
@@ -19,6 +20,9 @@ mongooseUsers.on('error', err => console.error('❌ Error de conexión a UsersDB
 
 // Crear la aplicación Express
 const app = express();
+
+// Configurar CORS
+app.use(cors());
 
 // Middleware para procesar datos en JSON y URL-encoded
 app.use(express.json());

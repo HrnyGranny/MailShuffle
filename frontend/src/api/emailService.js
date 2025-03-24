@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api/emails";
+const API_BASE_URL = "http://localhost:3000/api/emails";
 
 // Función para obtener correos por recipient
 export const getEmailsByRecipient = async (recipient) => {

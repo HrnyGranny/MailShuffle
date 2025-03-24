@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted } from "vue";
-//Vue Material Kit 2 components
+import { ref, onMounted } from "vue";
+import { generateRandomEmail } from "@/api/emailService"; // Importar la función para generar correos
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 
@@ -10,8 +10,55 @@ import ReloadIcon from "../../../assets/img/iconos/recargar.png";
 
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
-onMounted(() => {
+
+// Función para manejar cookies
+const setCookie = (name, value, days) => {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+};
+
+const getCookie = (name) => {
+  const cookies = document.cookie.split("; ");
+  const cookie = cookies.find((row) => row.startsWith(`${name}=`));
+  return cookie ? cookie.split("=")[1] : null;
+};
+
+// Variables reactivas
+const email = ref(""); // Variable para almacenar el correo generado
+
+// Función para generar un correo aleatorio
+const generateEmail = async () => {
+  try {
+    email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
+    setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
+    emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
+  } catch (error) {
+    console.error("Error generating email:", error);
+  }
+};
+
+// Función para copiar el contenido del input al portapapeles
+const copyToClipboard = async () => {
+  try {
+    await navigator.clipboard.writeText(email.value); // Copiar el contenido al portapapeles
+  } catch (error) {
+    console.error("Error copying to clipboard:", error);
+  }
+};
+
+// Emitir eventos al componente padre
+const emit = defineEmits(["emailGenerated"]);
+
+// Al montar el componente, verificar si ya existe un correo en las cookies
+onMounted(async () => {
   setMaterialInput();
+  const savedEmail = getCookie("mailshuffle_email");
+  if (savedEmail) {
+    email.value = savedEmail; // Usar el correo guardado en la cookie
+    emit("emailGenerated", email.value); // Emitir el correo al componente padre
+  } else {
+    await generateEmail(); // Generar un nuevo correo si no hay cookie
+  }
 });
 </script>
 
@@ -23,10 +70,12 @@ onMounted(() => {
           <div class="row">
             <div class="col-8">
               <MaterialInput
-                class="input-group-outline"
+                class="input-group-outline border-success"
                 id="email"
-                :label="{ text: 'Email Here...', class: 'form-label' }"
                 type="email"
+                :value="email"
+                :success=true
+                readonly
               />
             </div>
             <div class="col-4 ps-0">
@@ -36,6 +85,7 @@ onMounted(() => {
                     variant="gradient"
                     color="success"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
+                    @click="copyToClipboard"
                   >
                     <img :src="CopyIcon" alt="Copy" class="icon-button" />
                   </MaterialButton>
@@ -45,6 +95,7 @@ onMounted(() => {
                     variant="gradient"
                     color="warning"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
+                    @click="generateEmail"
                   >
                     <img :src="ReloadIcon" alt="Reload" class="icon-button" />
                   </MaterialButton>

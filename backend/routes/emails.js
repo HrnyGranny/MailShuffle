@@ -58,7 +58,7 @@ router.get('/emails/:recipient', async (req, res) => {
 router.get('/generate', (req, res) => {
   try {
     // Generar una parte aleatoria para el nombre de usuario
-    const username = faker.internet.userName(); // Nombre de usuario aleatorio
+    const username = faker.internet.username(); // Nombre de usuario aleatorio
     const email = `${username}@mailshuffle.online`; // Concatenamos con el dominio mailshuffle.online
 
     // Devolver solo el correo generado como texto plano

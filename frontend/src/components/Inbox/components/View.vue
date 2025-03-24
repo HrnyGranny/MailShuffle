@@ -38,6 +38,10 @@ const props = defineProps({
 // variables
 const { toClipboard } = useClipboard();
 const editorCode = ref(props.code);
+const recipient = ref(""); // Variable para almacenar el correo generado
+
+// Emitir eventos al componente padre
+const emit = defineEmits(["recipientUpdated"]);
 
 // functions
 const copy = async (event) => {
@@ -93,7 +97,7 @@ const highlighter = (code) => {
     <div class="container border-bottom">
       <div class="row justify-space-between py-2">
         <div class="col-lg-8 me-auto">
-          <MailBox />
+          <MailBox @emailGenerated="recipient = $event; emit('recipientUpdated', $event)" />
         </div>
         <div class="col-lg-3">
           <div class="nav-wrapper position-relative end-0">

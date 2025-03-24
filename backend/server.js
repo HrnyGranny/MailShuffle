@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const mailgunWebhook = require('./routes/mailgunWebhook');
+const Emails = require('./routes/emails');
+const Users = require('./routes/users');
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -23,8 +24,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Asegura que se procesen los datos de formulario también
 
-// Usar la ruta del webhook de Mailgun
-app.use('/webhook', mailgunWebhook);
+// Rutas
+app.use('/api/emails', Emails);
+app.use('/api/users', Users);
 
 // Iniciar el servidor
 const port = process.env.PORT || 3000;

@@ -7,7 +7,6 @@ import DefaultFooter from "../../components/Footer.vue";
 import Header from "../../components/Header.vue";
 import Inbox from "../../components/Inbox/Inbox.vue";
 import HowTo from "../../components/HowTo/HowTo.vue";
-import MailBox from "../../components/MailBox.vue";
 
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/material_components/MaterialSocialButton.vue";
@@ -52,7 +51,10 @@ onUnmounted(() => {
             >
               MailShuffle
             </h1>
-            <MailBox />
+            <p class="lead text-white px-5 mt-3" :style="{ fontWeight: '500' }">
+              Start the Development With Bootstrap 5 Design System inspired by
+              Material Design.
+            </p>
           </div>
         </div>
       </div>

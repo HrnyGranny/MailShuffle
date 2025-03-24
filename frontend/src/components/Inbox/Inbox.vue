@@ -4,10 +4,10 @@ import { onMounted } from "vue";
 // Sections components
 import BaseLayout from "../Inbox/components/BaseLayout.vue";
 import View from "../Inbox/components/View.vue";
+import Received from "../Inbox/components/Received.vue";
 
 // Send page components
 
-// import TabsSimple from "./components/TabsSimple.vue";
 
 // import Send from "@/components/Inbox/Send.vue";
 
@@ -29,8 +29,8 @@ onMounted(() => {
   <BaseLayout title="InBox">
     <!-- view -->
     <View title="" :code="TabsSimpleCode" id="tabs-simple">
-      <TabsSimple />
+      <!--Received-->
+      <Received/>
     </View>
-
   </BaseLayout>
 </template>

@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from "vue";
 
+//components
+import MailBox from "@/components/Inbox/components/MailBox.vue";
+
 // import Prism Editor
 import { PrismEditor } from "vue-prism-editor"; //
 import "prismjs/themes/prism.css"; // import the styles somewhere
@@ -89,8 +92,8 @@ const highlighter = (code) => {
   >
     <div class="container border-bottom">
       <div class="row justify-space-between py-2">
-        <div class="col-lg-3 me-auto">
-          <p class="lead text-dark pt-1 mb-0">{{ title }}</p>
+        <div class="col-lg-8 me-auto">
+          <MailBox />
         </div>
         <div class="col-lg-3">
           <div class="nav-wrapper position-relative end-0">
@@ -103,7 +106,7 @@ const highlighter = (code) => {
                   role="tab"
                   aria-selected="true"
                 >
-                  <i class="fas fa-desktop text-sm me-2"></i> Received
+                  <i class="fas fa-desktop text-sm me-2"></i> Preview
                 </a>
               </li>
               <li class="nav-item">
@@ -114,7 +117,7 @@ const highlighter = (code) => {
                   role="tab"
                   aria-selected="false"
                 >
-                  <i class="fas fa-code text-sm me-2"></i> Sent
+                  <i class="fas fa-code text-sm me-2"></i> Code
                 </a>
               </li>
             </ul>

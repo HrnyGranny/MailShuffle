@@ -27,20 +27,120 @@ const getCookie = (name) => {
 const email = ref(""); // Variable para almacenar el correo generado
 
 // Función para generar un correo aleatorio
-const generateEmail = async () => {
+const generateEmail = async (event) => {
   try {
     email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
     setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
     emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
+
+    // Mostrar alerta de éxito
+    const el = event.target.parentElement;
+    const alert = document.createElement("div");
+    alert.classList.add(
+      "alert",
+      "alert-success",
+      "position-absolute",
+      "top-5",
+      "border-0",
+      "text-white",
+      "w-25",
+      "end-0",
+      "start-0",
+      "mt-2",
+      "mx-auto",
+      "py-2"
+    );
+    alert.style.transform = "translate3d(0px, 0px, 0px)";
+    alert.style.opacity = "0";
+    alert.style.transition = ".35s ease";
+    setTimeout(() => {
+      alert.style.transform = "translate3d(0px, 20px, 0px)";
+      alert.style.setProperty("opacity", "1", "important");
+    }, 100);
+    alert.innerHTML = "New email generated successfully!";
+    el.parentElement.appendChild(alert);
+    setTimeout(() => {
+      alert.style.transform = "translate3d(0px, 0px, 0px)";
+      alert.style.setProperty("opacity", "0", "important");
+    }, 2000);
+    setTimeout(() => {
+      el.parentElement.querySelector(".alert").remove();
+    }, 2500);
   } catch (error) {
     console.error("Error generating email:", error);
+
+    // Mostrar alerta de error
+    const el = event.target.parentElement;
+    const alert = document.createElement("div");
+    alert.classList.add(
+      "alert",
+      "alert-danger",
+      "position-absolute",
+      "top-5",
+      "border-0",
+      "text-white",
+      "w-25",
+      "end-0",
+      "start-0",
+      "mt-2",
+      "mx-auto",
+      "py-2"
+    );
+    alert.style.transform = "translate3d(0px, 0px, 0px)";
+    alert.style.opacity = "0";
+    alert.style.transition = ".35s ease";
+    setTimeout(() => {
+      alert.style.transform = "translate3d(0px, 20px, 0px)";
+      alert.style.setProperty("opacity", "1", "important");
+    }, 100);
+    alert.innerHTML = "Failed to generate a new email!";
+    el.parentElement.appendChild(alert);
+    setTimeout(() => {
+      alert.style.transform = "translate3d(0px, 0px, 0px)";
+      alert.style.setProperty("opacity", "0", "important");
+    }, 2000);
+    setTimeout(() => {
+      el.parentElement.querySelector(".alert").remove();
+    }, 2500);
   }
 };
 
 // Función para copiar el contenido del input al portapapeles
-const copyToClipboard = async () => {
+const copyToClipboard = async (event) => {
   try {
     await navigator.clipboard.writeText(email.value); // Copiar el contenido al portapapeles
+    const el = event.target.parentElement;
+    const alert = document.createElement("div");
+    alert.classList.add(
+      "alert",
+      "alert-success",
+      "position-absolute",
+      "top-5",
+      "border-0",
+      "text-white",
+      "w-25",
+      "end-0",
+      "start-0",
+      "mt-2",
+      "mx-auto",
+      "py-2"
+    );
+    alert.style.transform = "translate3d(0px, 0px, 0px)";
+    alert.style.opacity = "0";
+    alert.style.transition = ".35s ease";
+    setTimeout(() => {
+      alert.style.transform = "translate3d(0px, 20px, 0px)";
+      alert.style.setProperty("opacity", "1", "important");
+    }, 100);
+    alert.innerHTML = "Email successfully copied!";
+    el.parentElement.appendChild(alert);
+    setTimeout(() => {
+      alert.style.transform = "translate3d(0px, 0px, 0px)";
+      alert.style.setProperty("opacity", "0", "important");
+    }, 2000);
+    setTimeout(() => {
+      el.parentElement.querySelector(".alert").remove();
+    }, 2500);
   } catch (error) {
     console.error("Error copying to clipboard:", error);
   }
@@ -68,7 +168,7 @@ onMounted(async () => {
       <div class="row">
         <div class="col-md-6 offset-md-0 ms-lg-n4 ms-md-n3">
           <div class="row">
-            <div class="col-8">
+            <div class="col-9">
               <MaterialInput
                 class="input-group-outline border-success"
                 id="email"
@@ -78,7 +178,7 @@ onMounted(async () => {
                 readonly
               />
             </div>
-            <div class="col-4 ps-0">
+            <div class="col-3 ps-0">
               <div class="row g-2">
                 <div class="col-6">
                   <MaterialButton
@@ -111,7 +211,7 @@ onMounted(async () => {
 
 <style scoped>
 .icon-button {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 </style>

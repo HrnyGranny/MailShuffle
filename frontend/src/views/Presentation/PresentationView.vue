@@ -6,7 +6,7 @@ import NavbarDefault from "../../components/Navbar.vue";
 import DefaultFooter from "../../components/Footer.vue";
 import Header from "../../components/Header.vue";
 import Inbox from "../../components/Inbox/Inbox.vue";
-import HowTo from "../../components/HowTo/HowTo.vue";
+import Premium from "../../components/Premium/Premium.vue";
 
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/material_components/MaterialSocialButton.vue";
@@ -63,7 +63,7 @@ onUnmounted(() => {
     <!-- Inbox -->
     <Inbox />
     <!-- How To -->
-    <HowTo />
+    <Premium />
     <!-- Thanks -->
     <div class="py-5">
       <div class="container">

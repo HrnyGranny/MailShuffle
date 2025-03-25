@@ -12,8 +12,7 @@ import HowTo from "../../components/HowTo/HowTo.vue";
 import MaterialSocialButton from "@/material_components/MaterialSocialButton.vue";
 
 //images
-import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
-import wavesWhite from "@/assets/img/waves-white.svg";
+import vueMkHeader from "@/assets/img/PaperPv.jpg";
 
 //hooks
 const body = document.getElementsByTagName("body")[0];
@@ -46,14 +45,13 @@ onUnmounted(() => {
         <div class="row">
           <div class="col-lg-7 text-center mx-auto position-relative">
             <h1
-              class="text-white pt-3 mt-n5 me-2"
+              class="pt-3 mt-n5 me-2"
               :style="{ display: 'inline-block ' }"
             >
               MailShuffle
             </h1>
-            <p class="lead text-white px-5 mt-3" :style="{ fontWeight: '500' }">
-              Start the Development With Bootstrap 5 Design System inspired by
-              Material Design.
+            <p class="lead px-5 mt-3" :style="{ fontWeight: '500' }">
+              Protect your inbox. Generate random emails instantly for safe and spam-free signups.
             </p>
           </div>
         </div>
@@ -62,7 +60,6 @@ onUnmounted(() => {
   </Header>
   <!--body-->
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
-    <!-- Box -->
     <!-- Inbox -->
     <Inbox />
     <!-- How To -->

@@ -24,9 +24,9 @@ const app = express();
 // Configurar CORS
 app.use(cors());
 
-// Middleware para procesar datos en JSON y URL-encoded
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Asegura que se procesen los datos de formulario también
+// Middleware para procesar datos en JSON y URL-encoded con un límite de 10 MB
+app.use(express.json({ limit: '10mb' })); 
+app.use(express.urlencoded({ extended: true, limit: '10mb' })); 
 
 // Rutas
 app.use('/api/emails', Emails);

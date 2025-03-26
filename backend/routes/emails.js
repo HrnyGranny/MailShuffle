@@ -40,8 +40,8 @@ router.get('/emails/:recipient', async (req, res) => {
   try {
     const { recipient } = req.params;
 
-    // Buscar los correos en la base de datos que coincidan con el recipient
-    const emails = await Email.find({ recipient });
+      // Buscar los correos en la base de datos que coincidan con el recipient (case-insensitive)
+      const emails = await Email.find({ recipient: { $regex: new RegExp(`^${recipient}$`, 'i') } });
 
     if (emails.length === 0) {
       return res.status(404).json({ message: 'No se encontraron correos para este destinatario.' });

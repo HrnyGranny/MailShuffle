@@ -45,6 +45,7 @@ import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
 
 <style scoped>
 .section-adjust {
-  margin-top: -80px;
+  margin-top: -140px;
+  margin-bottom: -60px;
 }
 </style>

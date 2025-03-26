@@ -6,7 +6,7 @@ import NavbarDefault from "../../components/Navbar.vue";
 import DefaultFooter from "../../components/Footer.vue";
 import Header from "../../components/Header.vue";
 import Inbox from "../../components/Inbox/Inbox.vue";
-import Premium from "../../components/Premium/Premium.vue";
+import AboutUs from "../../components/AboutUs/AboutUs.vue";
 
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/material_components/MaterialSocialButton.vue";
@@ -62,8 +62,8 @@ onUnmounted(() => {
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
     <!-- Inbox -->
     <Inbox />
-    <!-- How To -->
-    <Premium />
+    <!-- AboutUs -->
+    <AboutUs />
     <!-- Thanks -->
     <div class="py-5">
       <div class="container">

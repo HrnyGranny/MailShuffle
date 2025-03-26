@@ -16,7 +16,7 @@ defineProps({
     type: [String, Object],
     required: true,
     component: String,
-    color: String,
+    color: String, // Color personalizado para el ícono
   },
   content: {
     type: String,
@@ -25,28 +25,26 @@ defineProps({
 });
 
 function backgroundColor(variant, color) {
-  let colorValue;
-
-  if (variant === "gradient") {
-    colorValue = "bg-gradient-" + color;
-  } else if (variant === "contained") {
-    colorValue = "bg-" + color;
+  if (variant === "gradient" || variant === "contained") {
+    return `bg-${color}`; // Clases de Bootstrap si no es un color personalizado
   }
-
-  return colorValue;
+  return ""; // Si no aplica, retorna vacío
 }
 </script>
+
 <template>
   <div class="p-3 info-horizontal d-flex align-items-center">
     <div
       class="icon icon-shape text-center border-radius-xl"
-      :class="`icon-${size} ${backgroundColor(variant, color)} shadow-${color}`"
+      :class="`icon-${size}`"
+      :style="typeof icon === 'object' && icon.color ? { backgroundColor: icon.color } : ''"
     >
       <i
         class="material-icons opacity-10"
-        :class="typeof icon == 'object' ? icon.color : ''"
-        >{{ typeof icon == "string" ? icon : icon.component }}</i
+        :class="typeof icon === 'object' ? icon.color : ''"
       >
+        {{ typeof icon === "string" ? icon : icon.component }}
+      </i>
     </div>
     <div class="description ps-3">
       <p class="mb-0" v-html="content" />

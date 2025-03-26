@@ -1,10 +1,9 @@
 <script setup>
 import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
-//#98FE98
 </script>
 
 <template>
-  <section class="py-9">
+  <section class="py-9 section-adjust">
     <div class="container ms-7">
       <div class="row">
         <div class="col-lg-6 my-auto">
@@ -26,15 +25,15 @@ import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
         <div class="col-lg-6 mt-lg-0 mt-5 ps-lg-0 ps-0">
           <div class="pe-5">
             <AboutUsOption
-              :icon="{ component: 'schedule', color: '#4E64EE' }"
+            :icon="{ component: 'schedule', backgroundColor: '#98FE98', iconColor: '#344767' }"
               content="Emails last for 7 days, giving you enough time to manage your temporary inbox."
             />
             <AboutUsOption
-              :icon="{ component: 'add_circle', color: '#4E64EE' }" 
+              :icon="{ component: 'add_circle', backgroundColor: '#98FE98', iconColor: '#344767' }" 
               content="Generate as many random email addresses as you want, completely free."
             />
             <AboutUsOption
-              :icon="{ component: 'security', color: '#4E64EE' }"
+              :icon="{ component: 'security', backgroundColor: '#98FE98', iconColor: '#344767' }"
               content="Your privacy is our priority. Avoid spam and keep your personal email safe."
             />
           </div>
@@ -43,3 +42,9 @@ import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
     </div>
   </section>
 </template>
+
+<style scoped>
+.section-adjust {
+  margin-top: -80px;
+}
+</style>

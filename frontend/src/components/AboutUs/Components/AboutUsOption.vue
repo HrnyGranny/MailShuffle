@@ -16,7 +16,8 @@ defineProps({
     type: [String, Object],
     required: true,
     component: String,
-    color: String, // Color personalizado para el ícono
+    backgroundColor: String, // Color personalizado para el fondo
+    iconColor: String, // Color personalizado para el ícono
   },
   content: {
     type: String,
@@ -34,18 +35,21 @@ function backgroundColor(variant, color) {
 
 <template>
   <div class="p-3 info-horizontal d-flex align-items-center">
+    <!-- Contenedor del ícono -->
     <div
       class="icon icon-shape text-center border-radius-xl"
       :class="`icon-${size}`"
-      :style="typeof icon === 'object' && icon.color ? { backgroundColor: icon.color } : ''"
+      :style="typeof icon === 'object' && icon.backgroundColor ? { backgroundColor: icon.backgroundColor } : ''"
     >
+      <!-- Ícono con color personalizado -->
       <i
         class="material-icons opacity-10"
-        :class="typeof icon === 'object' ? icon.color : ''"
+        :style="typeof icon === 'object' && icon.iconColor ? { color: icon.iconColor } : ''"
       >
         {{ typeof icon === "string" ? icon : icon.component }}
       </i>
     </div>
+    <!-- Contenido -->
     <div class="description ps-3">
       <p class="mb-0" v-html="content" />
     </div>

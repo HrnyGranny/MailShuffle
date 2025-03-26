@@ -40,7 +40,7 @@ onMounted(() => {
 <style scoped>
 .received-container {
   position: relative; /* Necesario para centrar elementos hijos */
-  margin-bottom: 450px; /* Ajusta el valor según el espacio que necesites */
+  margin-bottom: 400px; /* Ajusta el valor según el espacio que necesites */
   min-height: 300px; /* Asegura que el contenedor tenga un tamaño mínimo */
 }
 

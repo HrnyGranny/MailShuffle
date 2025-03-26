@@ -1,5 +1,6 @@
 <script setup>
 import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
+//#98FE98
 </script>
 
 <template>
@@ -29,7 +30,7 @@ import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
               content="Emails last for 7 days, giving you enough time to manage your temporary inbox."
             />
             <AboutUsOption
-              :icon="{ component: 'add_circle', color: '#4E64EE' }"
+              :icon="{ component: 'add_circle', color: '#4E64EE' }" 
               content="Generate as many random email addresses as you want, completely free."
             />
             <AboutUsOption

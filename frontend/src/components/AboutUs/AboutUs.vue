@@ -4,7 +4,7 @@ import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
 
 <template>
   <section class="py-9 section-adjust">
-    <div class="container ms-7">
+    <div class="container">
       <div class="row">
         <div class="col-lg-6 my-auto">
           <h3>Why MailShuffle?</h3>

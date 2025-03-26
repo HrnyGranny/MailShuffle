@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { getEmailsByRecipient } from "@/api/emailService";
+import EmailModal from "./EmailModal.vue"; // Importar el nuevo componente del modal
 
 const props = defineProps({
   recipient: {
@@ -11,26 +12,59 @@ const props = defineProps({
 
 const emails = ref([]); // Lista de correos
 const error = ref(null); // Estado de error
-let intervalId = null; // ID del intervalo para consultas periódicas
-
 const selectedEmail = ref(null); // Correo seleccionado para mostrar en el modal
 const showModal = ref(false); // Estado del modal (abierto o cerrado)
+const selectedEmailElement = ref(null); // Referencia al elemento del mensaje seleccionado
+let pollingInterval = null; // Intervalo para el polling
+const emit = defineEmits(["hasEmails"]); // Emitir evento para notificar si hay correos
 
 // Función para obtener correos del backend
 const fetchEmails = async () => {
   try {
-    const response = await getEmailsByRecipient(props.recipient);
-    emails.value = response; // Actualizar la lista de correos
+    if (props.recipient) {
+      const response = await getEmailsByRecipient(props.recipient);
+      emails.value = response; // Actualizar la lista de correos
+      emit("hasEmails", emails.value.length > 0); // Emitir si hay correos
+    }
   } catch (err) {
-    error.value = "Error fetching emails.";
-    console.error(err);
+    if (err.response && err.response.status === 404) {
+      emails.value = []; // Si no hay correos, vaciar la lista
+      emit("hasEmails", false); // Emitir que no hay correos
+    } else {
+      error.value = "Error fetching emails.";
+      console.error(err);
+    }
+  }
+};
+
+// Función para iniciar el polling
+const startPolling = () => {
+  pollingInterval = setInterval(async () => {
+    await fetchEmails(); // Llamar a la función para comprobar nuevos correos
+  }, 3000); // Cada 3 segundos
+};
+
+// Función para detener el polling
+const stopPolling = () => {
+  if (pollingInterval) {
+    clearInterval(pollingInterval);
+    pollingInterval = null;
   }
 };
 
 // Función para abrir el modal con la información del correo seleccionado
-const openModal = (email) => {
+const openModal = (email, element) => {
   selectedEmail.value = email;
+  selectedEmailElement.value = element; // Guardar la referencia al elemento del mensaje
   showModal.value = true;
+
+  // Desplazar la pantalla hacia el mensaje seleccionado
+  if (selectedEmailElement.value) {
+    selectedEmailElement.value.scrollIntoView({
+      behavior: "smooth", // Desplazamiento suave
+      block: "center", // Centrar el mensaje en la pantalla
+    });
+  }
 };
 
 // Función para cerrar el modal
@@ -39,48 +73,55 @@ const closeModal = () => {
   selectedEmail.value = null;
 };
 
-// Configurar consultas periódicas
+// Configurar el polling al montar el componente
 onMounted(() => {
   fetchEmails(); // Obtener correos al montar el componente
-  intervalId = setInterval(fetchEmails, 5000); // Consultar cada 5 segundos
+  startPolling(); // Iniciar el polling
 });
 
-// Limpiar el intervalo al desmontar el componente
+// Detener el polling al desmontar el componente
 onUnmounted(() => {
-  clearInterval(intervalId);
+  stopPolling();
 });
 
 // Reactualizar correos si cambia el recipient
-watch(() => props.recipient, fetchEmails);
+watch(() => props.recipient, async () => {
+  await fetchEmails(); // Actualizar correos al cambiar el recipient
+});
 </script>
 
 <template>
-  <div>
-    <h3>Received Emails for {{ recipient }}</h3>
+  <div class="received-container">
     <div v-if="error">{{ error }}</div>
-    <ul>
-      <li v-for="email in emails" :key="email.id" @click="openModal(email)">
+    <ul v-if="emails.length">
+      <li
+        v-for="email in emails"
+        :key="email.id"
+        @click="openModal(email, $event.target)"
+      >
         <strong>{{ email.subject }}</strong> - {{ email.sender }}
         <p>{{ email.body }}</p>
       </li>
     </ul>
 
     <!-- Modal -->
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <button class="close-button" @click="closeModal">×</button>
-        <h4>{{ selectedEmail.subject }}</h4>
-        <p><strong>From:</strong> {{ selectedEmail.sender }}</p>
-        <p><strong>To:</strong> {{ recipient }}</p>
-        <p><strong>Body:</strong></p>
-        <p>{{ selectedEmail.body }}</p>
-      </div>
-    </div>
+    <EmailModal
+      v-if="showModal"
+      :email="selectedEmail"
+      :recipient="recipient"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <style scoped>
-/* Estilos para la lista de correos */
+/* Estilos para el contenedor de correos */
+.received-container {
+  position: relative; /* Necesario para que el modal sea relativo a este contenedor */
+  margin-bottom: 400px; /* Ajusta el valor según el espacio que necesites */
+  min-height: 300px; /* Asegura que el contenedor tenga un tamaño mínimo */
+}
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -94,42 +135,5 @@ li {
 
 li:hover {
   background-color: #f9f9f9;
-}
-
-/* Estilos para el modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: red;
 }
 </style>

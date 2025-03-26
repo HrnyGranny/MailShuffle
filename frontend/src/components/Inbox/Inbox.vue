@@ -7,6 +7,7 @@ import View from "../Inbox/components/View.vue";
 import Received from "../Inbox/components/Received.vue";
 
 const recipient = ref(""); // Variable para almacenar el correo generado
+const hasEmails = ref(false); // Variable para controlar si hay correos
 
 //nav-pills
 import setNavPills from "@/assets/js/nav-pills";
@@ -25,14 +26,17 @@ onMounted(() => {
       <div class="received-container">
         <!-- Imagen centrada si no hay correos -->
         <img
-          v-if="!recipient"
+          v-if="!hasEmails && recipient"
           src="../../assets/img/carpeta-vacia.png"
           alt="No Emails"
           class="centered-image"
         />
         <!-- Componente Received si hay correos -->
-        <Received v-if="recipient" :recipient="recipient" />
-      </div>
+        <Received
+          v-if="recipient"
+          :recipient="recipient"
+          @hasEmails="hasEmails = $event"
+        />      </div>
     </View>
   </BaseLayout>
 </template>

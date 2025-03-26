@@ -32,7 +32,7 @@ const generateEmail = async (event) => {
     email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
     setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
     emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
-
+    emit("resetView")
     // Mostrar alerta de éxito
     const el = event.target.parentElement;
     const alert = document.createElement("div");

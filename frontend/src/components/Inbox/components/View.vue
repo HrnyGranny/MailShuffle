@@ -44,6 +44,10 @@ const recipient = ref(""); // Variable para almacenar el correo generado
 const emit = defineEmits(["recipientUpdated"]);
 
 // functions
+const resetView = () => {
+  emit("recipientUpdated", recipient.value); // Emitir evento para restablecer la vista
+};
+
 const copy = async (event) => {
   try {
     await toClipboard(editorCode.value);
@@ -92,12 +96,11 @@ const highlighter = (code) => {
 
 <template>
   <div
-    class="position-relative border-radius-xl overflow-hidden shadow-lg mb-7"
-  >
+    class="position-relative border-radius-xl overflow-hidden shadow-lg mb-7">
     <div class="container border-bottom">
       <div class="row justify-space-between py-2">
         <div class="col-lg-8 me-auto">
-          <MailBox @emailGenerated="recipient = $event; emit('recipientUpdated', $event)" />
+          <MailBox @emailGenerated="recipient = $event; emit('recipientUpdated', $event)" @resetView="resetView" />
         </div>
         <div class="col-lg-3">
           <div class="nav-wrapper position-relative end-0">

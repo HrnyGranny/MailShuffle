@@ -54,6 +54,44 @@ router.get('/emails/:recipient', async (req, res) => {
   }
 });
 
+// Ruta para borrar los correos por recipient
+router.delete('/emails/:recipient', async (req, res) => {
+  try {
+    const { recipient } = req.params;
+
+    // Borrar los correos en la base de datos que coincidan con el recipient (case-insensitive)
+    const result = await Email.deleteMany({ recipient: { $regex: new RegExp(`^${recipient}$`, 'i') } });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'No se encontraron correos para borrar.' });
+    }
+
+    res.status(200).json({ message: 'Correos borrados correctamente.' });
+  } catch (err) {
+    console.error('❌ Error al borrar los correos:', err);
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
+// Ruta para borrar un correo específico por su _id
+router.delete('/emails/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar y borrar el correo por su _id
+    const result = await Email.findByIdAndDelete(id);
+
+    if (!result) {
+      return res.status(404).json({ message: 'No se encontró el correo con el ID proporcionado.' });
+    }
+
+    res.status(200).json({ message: 'Correo borrado correctamente.' });
+  } catch (err) {
+    console.error('❌ Error al borrar el correo:', err);
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
 // Ruta para generar un correo aleatorio con el dominio mailshuffle.online
 router.get('/generate', (req, res) => {
   try {

@@ -23,3 +23,25 @@ export const generateRandomEmail = async () => {
       throw error;
     }
   };
+
+// Función para borrar correos por recipient
+export const deleteEmailsByRecipient = async (recipient) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/emails/${recipient}`);
+    return response.data; // Devuelve el mensaje de éxito o error
+  } catch (error) {
+    console.error("Error deleting emails for recipient:", error);
+    throw error;
+  }
+};
+
+// Función para borrar un correo específico por su _id
+export const deleteEmailById = async (id) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/emails/${id}`);
+    return response.data; // Devuelve el mensaje de éxito o error
+  } catch (error) {
+    console.error("Error deleting email by ID:", error);
+    throw error;
+  }
+};

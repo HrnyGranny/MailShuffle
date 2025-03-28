@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { generateRandomEmail } from "@/api/emailService"; // Importar la función para generar correos
+import { generateRandomEmail, deleteEmailsByRecipient } from "@/api/emailService";
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
+import Swal from "sweetalert2";
 
 // Importar iconos desde assets
 import CopyIcon from "../../../assets/img/iconos/copiar.png";
@@ -29,79 +30,55 @@ const email = ref(""); // Variable para almacenar el correo generado
 // Función para generar un correo aleatorio
 const generateEmail = async (event) => {
   try {
-    email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
-    setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
-    emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
-    emit("resetView")
-    // Mostrar alerta de éxito
-    const el = event.target.parentElement;
-    const alert = document.createElement("div");
-    alert.classList.add(
-      "alert",
-      "alert-success",
-      "position-absolute",
-      "top-5",
-      "border-0",
-      "text-white",
-      "w-25",
-      "end-0",
-      "start-0",
-      "mt-2",
-      "mx-auto",
-      "py-2"
-    );
-    alert.style.transform = "translate3d(0px, 0px, 0px)";
-    alert.style.opacity = "0";
-    alert.style.transition = ".35s ease";
-    setTimeout(() => {
-      alert.style.transform = "translate3d(0px, 20px, 0px)";
-      alert.style.setProperty("opacity", "1", "important");
-    }, 100);
-    alert.innerHTML = "New email generated successfully!";
-    el.parentElement.appendChild(alert);
-    setTimeout(() => {
-      alert.style.transform = "translate3d(0px, 0px, 0px)";
-      alert.style.setProperty("opacity", "0", "important");
-    }, 2000);
-    setTimeout(() => {
-      el.parentElement.querySelector(".alert").remove();
-    }, 2500);
+    // Mostrar alerta de confirmación antes de eliminar correos
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "This will delete all emails associated with the current address!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete them!',
+      position: 'center',
+      toast: true
+    });
+    if (result.isConfirmed) {
+
+      // Eliminar correos
+      if (email.value) {
+        await deleteEmailsByRecipient(email.value); // Llamar al backend para eliminar correos
+        console.log(`Emails associated with ${email.value} deleted successfully.`);
+      }
+      
+      // Generar un nuevo correo
+      email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
+      setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
+      emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
+
+      // Mostrar alerta de éxito al generar
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Emails deleted successfully!',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+      });
+    }
   } catch (error) {
     console.error("Error generating email:", error);
 
     // Mostrar alerta de error
-    const el = event.target.parentElement;
-    const alert = document.createElement("div");
-    alert.classList.add(
-      "alert",
-      "alert-danger",
-      "position-absolute",
-      "top-5",
-      "border-0",
-      "text-white",
-      "w-25",
-      "end-0",
-      "start-0",
-      "mt-2",
-      "mx-auto",
-      "py-2"
-    );
-    alert.style.transform = "translate3d(0px, 0px, 0px)";
-    alert.style.opacity = "0";
-    alert.style.transition = ".35s ease";
-    setTimeout(() => {
-      alert.style.transform = "translate3d(0px, 20px, 0px)";
-      alert.style.setProperty("opacity", "1", "important");
-    }, 100);
-    alert.innerHTML = "Failed to generate a new email!";
-    el.parentElement.appendChild(alert);
-    setTimeout(() => {
-      alert.style.transform = "translate3d(0px, 0px, 0px)";
-      alert.style.setProperty("opacity", "0", "important");
-    }, 2000);
-    setTimeout(() => {
-      el.parentElement.querySelector(".alert").remove();
-    }, 2500);
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'success',
+      title: 'New email generated successfully!',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
   }
 };
 
@@ -111,36 +88,17 @@ const copyToClipboard = async (event) => {
     await navigator.clipboard.writeText(email.value); // Copiar el contenido al portapapeles
     const el = event.target.parentElement;
     const alert = document.createElement("div");
-    alert.classList.add(
-      "alert",
-      "alert-success",
-      "position-absolute",
-      "top-5",
-      "border-0",
-      "text-white",
-      "w-25",
-      "end-0",
-      "start-0",
-      "mt-2",
-      "mx-auto",
-      "py-2"
-    );
-    alert.style.transform = "translate3d(0px, 0px, 0px)";
-    alert.style.opacity = "0";
-    alert.style.transition = ".35s ease";
-    setTimeout(() => {
-      alert.style.transform = "translate3d(0px, 20px, 0px)";
-      alert.style.setProperty("opacity", "1", "important");
-    }, 100);
-    alert.innerHTML = "Email successfully copied!";
-    el.parentElement.appendChild(alert);
-    setTimeout(() => {
-      alert.style.transform = "translate3d(0px, 0px, 0px)";
-      alert.style.setProperty("opacity", "0", "important");
-    }, 2000);
-    setTimeout(() => {
-      el.parentElement.querySelector(".alert").remove();
-    }, 2500);
+
+    // Mostrar alerta de éxito
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'success', 
+      title: 'Email copied successfully!',
+      showConfirmButton: false, 
+      timer: 3000,
+      timerProgressBar: true
+    });
   } catch (error) {
     console.error("Error copying to clipboard:", error);
   }
@@ -193,7 +151,7 @@ onMounted(async () => {
                 <div class="col-6">
                   <MaterialButton
                     variant="gradient"
-                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#fff' }"
+                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767' }"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
                     @click="generateEmail"
                   >

@@ -40,7 +40,7 @@ watch(recipient, () => {
 <style scoped>
 .received-container {
   position: relative;
-  margin-bottom: 350px;
+  margin-bottom: 280px;
   min-height: 300px;
 }
 

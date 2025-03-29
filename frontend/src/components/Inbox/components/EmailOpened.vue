@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from "vue";
+
 const props = defineProps({
   email: {
     type: Object,
@@ -7,6 +9,16 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["back"]);
+
+// Convierte URLs en enlaces clicables (maneja undefined o null)
+const formattedBody = computed(() => {
+  if (!props.email?.body) return ""; // Evita errores si body es undefined o null
+
+  return props.email.body.replace(
+    /(https?:\/\/[^\s]+)/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+});
 </script>
 
 <template>
@@ -15,18 +27,18 @@ const emit = defineEmits(["back"]);
     <div class="email-card">
       <!-- Encabezado -->
       <div class="email-header">
-        <div class="avatar">{{ email.sender.charAt(0).toUpperCase() }}</div>
+        <div class="avatar">{{ email.sender?.charAt(0).toUpperCase() || "?" }}</div>
         <div class="email-info">
-          <h3 class="sender-name">{{ email.sender }}</h3>
-          <p class="email-address">{{ email.recipient }}</p>
+          <h3 class="sender-name">{{ email.sender || "Unknown" }}</h3>
+          <p class="email-address">{{ email.recipient || "Unknown" }}</p>
         </div>
         <span class="email-date">{{ new Date().toLocaleString() }}</span>
       </div>
 
       <!-- Contenido del correo -->
       <div class="email-body">
-        <h4 class="email-subject">{{ email.subject }}</h4>
-        <p class="email-text">{{ email.body }}</p>
+        <h4 class="email-subject">{{ email.subject || "(No subject)" }}</h4>
+        <p class="email-text" v-html="formattedBody"></p>
       </div>
     </div>
 

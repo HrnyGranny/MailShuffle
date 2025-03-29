@@ -143,7 +143,7 @@ onMounted(async () => {
                 <div class="col-6">
                   <MaterialButton
                     variant="gradient"
-                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#fff' }"
+                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767' }"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
                     @click="copyToClipboard"
                   >

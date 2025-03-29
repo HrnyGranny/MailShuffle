@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { getEmailsByRecipient, deleteEmailById } from "@/api/emailService";
 import EmailOpened from "./EmailOpened.vue";
+import Swal from "sweetalert2";
 
 const props = defineProps({ recipient: String });
 const emit = defineEmits(["hasEmails"]);
@@ -42,6 +43,17 @@ const deleteEmail = async (id) => {
   try {
     await deleteEmailById(id); // Llamar al backend para eliminar el correo
     emails.value = emails.value.filter((email) => email._id !== id); // Actualizar la lista local
+
+    // Mostrar alerta de éxito al eliminar
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'success',
+      title: 'Email deleted successfully!',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
   } catch (error) {
     console.error("Error deleting email:", error);
   }
@@ -82,9 +94,15 @@ watch(() => props.recipient, async () => {
           <strong class="email-subject">{{ email.subject }}</strong>
           <span class="email-sender"> - {{ email.sender }}</span>
         </div>
-        <button class="delete-button" @click.stop="deleteEmail(email._id)">
-          <span class="material-icons">delete</span>
-        </button>
+        <!-- Botón de eliminar con MaterialButton -->
+        <MaterialButton
+          variant="gradient"
+          :style="{ backgroundColor: '#e74c3c', borderColor: '#e74c3c', color: '#fff' }"
+          class="delete-button"
+          @click.stop="deleteEmail(email._id)"
+        >
+          <span class="material-icons delete-icon">delete</span>
+        </MaterialButton>
       </li>
     </ul>
     <EmailOpened v-if="isViewingEmail && selectedEmail" :email="selectedEmail" @back="backToList" />
@@ -134,20 +152,19 @@ ul {
 }
 
 .delete-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #e74c3c;
-
-  font-size: 24px;
-  padding-right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
 }
 
 .delete-button:hover {
-  color: #c0392b;
+  transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
 }
 
-.alternate {
-  background-color: #f9f9f9;
+.delete-icon {
+  font-size: 22px; /* Tamaño del ícono */
 }
 </style>

@@ -36,7 +36,7 @@ router.post('/mailgun', async (req, res) => {
 });
 
 // Ruta para obtener los correos por recipient
-router.get('/emails/:recipient', async (req, res) => {
+router.get('/:recipient', async (req, res) => {
   try {
     const { recipient } = req.params;
 
@@ -55,7 +55,7 @@ router.get('/emails/:recipient', async (req, res) => {
 });
 
 // Ruta para borrar los correos por recipient
-router.delete('/emails/:recipient', async (req, res) => {
+router.delete('/:recipient', async (req, res) => {
   try {
     const { recipient } = req.params;
 
@@ -74,10 +74,10 @@ router.delete('/emails/:recipient', async (req, res) => {
 });
 
 // Ruta para borrar un correo específico por su _id
-router.delete('/emails/:id', async (req, res) => {
+router.delete('/id/:id', async (req, res) => {
   try {
     const { id } = req.params;
-
+    
     // Buscar y borrar el correo por su _id
     const result = await Email.findByIdAndDelete(id);
 

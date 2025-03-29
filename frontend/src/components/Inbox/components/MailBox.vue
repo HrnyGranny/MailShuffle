@@ -32,15 +32,17 @@ const generateEmail = async (event) => {
   try {
     // Mostrar alerta de confirmación antes de eliminar correos
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: '<span style="color:#344767;">Are you sure?</span>',
       text: "This will delete all emails associated with the current address!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#4e64ee',
       cancelButtonColor: '#d33',
+      color: "#7b809a",
+      background: '#fff',
       confirmButtonText: 'Yes, delete them!',
       position: 'center',
-      toast: true
+      toast: true,
     });
     if (result.isConfirmed) {
 
@@ -171,5 +173,15 @@ onMounted(async () => {
 .icon-button {
   width: 22px;
   height: 22px;
+}
+/* Cambiar el color del título */
+.swal-title {
+  color: #ff5722;
+  font-weight: bold;
+}
+
+/* Cambiar el color del texto del popup */
+.swal-popup {
+  color: #4caf50; 
 }
 </style>

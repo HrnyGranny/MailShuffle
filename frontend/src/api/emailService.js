@@ -5,7 +5,7 @@ const API_BASE_URL = "http://localhost:3000/api/emails";
 // Función para obtener correos por recipient
 export const getEmailsByRecipient = async (recipient) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/emails/${recipient}`);
+    const response = await axios.get(`${API_BASE_URL}/${recipient}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching emails for recipient:", error);
@@ -27,7 +27,7 @@ export const generateRandomEmail = async () => {
 // Función para borrar correos por recipient
 export const deleteEmailsByRecipient = async (recipient) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/emails/${recipient}`);
+    const response = await axios.delete(`${API_BASE_URL}/${recipient}`);
     return response.data; // Devuelve el mensaje de éxito o error
   } catch (error) {
     console.error("Error deleting emails for recipient:", error);
@@ -38,10 +38,11 @@ export const deleteEmailsByRecipient = async (recipient) => {
 // Función para borrar un correo específico por su _id
 export const deleteEmailById = async (id) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/emails/${id}`);
-    return response.data; // Devuelve el mensaje de éxito o error
+    console.log(`Borrando correo con ID: ${id}`);
+    const response = await axios.delete(`${API_BASE_URL}/id/${id}`);
+    return response.data;
   } catch (error) {
-    console.error("Error deleting email by ID:", error);
+    console.error("Error deleting email by ID:", error.response || error.message);
     throw error;
   }
 };

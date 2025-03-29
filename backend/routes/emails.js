@@ -93,7 +93,7 @@ router.delete('/id/:id', async (req, res) => {
 });
 
 // Ruta para generar un correo aleatorio con el dominio mailshuffle.online
-router.get('/generate', (req, res) => {
+router.get('/g/generate', (req, res) => {
   try {
     // Generar una parte aleatoria para el nombre de usuario
     const username = faker.internet.username(); // Nombre de usuario aleatorio

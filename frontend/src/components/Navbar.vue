@@ -229,7 +229,7 @@ watch(
                   <li class="nav-item list-group-item border-0 p-0">
                     <a
                       class="dropdown-item py-2 ps-3 border-radius-md"
-                      href="#"
+                      href="/login"
                     >
                       <h6
                         class="dropdown-header text-dark font-weight-bolder d-flex align-items-start p-0"
@@ -242,14 +242,14 @@ watch(
                   <li class="nav-item list-group-item border-0 p-0">
                     <a
                       class="dropdown-item py-2 ps-3 border-radius-md"
-                      href="/login-issues"
+                      href="/contact"
                     >
                       <h6
                         class="dropdown-header text-dark font-weight-bolder d-flex align-items-start p-0"
                       >
-                        Login Issues
+                        Contact Us
                       </h6>
-                      <span class="text-sm text-start">Troubleshoot login problems</span>
+                      <span class="text-sm text-start">For issues, recommendations, or general inquiries</span>
                     </a>
                   </li>
                 </ul>

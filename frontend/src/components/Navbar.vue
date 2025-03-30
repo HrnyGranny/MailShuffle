@@ -167,8 +167,8 @@ watch(
       </button>
       <div :class="['navbar-collapse', 'w-100', 'pt-3', 'pb-2', 'py-lg-0', { collapse: !menuOpen }]" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
-            <!-- GITHUB -->
-            <li class="nav-item dropdown dropdown-hover mx-2">
+          <!-- GITHUB -->
+          <li class="nav-item dropdown dropdown-hover mx-2">
             <a
               href="https://github.com/HrnyGranny"
               class="nav-link d-flex cursor-pointer align-items-center"
@@ -189,23 +189,25 @@ watch(
               HornyGranny
             </a>
           </li>
-          <!-- GITHUB -->
+          <!-- GITHUB END -->
           <!-- LOGIN -->
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a
               role="button"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
               :class="getTextColor()"
-              id="dropdownMenuDocs"
+              id="dropdownMenuLogin"
               data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
               aria-expanded="false"
             >
               <i
                 class="material-icons opacity-6 me-2 text-md"
                 :class="getTextColor()"
-                >article</i
               >
-              Docs
+                login
+              </i>
+              Login
               <img
                 :src="getArrowColor()"
                 alt="down-arrow"
@@ -220,55 +222,34 @@ watch(
             <!--Content-->
             <div
               class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md mt-0 mt-lg-3 p-3 border-radius-lg"
-              aria-labelledby="dropdownMenuDocs"
+              aria-labelledby="dropdownMenuLogin"
             >
               <div class="d-none d-lg-block">
                 <ul class="list-group">
                   <li class="nav-item list-group-item border-0 p-0">
                     <a
                       class="dropdown-item py-2 ps-3 border-radius-md"
-                      href=" https://www.creative-tim.com/learning-lab/vue/overview/material-kit/"
+                      href="#"
                     >
                       <h6
-                        class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-start p-0"
                       >
-                        Getting Started
+                        Login
                       </h6>
-                      <span class="text-sm"
-                        >All about overview, quick start, license and
-                        contents</span
-                      >
+                      <span class="text-sm text-start">Access your account</span>
                     </a>
                   </li>
                   <li class="nav-item list-group-item border-0 p-0">
                     <a
                       class="dropdown-item py-2 ps-3 border-radius-md"
-                      href=" https://www.creative-tim.com/learning-lab/vue/colors/material-kit/"
+                      href="/login-issues"
                     >
                       <h6
-                        class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-start p-0"
                       >
-                        Foundation
+                        Login Issues
                       </h6>
-                      <span class="text-sm"
-                        >See our colors, icons and typography</span
-                      >
-                    </a>
-                  </li>
-                  <li class="nav-item list-group-item border-0 p-0">
-                    <a
-                      class="dropdown-item py-2 ps-3 border-radius-md"
-                      href=" https://www.creative-tim.com/learning-lab/vue/alerts/material-kit/"
-                    >
-                      <h6
-                        class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                      >
-                        Components
-                      </h6>
-                      <span class="text-sm"
-                        >Explore our collection of fully designed
-                        components</span
-                      >
+                      <span class="text-sm text-start">Troubleshoot login problems</span>
                     </a>
                   </li>
                 </ul>
@@ -278,76 +259,31 @@ watch(
                 <div class="col-md-12 g-0">
                   <a
                     class="dropdown-item py-2 ps-3 border-radius-md"
-                    href="./pages/about-us.html"
+                    href="/login"
                   >
                     <h6
-                      class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
+                      class="dropdown-header text-dark font-weight-bolder d-flex align-items-start p-0"
                     >
-                      Getting Started
+                      Login
                     </h6>
-                    <span class="text-sm"
-                      >All about overview, quick start, license and
-                      contents</span
-                    >
+                    <span class="text-sm text-start">Access your account</span>
                   </a>
                   <a
                     class="dropdown-item py-2 ps-3 border-radius-md"
-                    href="./pages/about-us.html"
+                    href="/login-issues"
                   >
                     <h6
-                      class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
+                      class="dropdown-header text-dark font-weight-bolder d-flex align-items-start p-0"
                     >
-                      Foundation
+                      Login Issues
                     </h6>
-                    <span class="text-sm"
-                      >See our colors, icons and typography</span
-                    >
-                  </a>
-                  <a
-                    class="dropdown-item py-2 ps-3 border-radius-md"
-                    href="./pages/about-us.html"
-                  >
-                    <h6
-                      class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                    >
-                      Components
-                    </h6>
-                    <span class="text-sm"
-                      >Explore our collection of fully designed components</span
-                    >
-                  </a>
-                  <a
-                    class="dropdown-item py-2 ps-3 border-radius-md"
-                    href="./pages/about-us.html"
-                  >
-                    <h6
-                      class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                    >
-                      Plugins
-                    </h6>
-                    <span class="text-sm"
-                      >Check how you can integrate our plugins</span
-                    >
-                  </a>
-                  <a
-                    class="dropdown-item py-2 ps-3 border-radius-md"
-                    href="./pages/about-us.html"
-                  >
-                    <h6
-                      class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0"
-                    >
-                      Utility Classes
-                    </h6>
-                    <span class="text-sm"
-                      >For those who want flexibility, use our utility
-                      classes</span
-                    >
+                    <span class="text-sm text-start">Troubleshoot login problems</span>
                   </a>
                 </div>
               </div>
             </div>
           </li>
-          <!-- LOGIN -->
+          <!-- LOGIN END -->
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">

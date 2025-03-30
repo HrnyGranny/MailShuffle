@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, watch } from "vue";
 import { getEmailsByRecipient, deleteEmailById } from "@/api/emailService";
 import EmailOpened from "./EmailOpened.vue";
 import Swal from "sweetalert2";
+import MaterialButton from "@/material_components/MaterialButton.vue";
 
 const props = defineProps({ recipient: String });
 const emit = defineEmits(["hasEmails"]);
@@ -97,12 +98,12 @@ watch(() => props.recipient, async () => {
         <!-- Botón de eliminar con MaterialButton -->
         <MaterialButton
           variant="gradient"
-          :style="{ backgroundColor: '#e74c3c', borderColor: '#e74c3c', color: '#fff' }"
+          color="danger"
           class="delete-button"
           @click.stop="deleteEmail(email._id)"
         >
           <span class="material-icons delete-icon">delete</span>
-        </MaterialButton>
+      </MaterialButton>
       </li>
     </ul>
     <EmailOpened v-if="isViewingEmail && selectedEmail" :email="selectedEmail" @back="backToList" />

@@ -99,7 +99,7 @@ watch(() => props.recipient, async () => {
         <MaterialButton
           variant="gradient"
           color="danger"
-          class="delete-button"
+          class="ms-auto d-flex align-items-center btn-sm p-2 mt-3"
           @click.stop="deleteEmail(email._id)"
         >
           <span class="material-icons delete-icon">delete</span>
@@ -150,19 +150,6 @@ ul {
 .email-sender {
   color: #7b829a; /* Color del remitente */
   font-style: italic;
-}
-
-.delete-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
-}
-
-.delete-button:hover {
-  transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
 }
 
 .delete-icon {

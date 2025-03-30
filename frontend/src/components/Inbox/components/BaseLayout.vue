@@ -1,9 +1,5 @@
 <script setup>
 defineProps({
-  breadcrumb: {
-    type: Array,
-    required: true,
-  },
   title: {
     type: String,
     required: true,

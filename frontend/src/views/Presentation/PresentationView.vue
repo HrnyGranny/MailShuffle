@@ -1,15 +1,13 @@
 <script setup>
 import { onMounted, onUnmounted } from "vue";
 
-//example components
+//components
 import NavbarDefault from "../../components/Navbar.vue";
 import DefaultFooter from "../../components/Footer.vue";
 import Header from "../../components/Header.vue";
 import Inbox from "../../components/Inbox/Inbox.vue";
 import AboutUs from "../../components/AboutUs/AboutUs.vue";
-
-//Vue Material Kit 2 components
-import MaterialSocialButton from "@/material_components/MaterialSocialButton.vue";
+import Contact from "../../components/Contact.vue";
 
 //images
 import vueMkHeader from "@/assets/img/PaperPv.jpg";
@@ -34,6 +32,8 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+  <!-- Contact button-->
+  <Contact />
   <!-- Header -->
   <Header>
     <div

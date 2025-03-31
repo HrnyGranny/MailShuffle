@@ -1,9 +1,6 @@
 <script setup>
 import { computed } from "vue";
-<<<<<<< HEAD
-=======
 import DOMPurify from "dompurify";
->>>>>>> nueva-rama
 
 const props = defineProps({
   email: {
@@ -14,16 +11,6 @@ const props = defineProps({
 
 const emit = defineEmits(["back"]);
 
-<<<<<<< HEAD
-// Convierte URLs en enlaces clicables (maneja undefined o null)
-const formattedBody = computed(() => {
-  if (!props.email?.body) return ""; // Evita errores si body es undefined o null
-
-  return props.email.body.replace(
-    /(https?:\/\/[^\s]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
-  );
-=======
 // Sanitiza el cuerpo del correo y convierte enlaces en clicables
 const sanitizedBody = computed(() => {
   if (!props.email?.body) return ""; // Evita errores si body es undefined o null
@@ -51,7 +38,6 @@ const formattedDate = computed(() => {
 
   const date = new Date(props.email.receivedAt);
   return date.toLocaleString(); // Ajusta según el formato deseado
->>>>>>> nueva-rama
 });
 </script>
 
@@ -72,11 +58,7 @@ const formattedDate = computed(() => {
       <!-- Contenido del correo -->
       <div class="email-body">
         <h4 class="email-subject">{{ email.subject || "(No subject)" }}</h4>
-<<<<<<< HEAD
-        <p class="email-text" v-html="formattedBody"></p>
-=======
         <div class="email-text" v-html="sanitizedBody"></div>
->>>>>>> nueva-rama
       </div>
     </div>
 

@@ -43,6 +43,7 @@ onMounted(() => {
           </p>
           <!-- Botón de soporte -->
           <div id="donate-button-container" style="display: inline-block;"></div>
+          <!--Contact Us-->         
         </div>
         <!-- Columna de opciones -->
         <div class="col-lg-6 mt-lg-0 mt-5 ps-lg-0 ps-0">

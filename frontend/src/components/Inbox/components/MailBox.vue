@@ -143,7 +143,7 @@ onMounted(async () => {
                 <div class="col-6">
                   <MaterialButton
                     variant="gradient"
-                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767' }"
+                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
                     @click="copyToClipboard"
                   >
@@ -153,7 +153,7 @@ onMounted(async () => {
                 <div class="col-6">
                   <MaterialButton
                     variant="gradient"
-                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767' }"
+                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
                     @click="generateEmail"
                   >

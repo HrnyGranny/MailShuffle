@@ -1,39 +1,38 @@
 const express = require('express');
 const { faker } = require('@faker-js/faker');
 const Email = require('../models/email');
+const UserEmail = require('../models/emailp'); // Correos premium
+const classifyEmail = require("../middleware/classifyEmail");
 
 const router = express.Router();
 
 // Ruta para recibir correos desde Mailgun
-router.post('/mailgun', async (req, res) => {
+
+router.post('/mailgun', classifyEmail, async (req, res) => {
   try {
     const { sender, recipient, subject, 'body-plain': body } = req.body;
 
     if (!sender || !recipient || !subject || !body) {
-      console.error("❌ Datos incompletos recibidos:", req.body, req.headers);
-      return res.status(400).send('Datos incompletos');
+      return res.status(400).send("Datos incompletos");
     }
 
-    // Crear un nuevo documento de correo
-    const newEmail = new Email({
-      sender,
-      recipient,
-      subject,
-      body,
-    });
+    if (req.isPremium) {
+      const newEmail = new UserEmail({ sender, recipient, subject, body, userId: req.userId });
+      await newEmail.save();
+      console.log(`✅ Email Premium guardado para usuario ${req.userId}`);
+    } else {
+      const newEmail = new Email({ sender, recipient, subject, body });
+      await newEmail.save();
+      console.log(`✅ Email Temporal guardado`);
+    }
 
-    // Guardar el correo en la base de datos
-    await newEmail.save();
-
-    console.log(`✅ Correo guardado en MongoDB de ${sender} con asunto: ${subject}, y body: ${body}`);
-
-    // Responder a Mailgun para confirmar la recepción
-    res.status(200).send('OK');
+    res.status(200).send("OK");
   } catch (err) {
-    console.error('❌ Error al guardar el correo en la base de datos:', err);
-    res.status(500).send('Error interno del servidor');
+    console.error("❌ Error al guardar el correo:", err);
+    res.status(500).send("Error interno del servidor");
   }
 });
+
 
 // Ruta para obtener los correos por recipient
 router.get('/:recipient', async (req, res) => {

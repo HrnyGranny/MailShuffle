@@ -16,7 +16,7 @@ export const getEmailsByRecipient = async (recipient) => {
 // Función para generar un correo aleatorio
 export const generateRandomEmail = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/generate`);
+      const response = await axios.get(`${API_BASE_URL}/g/generate`);
       return response.data; // Devuelve el correo generado como texto
     } catch (error) {
       console.error("Error generating random email:", error);

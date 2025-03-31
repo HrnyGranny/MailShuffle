@@ -1,5 +1,9 @@
 <script setup>
 import { computed } from "vue";
+<<<<<<< HEAD
+=======
+import DOMPurify from "dompurify";
+>>>>>>> nueva-rama
 
 const props = defineProps({
   email: {
@@ -10,6 +14,7 @@ const props = defineProps({
 
 const emit = defineEmits(["back"]);
 
+<<<<<<< HEAD
 // Convierte URLs en enlaces clicables (maneja undefined o null)
 const formattedBody = computed(() => {
   if (!props.email?.body) return ""; // Evita errores si body es undefined o null
@@ -18,6 +23,35 @@ const formattedBody = computed(() => {
     /(https?:\/\/[^\s]+)/g,
     '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
   );
+=======
+// Sanitiza el cuerpo del correo y convierte enlaces en clicables
+const sanitizedBody = computed(() => {
+  if (!props.email?.body) return ""; // Evita errores si body es undefined o null
+
+  // Convierte URLs en enlaces antes de sanitizar
+  const transformedBody = props.email.body.replace(
+    /(https?:\/\/[^\s]+)/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+
+  // Sanitiza el HTML (permite etiquetas seguras y atributos específicos)
+  return DOMPurify.sanitize(transformedBody, {
+    ALLOWED_TAGS: [
+      "b", "i", "em", "strong", "a", "p", "br", "ul", "ol", "li",
+      "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "code",
+      "pre", "span", "img"
+    ],
+    ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "title", "style"],
+  });
+});
+
+// Formatea la fecha de recepción usando receivedAt
+const formattedDate = computed(() => {
+  if (!props.email?.receivedAt) return "Fecha desconocida";
+
+  const date = new Date(props.email.receivedAt);
+  return date.toLocaleString(); // Ajusta según el formato deseado
+>>>>>>> nueva-rama
 });
 </script>
 
@@ -32,13 +66,17 @@ const formattedBody = computed(() => {
           <h3 class="sender-name">{{ email.sender || "Unknown" }}</h3>
           <p class="email-address">{{ email.recipient || "Unknown" }}</p>
         </div>
-        <span class="email-date">{{ new Date().toLocaleString() }}</span>
+        <span class="email-date">{{ formattedDate }}</span>      
       </div>
 
       <!-- Contenido del correo -->
       <div class="email-body">
         <h4 class="email-subject">{{ email.subject || "(No subject)" }}</h4>
+<<<<<<< HEAD
         <p class="email-text" v-html="formattedBody"></p>
+=======
+        <div class="email-text" v-html="sanitizedBody"></div>
+>>>>>>> nueva-rama
       </div>
     </div>
 

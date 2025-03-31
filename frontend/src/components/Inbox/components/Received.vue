@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, watch } from "vue";
 import { getEmailsByRecipient, deleteEmailById } from "@/api/emailService";
 import EmailOpened from "./EmailOpened.vue";
 import Swal from "sweetalert2";
+import MaterialButton from "@/material_components/MaterialButton.vue";
 
 const props = defineProps({ recipient: String });
 const emit = defineEmits(["hasEmails"]);
@@ -97,12 +98,12 @@ watch(() => props.recipient, async () => {
         <!-- Botón de eliminar con MaterialButton -->
         <MaterialButton
           variant="gradient"
-          :style="{ backgroundColor: '#e74c3c', borderColor: '#e74c3c', color: '#fff' }"
-          class="delete-button"
+          color="danger"
+          class="ms-auto d-flex align-items-center btn-sm p-2 mt-3"
           @click.stop="deleteEmail(email._id)"
         >
           <span class="material-icons delete-icon">delete</span>
-        </MaterialButton>
+      </MaterialButton>
       </li>
     </ul>
     <EmailOpened v-if="isViewingEmail && selectedEmail" :email="selectedEmail" @back="backToList" />
@@ -149,19 +150,6 @@ ul {
 .email-sender {
   color: #7b829a; /* Color del remitente */
   font-style: italic;
-}
-
-.delete-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
-}
-
-.delete-button:hover {
-  transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
 }
 
 .delete-icon {

@@ -45,17 +45,17 @@ const generateEmail = async (event) => {
       toast: true,
     });
     if (result.isConfirmed) {
+      
+      // Generar un nuevo correo
+      email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
+      setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
+      emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
 
       // Eliminar correos
       if (email.value) {
         await deleteEmailsByRecipient(email.value); // Llamar al backend para eliminar correos
         console.log(`Emails associated with ${email.value} deleted successfully.`);
       }
-      
-      // Generar un nuevo correo
-      email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
-      setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
-      emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
 
       // Mostrar alerta de éxito al generar
       Swal.fire({

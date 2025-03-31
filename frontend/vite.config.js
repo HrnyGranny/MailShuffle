@@ -10,6 +10,6 @@ export default defineConfig({
     },
   },
   server: {
-    port: 8081, // Cambia este puerto al que prefieras
+    port: 8081, // Port
   },
 });

@@ -23,7 +23,7 @@ defineProps({
         "none",
       ].includes(color);
     },
-    default: "",
+    default: "#98FE98",
   },
   size: {
     validator(size) {

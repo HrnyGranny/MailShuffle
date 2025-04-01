@@ -15,6 +15,7 @@ import MaterialButton from "@/material_components/MaterialButton.vue";
 
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
+
 onMounted(() => {
   setMaterialInput();
 });
@@ -28,7 +29,7 @@ onMounted(() => {
           :action="{
             route: 'https://www.creative-tim.com/product/vue-material-kit-pro',
             color: 'bg-gradient-success',
-            label: 'Buy Now',
+            label: 'Go Premium',
           }"
         />
       </div>
@@ -60,15 +61,14 @@ onMounted(() => {
                 class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
               >
                 <div
-                  class="bg-gradient-success shadow-success border-radius-lg p-3"
+                  class="custom-gradient border-radius-lg p-3"
                 >
-                  <h3 class="text-white text-success mb-0">Contact us</h3>
+                  <h3 class="mb-0">Contact us</h3>
                 </div>
               </div>
               <div class="card-body">
                 <p class="pb-3">
-                  For further questions, including partnership opportunities,
-                  please email hello@creative-tim.com or contact using our
+                  For any inquiries or support, feel free to reach out to us at <strong>mailshuffle@mailshuffle.xyz</strong> or contact using our
                   contact form.
                 </p>
                 <form id="contact-form" method="post" autocomplete="off">
@@ -104,7 +104,7 @@ onMounted(() => {
                       <div class="col-md-12 text-center">
                         <MaterialButton
                           variant="gradient"
-                          color="success"
+                          :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
                           class="mt-3 mb-0"
                           >Send Message</MaterialButton
                         >
@@ -121,3 +121,11 @@ onMounted(() => {
   </section>
   <DefaultFooter />
 </template>
+
+<style scoped>
+.custom-gradient {
+  background: #98FE98;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  color: #344767;
+}
+</style>

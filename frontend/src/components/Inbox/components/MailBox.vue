@@ -27,6 +27,19 @@ const getCookie = (name) => {
 // Variables reactivas
 const email = ref(""); // Variable para almacenar el correo generado
 
+const generateFirstEmail = async (event) => {
+  try {
+
+    // Generar un nuevo correo
+    email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
+    setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
+    emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
+
+  } catch (error) {
+    console.error("Error generating First email:", error);
+  }
+}
+
 // Función para generar un correo aleatorio
 const generateEmail = async (event) => {
   try {
@@ -75,8 +88,8 @@ const generateEmail = async (event) => {
     Swal.fire({
       toast: true,
       position: 'bottom-end',
-      icon: 'success',
-      title: 'New email generated successfully!',
+      icon: 'error',
+      title: 'An error occurred!',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
@@ -103,6 +116,17 @@ const copyToClipboard = async (event) => {
     });
   } catch (error) {
     console.error("Error copying to clipboard:", error);
+
+    // Mostrar alerta de error
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'error',
+      title: 'An error occurred!',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
   }
 };
 
@@ -117,7 +141,7 @@ onMounted(async () => {
     email.value = savedEmail; // Usar el correo guardado en la cookie
     emit("emailGenerated", email.value); // Emitir el correo al componente padre
   } else {
-    await generateEmail(); // Generar un nuevo correo si no hay cookie
+    await generateFirstEmail(); // Generar un nuevo correo si no hay cookie
   }
 });
 </script>
@@ -130,11 +154,11 @@ onMounted(async () => {
           <div class="row">
             <div class="col-9">
               <MaterialInput
-                class="input-group-outline border-success"
+                class="input-group-outline border-danger"
                 id="email"
                 type="email"
                 :value="email"
-                :success=true
+                :error="true"
                 readonly
               />
             </div>
@@ -144,7 +168,7 @@ onMounted(async () => {
                   <MaterialButton
                     variant="gradient"
                     :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
-                    class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
+                    class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2 floating-button"
                     @click="copyToClipboard"
                   >
                     <img :src="CopyIcon" alt="Copy" class="icon-button" />
@@ -154,7 +178,7 @@ onMounted(async () => {
                   <MaterialButton
                     variant="gradient"
                     :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
-                    class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2"
+                    class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2 floating-button"
                     @click="generateEmail"
                   >
                     <img :src="ReloadIcon" alt="Reload" class="icon-button" />
@@ -174,14 +198,18 @@ onMounted(async () => {
   width: 22px;
   height: 22px;
 }
-/* Cambiar el color del título */
-.swal-title {
-  color: #ff5722;
-  font-weight: bold;
+.floating-button:hover {
+    transform: scale(1.1);
 }
 
-/* Cambiar el color del texto del popup */
-.swal-popup {
-  color: #4caf50; 
+/* Estilo para mantener el campo enfocado */
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
+
+input[readonly] {
+  cursor: default;
+}
+
 </style>

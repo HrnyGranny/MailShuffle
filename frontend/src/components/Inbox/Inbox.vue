@@ -5,7 +5,7 @@ import View from "../Inbox/components/View.vue";
 import Received from "../Inbox/components/Received.vue";
 import setNavPills from "@/assets/js/nav-pills";
 
-const recipient = ref("");
+const recipient = ref({ email: "", apiKey: "" }); // Ahora es un objeto con email y apiKey
 const hasEmails = ref(false);
 
 onMounted(() => {
@@ -22,14 +22,15 @@ watch(recipient, () => {
     <View title="" id="tabs-simple" @recipientUpdated="recipient = $event">
       <div class="received-container">
         <img
-          v-if="!hasEmails && recipient"
+          v-if="!hasEmails && recipient.email"
           src="../../assets/img/carpeta-vacia.png"
           alt="No Emails"
           class="centered-image"
         />
         <Received
-          v-if="recipient"
-          :recipient="recipient"
+          v-if="recipient.email"
+          :email="recipient.email"
+          :apiKey="recipient.apiKey"
           @hasEmails="hasEmails = $event"
         />
       </div>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { generateRandomEmail, deleteEmailsByRecipient } from "@/api/emailService";
+import { generateTemporalEmail, deleteEmailAddress } from "@/api/emailService";
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import Swal from "sweetalert2";
@@ -26,52 +26,78 @@ const getCookie = (name) => {
 
 // Variables reactivas
 const email = ref(""); // Variable para almacenar el correo generado
+const apiKey = ref(""); // Variable para almacenar la API Key
+const emailId = ref(""); // Variable para almacenar el ID del correo
 
-// Función para generar un correo aleatorio
-const generateEmail = async (event) => {
+// Función para generar un correo temporal
+const generateEmail = async () => {
   try {
-    // Mostrar alerta de confirmación antes de eliminar correos
-    const result = await Swal.fire({
-      title: '<span style="color:#344767;">Are you sure?</span>',
-      text: "This will delete all emails associated with the current address!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#4e64ee',
-      cancelButtonColor: '#d33',
-      color: "#7b809a",
-      background: '#fff',
-      confirmButtonText: 'Yes, delete them!',
-      position: 'center',
-      toast: true,
-    });
-    if (result.isConfirmed) {
-      
-      // Generar un nuevo correo
-      email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
-      setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
-      emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
-
-      // Eliminar correos
-      if (email.value) {
-        await deleteEmailsByRecipient(email.value); // Llamar al backend para eliminar correos
-        console.log(`Emails associated with ${email.value} deleted successfully.`);
-      }
-
-      // Mostrar alerta de éxito al generar
-      Swal.fire({
-        toast: true,
-        position: 'bottom-end',
-        icon: 'success',
-        title: 'Emails deleted successfully!',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
+    // Verificar si existe un correo actual (ya sea cargado desde cookies o generado previamente)
+    if (email.value && emailId.value && apiKey.value) {
+      // Mostrar alerta de confirmación antes de eliminar la dirección de correo
+      const result = await Swal.fire({
+        title: '<span style="color:#344767;">Are you sure?</span>',
+        text: "This will delete the current email address and all associated emails!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4e64ee',
+        cancelButtonColor: '#d33',
+        color: "#7b809a",
+        background: '#fff',
+        confirmButtonText: 'Yes, delete it!',
+        position: 'center',
       });
-    }
-  } catch (error) {
-    console.error("Error generating email:", error);
 
-    // Mostrar alerta de error
+      if (result.isConfirmed) {
+        console.log("emailId before delete:", emailId.value);
+        console.log("apiKey before delete:", apiKey.value);
+
+        try {
+          // Llamar a la API para eliminar la dirección de correo
+          await deleteEmailAddress(emailId.value, apiKey.value);
+
+          // Limpiar las cookies y las variables reactivas
+          setCookie("mailshuffle_email", "", -1); // Eliminar cookie
+          setCookie("mailshuffle_apiKey", "", -1); // Eliminar cookie
+          setCookie("mailshuffle_emailId", "", -1); // Eliminar cookie
+          email.value = "";
+          apiKey.value = "";
+          emailId.value = "";
+
+          console.log("Correo eliminado correctamente.");
+        } catch (deleteError) {
+          console.error("Error deleting email address:", deleteError);
+          Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: 'Error deleting email address!',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+          return; // Detener el flujo si ocurre un error al eliminar
+        }
+      } else {
+        return; // Si el usuario cancela, detener el flujo
+      }
+    }
+
+    // Generar un nuevo correo temporal
+    const response = await generateTemporalEmail();
+    console.log("Response from generateTemporalEmail:", response);
+    email.value = response.email;
+    apiKey.value = response.apiKey;
+    emailId.value = response._id; // Almacenar el ID del correo
+
+    // Guardar el correo, la API Key y el ID en cookies
+    setCookie("mailshuffle_email", email.value, 7);
+    setCookie("mailshuffle_apiKey", apiKey.value, 7);
+    setCookie("mailshuffle_emailId", emailId.value, 7);
+
+    emit("emailGenerated", { email: email.value, apiKey: apiKey.value });
+
+    // Mostrar alerta de éxito
     Swal.fire({
       toast: true,
       position: 'bottom-end',
@@ -79,7 +105,20 @@ const generateEmail = async (event) => {
       title: 'New email generated successfully!',
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true
+      timerProgressBar: true,
+    });
+  } catch (error) {
+    console.error("Error generating email:", error);
+
+    // Mostrar alerta de error
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'error',
+      title: 'Error generating email!',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
     });
   }
 };
@@ -88,8 +127,6 @@ const generateEmail = async (event) => {
 const copyToClipboard = async (event) => {
   try {
     await navigator.clipboard.writeText(email.value); // Copiar el contenido al portapapeles
-    const el = event.target.parentElement;
-    const alert = document.createElement("div");
 
     // Mostrar alerta de éxito
     Swal.fire({
@@ -113,9 +150,13 @@ const emit = defineEmits(["emailGenerated"]);
 onMounted(async () => {
   setMaterialInput();
   const savedEmail = getCookie("mailshuffle_email");
-  if (savedEmail) {
-    email.value = savedEmail; // Usar el correo guardado en la cookie
-    emit("emailGenerated", email.value); // Emitir el correo al componente padre
+  const savedApiKey = getCookie("mailshuffle_apiKey");
+  const savedEmailId = getCookie("mailshuffle_emailId");
+  if (savedEmail && savedApiKey && savedEmailId) {
+    email.value = savedEmail;
+    apiKey.value = savedApiKey;
+    emailId.value = savedEmailId;
+    emit("emailGenerated", { email: email.value, apiKey: apiKey.value }); // Emitir el correo al componente padre
   } else {
     await generateEmail(); // Generar un nuevo correo si no hay cookie
   }

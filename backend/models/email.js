@@ -1,18 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 
-// Definir el esquema del correo
-const emailSchema = new mongoose.Schema({
-  sender: String,
-  recipient: String,
-  subject: String,
-  body: String,
-  receivedAt: { type: Date, default: Date.now }, // Fecha cuando se recibe el correo
+const EmailSchema = new Schema({
+    address: { type: String, required: true, unique: true },  // Dirección de correo única
+    owner: { type: Schema.Types.ObjectId, ref: "User", default: null },  // Propietario (solo para usuarios premium)
+    expiresAt: { type: Date, default: null }, // Fecha de expiración (si aplica)
+    apiKey: { type: String, default: null },  // API Key (para correos temporales)
+    inbox: [{ sender: String, subject: String, body: String, receivedAt: Date }] // Bandeja de entrada
 });
 
-// Crear un índice TTL en el campo `receivedAt` para que los documentos expiren después de 3 días (259200 segundos)
-emailSchema.index({ receivedAt: 1 }, { expireAfterSeconds: 604800 }); // 3 días = 259200 segundos
+// Indices para TTL de correos temporales (expiración de 7 días)
+EmailSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-// Crear el modelo y especificar que use la colección TempEmails
-const Email = mongoose.model("Email", emailSchema, "TempEmails");
-
-module.exports = Email;
+module.exports = model("Email", EmailSchema, "Emails");

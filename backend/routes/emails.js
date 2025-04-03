@@ -1,109 +1,211 @@
+// routes/emails.js
 const express = require('express');
 const { faker } = require('@faker-js/faker');
+const crypto = require('crypto');
 const Email = require('../models/email');
-const UserEmail = require('../models/emailp'); // Correos premium
-const classifyEmail = require("../middleware/classifyEmail");
-
+const authMiddleware = require('../middleware/authMiddleware'); // Middleware de autenticación
 const router = express.Router();
 
 // Ruta para recibir correos desde Mailgun
+router.post('/mailgun', async (req, res) => {
+    try {
+        const { recipient, sender, subject, 'body-plain':body } = req.body; // Datos enviados por Mailgun
 
-router.post('/mailgun', classifyEmail, async (req, res) => {
-  try {
-    const { sender, recipient, subject, 'body-plain': body } = req.body;
+        // Buscar el correo en la base de datos (mayus/minus)
+        const emailDoc = await Email.findOne({ address: new RegExp(`^${recipient}$`, 'i') });
 
-    if (!sender || !recipient || !subject || !body) {
-      return res.status(400).send("Datos incompletos");
+        // Si no se encuentra el correo, devolver un error
+        if (!emailDoc) {
+            return res.status(404).json({ message: "Correo no encontrado" });
+        }
+
+        // Verificar si el correo ha expirado (solo para correos temporales)
+        if (emailDoc.expiresAt && new Date() > emailDoc.expiresAt) {
+            return res.status(410).json({ message: "El correo ha expirado" });
+        }
+
+        // Agregar el correo recibido a la bandeja de entrada
+        emailDoc.inbox.push({
+            sender: sender,
+            subject: subject,
+            body: body,
+            receivedAt: new Date()
+        });
+
+        // Guardar los cambios en la base de datos
+        await emailDoc.save();
+
+        // Responder con éxito
+        res.status(200).json({ message: "Correo recibido y almacenado correctamente" });
+    } catch (err) {
+        console.error('❌ Error al procesar el correo recibido:', err);
+        res.status(500).json({ message: "Error interno del servidor" });
     }
-
-    if (req.isPremium) {
-      const newEmail = new UserEmail({ sender, recipient, subject, body, userId: req.userId });
-      await newEmail.save();
-      console.log(`✅ Email Premium guardado para usuario ${req.userId}`);
-    } else {
-      const newEmail = new Email({ sender, recipient, subject, body });
-      await newEmail.save();
-      console.log(`✅ Email Temporal guardado`);
-    }
-
-    res.status(200).send("OK");
-  } catch (err) {
-    console.error("❌ Error al guardar el correo:", err);
-    res.status(500).send("Error interno del servidor");
-  }
 });
 
+// Ruta para generar un correo aleatorio con el dominio mailshuffle.xyz
+router.post('/generate-temporal', async (req, res) => {
+    try {
+        // Generar una parte aleatoria para el nombre de usuario
+        const username = faker.internet.username(); // Nombre de usuario aleatorio
+        const email = `${username}@mailshuffle.xyz`; // Concatenamos con el dominio mailshuffle.xyz
 
-// Ruta para obtener los correos por recipient
-router.get('/:recipient', async (req, res) => {
-  try {
-    const { recipient } = req.params;
+        // Generar una API Key única
+        const apiKey = crypto.randomBytes(16).toString('hex');
 
-      // Buscar los correos en la base de datos que coincidan con el recipient (case-insensitive)
-      const emails = await Email.find({ recipient: { $regex: new RegExp(`^${recipient}$`, 'i') } });
+        // Establecer la fecha de expiración para el correo (7 días)
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 7);
 
-    if (emails.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron correos para este destinatario.' });
+        // Crear el correo temporal en la base de datos
+        const newEmail = new Email({
+            address: email,
+            apiKey: apiKey,
+            expiresAt: expiresAt
+        });
+
+        // Guardar el correo en la base de datos
+        await newEmail.save();
+
+        // Devolver el correo generado junto con la API Key y la fecha de expiración
+        res.status(200).json({_id: newEmail._id, email: email, apiKey: apiKey, expiresAt: expiresAt });
+    } catch (err) {
+        console.error('❌ Error al generar el correo aleatorio:', err);
+        res.status(500).send('Error interno del servidor');
     }
-
-    res.status(200).json(emails);
-  } catch (err) {
-    console.error('❌ Error al obtener los correos:', err);
-    res.status(500).send('Error interno del servidor');
-  }
 });
 
-// Ruta para borrar los correos por recipient
-router.delete('/:recipient', async (req, res) => {
-  try {
-    const { recipient } = req.params;
+// Ruta para generar un correo permanente para usuarios premium
+router.post('/generate-permanent', authMiddleware, async (req, res) => {
+    try {
+        // Verificar que el usuario está autenticado
+        if (!req.user) {
+            return res.status(401).json({ message: "Autenticación requerida" });
+        }
 
-    // Borrar los correos en la base de datos que coincidan con el recipient (case-insensitive)
-    const result = await Email.deleteMany({ recipient: { $regex: new RegExp(`^${recipient}$`, 'i') } });
+        // Generar una parte aleatoria para el nombre de usuario
+        const username = faker.internet.username(); // Nombre de usuario aleatorio
+        const email = `${username}@mailshuffle.xyz`; // Concatenamos con el dominio mailshuffle.xyz
 
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'No se encontraron correos para borrar.' });
+        // Verificar si el usuario ya tiene un correo permanente
+        const existingEmail = await Email.findOne({ owner: req.user.id });
+        if (existingEmail) {
+            return res.status(400).json({ message: "Ya tienes un correo permanente" });
+        }
+
+        // Crear el correo permanente en la base de datos
+        const newEmail = new Email({
+            address: email,
+            owner: req.user.id, // Asociar al usuario autenticado
+            apiKey: crypto.randomBytes(16).toString('hex'), // Generar una API Key única
+            expiresAt: null // No expira
+        });
+
+        // Guardar el correo en la base de datos
+        await newEmail.save();
+
+        // Devolver el correo generado
+        res.status(200).json({ email: email, apiKey: newEmail.apiKey });
+    } catch (err) {
+        console.error('❌ Error al generar el correo permanente:', err);
+        res.status(500).json({ message: "Error interno del servidor" });
     }
-
-    res.status(200).json({ message: 'Correos borrados correctamente.' });
-  } catch (err) {
-    console.error('❌ Error al borrar los correos:', err);
-    res.status(500).send('Error interno del servidor');
-  }
-});
-
-// Ruta para borrar un correo específico por su _id
-router.delete('/id/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    // Buscar y borrar el correo por su _id
-    const result = await Email.findByIdAndDelete(id);
-
-    if (!result) {
-      return res.status(404).json({ message: 'No se encontró el correo con el ID proporcionado.' });
-    }
-
-    res.status(200).json({ message: 'Correo borrado correctamente.' });
-  } catch (err) {
-    console.error('❌ Error al borrar el correo:', err);
-    res.status(500).send('Error interno del servidor');
-  }
-});
-
-// Ruta para generar un correo aleatorio con el dominio mailshuffle.online
-router.get('/g/generate', (req, res) => {
-  try {
-    // Generar una parte aleatoria para el nombre de usuario
-    const username = faker.internet.username(); // Nombre de usuario aleatorio
-    const email = `${username}@mailshuffle.xyz`; // Concatenamos con el dominio mailshuffle.online
-
-    // Devolver solo el correo generado como texto plano
-    res.status(200).send(email);
-  } catch (err) {
-    console.error('❌ Error al generar el correo aleatorio:', err);
-    res.status(500).send('Error interno del servidor');
-  }
 });
 
 module.exports = router;
+
+// Ruta para obtener la bandeja de entrada
+router.get("/inbox", async (req, res) => {
+    try {
+        const { email, apiKey } = req.query;  // Obtener la dirección de correo y la API Key
+
+        // Si el usuario está autenticado (es un usuario premium)
+        if (req.user) {
+            // Buscar el correo asociado al usuario premium
+            const emailDoc = await Email.findOne({ address: email, owner: req.user.id });
+
+            // Si no existe o no pertenece al usuario premium, denegar acceso
+            if (!emailDoc) {
+                return res.status(403).json({ message: "No tienes acceso a esta dirección de correo" });
+            }
+
+            // Si pertenece al usuario premium, devolver los correos de la bandeja de entrada
+            return res.json(emailDoc.inbox); // Devolver los correos recibidos en esa dirección
+        }
+
+        // Si no está autenticado (es un usuario anónimo), verificar por la API Key
+        const emailDoc = await Email.findOne({ address: email, apiKey: apiKey });
+
+        // Si no existe el correo o la API Key no es válida
+        if (!emailDoc) {
+            return res.status(404).json({ message: "Correo no encontrado o API Key incorrecta" });
+        }
+
+        // Si la dirección de correo temporal existe y la API Key coincide, devolver los correos
+        res.json(emailDoc.inbox); // Devolver los correos recibidos
+    } catch (err) {
+        res.status(500).json({ message: "Error al obtener los correos" });
+    }
+});
+
+// ruta para eliminar un correo específico
+router.delete('/e/delete-email', async (req, res) => {
+    try {
+        const { email, apiKey, emailId } = req.body; // Obtener la dirección de correo y la API Key
+
+        // Buscar el correo en la base de datos
+        const emailDoc = await Email.findOne({ address: email, apiKey: apiKey });
+
+        // Si no existe el correo o la API Key no es válida
+        if (!emailDoc) {
+            return res.status(404).json({ message: "Correo no encontrado o API Key incorrecta" });
+        }
+
+        // Filtrar los correos para eliminar el específico
+        emailDoc.inbox = emailDoc.inbox.filter(mail => mail._id.toString() !== emailId);
+
+        // Guardar los cambios en la base de datos
+        await emailDoc.save();
+
+        res.status(200).json({ message: "Correo eliminado correctamente" });
+    } catch (err) {
+        res.status(500).json({ message: "Error al eliminar el correo" });
+    }
+});
+
+// ruta para eliminar la dirección de correo por ID
+router.delete('/a/delete-address', async (req, res) => {
+    try {
+        const { id, apiKey } = req.body; // Obtener el ID del correo y la API Key
+
+        let emailDoc;
+
+        // Si el usuario está autenticado (usuario premium)
+        if (req.user) {
+            // Buscar el correo asociado al usuario premium por ID
+            emailDoc = await Email.findOne({ _id: id, owner: req.user.id });
+
+            // Si no existe el correo o no pertenece al usuario premium
+            if (!emailDoc) {
+                return res.status(404).json({ message: "Correo no encontrado o no pertenece a tu cuenta" });
+            }
+        } else {
+            // Si el usuario no está autenticado, verificar por la API Key
+            emailDoc = await Email.findOne({ _id: id, apiKey: apiKey });
+
+            // Si no existe el correo o la API Key no es válida
+            if (!emailDoc) {
+                return res.status(404).json({ message: "Correo no encontrado o API Key incorrecta" });
+            }
+        }
+
+        // Eliminar el correo de la base de datos
+        await Email.deleteOne({ _id: emailDoc._id });
+
+        res.status(200).json({ message: "Correo eliminado correctamente" });
+    } catch (err) {
+        console.error("Error al eliminar el correo:", err);
+        res.status(500).json({ message: "Error al eliminar el correo" });
+    }
+});
+

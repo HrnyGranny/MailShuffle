@@ -29,19 +29,6 @@ const email = ref(""); // Variable para almacenar el correo generado
 const apiKey = ref(""); // Variable para almacenar la API Key
 const emailId = ref(""); // Variable para almacenar el ID del correo
 
-const generateFirstEmail = async (event) => {
-  try {
-
-    // Generar un nuevo correo
-    email.value = await generateRandomEmail(); // Llamar al backend para generar el correo
-    setCookie("mailshuffle_email", email.value, 7); // Guardar el correo en una cookie por 7 días
-    emit("emailGenerated", email.value); // Emitir el correo generado al componente padre
-
-  } catch (error) {
-    console.error("Error generating First email:", error);
-  }
-}
-
 // Función para generar un correo temporal
 const generateEmail = async () => {
   try {
@@ -114,8 +101,8 @@ const generateEmail = async () => {
     Swal.fire({
       toast: true,
       position: 'bottom-end',
-      icon: 'error',
-      title: 'An error occurred!',
+      icon: 'success',
+      title: 'Email generated successfully!',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true,

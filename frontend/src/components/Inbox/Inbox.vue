@@ -3,35 +3,47 @@ import { onMounted, ref, watch } from "vue";
 import BaseLayout from "../Inbox/components/BaseLayout.vue";
 import View from "../Inbox/components/View.vue";
 import Received from "../Inbox/components/Received.vue";
+import Code from "../Inbox/components/Code.vue";
 import setNavPills from "@/assets/js/nav-pills";
 
-const recipient = ref({ email: "", apiKey: "" }); // Ahora es un objeto con email y apiKey
+const recipient = ref({ email: "", apiKey: "" });
 const hasEmails = ref(false);
+const currentTab = ref("preview");
 
 onMounted(() => {
   setNavPills();
 });
 
 watch(recipient, () => {
-  hasEmails.value = false; // Resetear el estado de correos al cambiar de recipient
+  hasEmails.value = false;
 });
 </script>
 
 <template>
   <BaseLayout title="InBox">
-    <View title="" id="tabs-simple" @recipientUpdated="recipient = $event">
+    <View
+      title=""
+      id="tabs-simple"
+      @recipientUpdated="recipient = $event"
+      @tabChanged="currentTab = $event"
+    >
       <div class="received-container">
         <img
-          v-if="!hasEmails && recipient.email"
+          v-if="!hasEmails && recipient.email && currentTab === 'preview'"
           src="../../assets/img/carpeta-vacia.png"
           alt="No Emails"
           class="centered-image"
         />
         <Received
-          v-if="recipient.email"
+          v-if="recipient.email && currentTab === 'preview'"
           :email="recipient.email"
           :apiKey="recipient.apiKey"
           @hasEmails="hasEmails = $event"
+        />
+        <Code
+          v-if="recipient.email && currentTab === 'code'"
+          :email="recipient.email"
+          :apiKey="recipient.apiKey"
         />
       </div>
     </View>

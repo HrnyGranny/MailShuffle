@@ -32,7 +32,6 @@
   }
   
   .floating-button:hover {
-    background-color: rgb(97, 205, 103);
     transform: scale(1.1);
   }
   

@@ -23,7 +23,6 @@ watch(recipient, () => {
   <BaseLayout title="InBox">
     <View
       title=""
-      id="tabs-simple"
       @recipientUpdated="recipient = $event"
       @tabChanged="currentTab = $event"
     >
@@ -53,13 +52,13 @@ watch(recipient, () => {
 <style scoped>
 .received-container {
   position: relative;
-  margin-bottom: 280px;
-  min-height: 300px;
+  min-height: 540px; /* Tamaño mínimo */
+  height: auto; /* Crece dinámicamente */
 }
 
 .centered-image {
   position: absolute;
-  top: 100%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 150px;

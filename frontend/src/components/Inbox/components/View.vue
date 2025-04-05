@@ -1,19 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import MailBox from "@/components/Inbox/components/MailBox.vue";
-import { PrismEditor } from "vue-prism-editor";
 import "prismjs/themes/prism.css";
 import "vue-prism-editor/dist/prismeditor.min.css";
-import prism from "prismjs";
 
 const props = defineProps({
-  id: { type: String, required: true },
-  code: { type: String, required: true },
   title: { type: String, required: true },
-  height: { type: String, default: "" },
 });
 
-const editorCode = ref(props.code);
 const recipient = ref("");
 const apiKey = ref("");
 
@@ -27,10 +21,6 @@ const updateRecipient = ({ email, apiKey: newApiKey }) => {
 
 const handleTabChange = (tab) => {
   emit("tabChanged", tab);
-};
-
-const highlighter = (code) => {
-  return prism.highlight(code, prism.languages.html, "html");
 };
 </script>
 
@@ -52,7 +42,7 @@ const highlighter = (code) => {
                   aria-selected="true"
                   @click.prevent="handleTabChange('preview')"
                 >
-                  <i class="fas fa-desktop text-sm me-2"></i> Preview
+                  <i class="fas fa-desktop text-sm me-2"></i> MailBox
                 </a>
               </li>
               <li class="nav-item">
@@ -63,7 +53,7 @@ const highlighter = (code) => {
                   aria-selected="false"
                   @click.prevent="handleTabChange('code')"
                 >
-                  <i class="fas fa-code text-sm me-2"></i> Code
+                  <i class="fas fa-code text-sm me-2"></i> API Code
                 </a>
               </li>
             </ul>
@@ -72,22 +62,9 @@ const highlighter = (code) => {
       </div>
     </div>
     <div class="tab-content tab-space">
-      <div class="tab-pane active p-2" :id="`preview-${id}`">
-        <div class="overflow-auto" :class="`${height && `height-${height}`}`">
+      <div class="tab-pane active p-2">
+        <div class="overflow-auto">
           <slot />
-        </div>
-      </div>
-      <div class="tab-pane" :id="`code-${id}`">
-        <div class="position-relative p-4 pb-2">
-          <figure class="highlight">
-            <PrismEditor
-              class="p-2 bg-gray-100 border-radius-xl height-800 my-editor"
-              v-model="editorCode"
-              :highlight="highlighter"
-              line-numbers
-              readonly
-            />
-          </figure>
         </div>
       </div>
     </div>

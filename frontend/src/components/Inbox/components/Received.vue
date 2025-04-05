@@ -108,31 +108,38 @@ watch(() => props.email, async () => {
 
 <template>
   <div class="received-container">
-    <ul v-if="!isViewingEmail && emails.length">
+    <ul v-if="!isViewingEmail && emails.length" class="email-list">
       <li
         v-for="(email, index) in emails"
         :key="email._id"
-        class="email-item"
-        :class="{ 'alternate': index % 2 === 0 }"
+        class="email-box"
       >
-        <div class="email-content" @click="openEmail(email)">
-          <strong class="email-subject">{{ email.subject }}</strong>
-          <span class="email-sender"> - {{ email.sender }}</span>
-        </div>
-        <!-- Botón de eliminar con MaterialButton -->
+        <!-- Botón de eliminar -->
         <MaterialButton
           variant="gradient"
           color="danger"
-          class="ms-auto d-flex align-items-center btn-sm p-2 mt-3"
+          class="delete-btn"
           @click.stop="deleteEmail(email._id)"
         >
           <span class="material-icons delete-icon">delete</span>
         </MaterialButton>
+
+        <!-- Contenido del email -->
+        <div class="email-body" @click="openEmail(email)">
+          <div class="text-dark fw-bold">{{ email.subject }}</div>
+          <div class="text-secondary">{{ email.sender }}</div>
+        </div>
       </li>
     </ul>
-    <EmailOpened v-if="isViewingEmail && selectedEmail" :email="selectedEmail" @back="backToList" />
+
+    <EmailOpened
+      v-if="isViewingEmail && selectedEmail"
+      :email="selectedEmail"
+      @back="backToList"
+    />
   </div>
 </template>
+
 
 <style scoped>
 .received-container {
@@ -140,43 +147,51 @@ watch(() => props.email, async () => {
   min-height: 300px;
 }
 
-ul {
+.email-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  gap: 16px;
 }
 
-.email-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  width: 100%;
-  border-bottom: 1px solid #ddd;
+.email-box {
+  position: relative;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.075);
+  transition: box-shadow 0.2s ease;
   cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 18px;
 }
 
-.email-item:hover {
-  background-color: #f0f0f0;
+.email-box:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
 }
 
-.email-content {
-  flex-grow: 1;
+.email-body {
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
 }
 
-.email-subject {
-  color: #344767; /* Color del asunto */
-  font-weight: bold;
-}
-
-.email-sender {
-  color: #7b829a; /* Color del remitente */
-  font-style: italic;
+.delete-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  padding: 8px;
+  background-color: #98FE98 !important;
+  border-color: #98FE98 !important;
+  color: #ffffff !important;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  z-index: 2;
 }
 
 .delete-icon {
-  font-size: 22px; /* Tamaño del ícono */
+  font-size: 24px;
 }
 </style>
+

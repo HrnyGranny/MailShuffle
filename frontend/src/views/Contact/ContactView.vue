@@ -6,7 +6,7 @@ import DefaultNavbar from "@/components/Navbar.vue";
 import DefaultFooter from "@/components/Footer.vue";
 
 //image
-import image from "@/assets/img/illustrations/illustration-signin.jpg";
+import image from "@/assets/img/ContactPlane.jpg";
 
 //material components
 import MaterialInput from "@/material_components/MaterialInput.vue";
@@ -26,11 +26,6 @@ onMounted(() => {
       <div class="col-12">
         <DefaultNavbar
           :sticky="true"
-          :action="{
-            route: 'https://www.creative-tim.com/product/vue-material-kit-pro',
-            color: 'bg-gradient-success',
-            label: 'Go Premium',
-          }"
         />
       </div>
     </div>

@@ -1,8 +1,4 @@
 <script setup>
-import { ref, onMounted } from "vue";
-
-const inputRef = ref(null);
-
 defineProps({
   id: {
     type: String,
@@ -56,8 +52,11 @@ defineProps({
     type: String,
     default: "",
   },
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 });
-
 function getClasses(size, success, error) {
   let sizeValue, isValidValue;
 
@@ -73,14 +72,7 @@ function getClasses(size, success, error) {
 
   return `${sizeValue} ${isValidValue}`;
 }
-
-onMounted(() => {
-  if (inputRef.value) {
-    inputRef.value.setAttribute('readonly', true); // Asegurar que el campo sea de solo lectura
-  }
-});
 </script>
-
 <template>
   <div class="input-group">
     <label v-if="label" :class="label.class">{{
@@ -90,7 +82,6 @@ onMounted(() => {
       ><i class="fas" :class="`fa-${icon}`" aria-hidden="true"></i
     ></span>
     <input
-      ref="inputRef"
       :id="id"
       :type="type"
       class="form-control"
@@ -99,29 +90,7 @@ onMounted(() => {
       :placeholder="placeholder"
       :isRequired="isRequired"
       :disabled="isDisabled"
-      readonly
+      :readonly="readonly"
     />
   </div>
 </template>
-
-<style scoped>
-.icon-button {
-  width: 22px;
-  height: 22px;
-}
-
-.floating-button:hover {
-  background-color: rgb(97, 205, 103);
-  transform: scale(1.1);
-}
-
-/* Estilo para mantener el borde de color */
-input {
-  border: 2px solid #98FE98; /* Cambia #4e64ee por el color que prefieras */
-  box-shadow: 0 0 0 2px rgba(63, 187, 125, 0.25); /* Ajusta el color y la transparencia según tus necesidades */
-}
-
-input[readonly] {
-  cursor: default;
-}
-</style>

@@ -14,7 +14,7 @@ import MaterialButton from "@/material_components/MaterialButton.vue";
 import setMaterialInput from "@/assets/js/material-input";
 
 //image
-import image from "@/assets/img/Back.jpg";
+import image from "@/assets/img/LoginPlane.jpg";
 
 onMounted(() => {
   setMaterialInput();

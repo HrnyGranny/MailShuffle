@@ -39,10 +39,10 @@ onMounted(() => {
                 class="card-header p-0 position-relative mt-n4 mx-3 z-index-2"
               >
                 <div
-                  class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1"
+                  class="custom-gradient border-radius-lg py-3 pe-1"
                 >
                   <h4
-                    class="text-white font-weight-bolder text-center mt-2 mb-0"
+                    class="text-dark font-weight-bolder text-center mt-2 mb-0"
                   >
                     Sign in
                   </h4>
@@ -148,3 +148,11 @@ onMounted(() => {
     </div>
   </Header>
 </template>
+
+<style scoped>
+.custom-gradient {
+  background: #98FE98;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  color: #344767;
+}
+</style>

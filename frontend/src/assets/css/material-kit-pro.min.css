@@ -16042,7 +16042,7 @@ fieldset:disabled .btn {
   background-image: linear-gradient(195deg, #747b8a, #495361);
 }
 .alert-success {
-  background-image: linear-gradient(195deg, #66bb6a, #43a047);
+  background-image: linear-gradient(195deg, #66bb6a, #98FE98);
 }
 .alert-info {
   background-image: linear-gradient(195deg, #49a3f1, #1a73e8);
@@ -16786,7 +16786,7 @@ fieldset:disabled .btn {
   background: rgba(0, 0, 0, 0.2);
 }
 .card.card-background.card-background-mask-success:after {
-  background-image: linear-gradient(195deg, #66bb6a, #43a047);
+  background-image: linear-gradient(195deg, #66bb6a, #98FE98);
   opacity: 0.85;
 }
 .card.card-background.card-background-mask-info:before {
@@ -17961,7 +17961,7 @@ label {
   background-image: linear-gradient(195deg, #747b8a, #495361);
 }
 .bg-gradient-success {
-  background-image: linear-gradient(195deg, #66bb6a, #43a047);
+  background-image: linear-gradient(195deg, #66bb6a, #98FE98);
 }
 .bg-gradient-info {
   background-image: linear-gradient(195deg, #49a3f1, #1a73e8);
@@ -18256,7 +18256,7 @@ svg.text-success .color-foreground {
   fill: #66bb6a;
 }
 svg.text-success .color-background {
-  fill: #43a047;
+  fill: #98FE98;
 }
 svg.text-dark .color-foreground {
   fill: #42424a;
@@ -20422,7 +20422,7 @@ body:not(.dark-version)
 .pagination.pagination-success .page-item.active > .page-link,
 .pagination.pagination-success .page-item.active > .page-link:focus,
 .pagination.pagination-success .page-item.active > .page-link:hover {
-  background-image: linear-gradient(195deg, #66bb6a, #43a047);
+  background-image: linear-gradient(195deg, #66bb6a, #98FE98);
   border: none;
 }
 .pagination.pagination-info .page-item.active > .page-link,
@@ -21395,7 +21395,7 @@ p {
   background-image: linear-gradient(195deg, #49a3f1, #1a73e8);
 }
 .text-gradient.text-success {
-  background-image: linear-gradient(195deg, #66bb6a, #43a047);
+  background-image: linear-gradient(195deg, #66bb6a, #98FE98);
 }
 .text-gradient.text-warning {
   background-image: linear-gradient(195deg, #ffa726, #fb8c00);

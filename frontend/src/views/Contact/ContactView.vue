@@ -1,120 +1,142 @@
 <script setup>
 import { onMounted } from "vue";
 
-//example components
+// Example components
 import DefaultNavbar from "@/components/Navbar.vue";
 import DefaultFooter from "@/components/Footer.vue";
 
-//image
-import image from "@/assets/img/ContactPlane.jpg";
-
-//material components
+// Material components
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialTextArea from "@/material_components/MaterialTextArea.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 
-// material-input
+// Material input setup
 import setMaterialInput from "@/assets/js/material-input";
+
+// Image for the background
+import image from "@/assets/img/LoginPlane.jpg";
 
 onMounted(() => {
   setMaterialInput();
 });
 </script>
+
 <template>
-  <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <DefaultNavbar
-          :sticky="true"
-        />
-      </div>
-    </div>
-  </div>
-  <section>
-    <div class="page-header min-vh-100">
-      <div class="container">
-        <div class="row">
+  <DefaultNavbar transparent />
+  <div
+    class="page-header align-items-start min-vh-100"
+    :style="{
+      backgroundImage: `url(${image})`,
+    }"
+    loading="lazy"
+  >
+    <span class="mask bg-gradient-dark opacity-6"></span>
+    <div class="container my-auto">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7 col-10">
           <div
-            class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column"
+            class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
           >
             <div
-              class="position-relative h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center"
-              :style="{
-                backgroundImage: `url(${image})`,
-                backgroundSize: 'cover',
-              }"
-              loading="lazy"
-            ></div>
-          </div>
-          <div
-            class="mt-8 col-xl-5 col-lg-6 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5"
-          >
-            <div
-              class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
+              class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
             >
-              <div
-                class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
-              >
-                <div
-                  class="custom-gradient border-radius-lg p-3"
-                >
-                  <h3 class="mb-0">Contact us</h3>
-                </div>
+              <div class="custom-gradient border-radius-lg p-3">
+                <h3 class="mb-0">Contact us</h3>
               </div>
-              <div class="card-body">
-                <p class="pb-3">
-                  For any inquiries or support, feel free to reach out to us at <strong>mailshuffle@mailshuffle.xyz</strong> or contact using our
-                  contact form.
-                </p>
-                <form id="contact-form" method="post" autocomplete="off">
-                  <div class="card-body p-0 my-3">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <MaterialInput
-                          class="input-group-static mb-4"
-                          type="text"
-                          label="Full Name"
-                          placeholder="Full Name"
-                        />
-                      </div>
-                      <div class="col-md-6 ps-md-2">
-                        <MaterialInput
-                          class="input-group-static mb-4"
-                          type="email"
-                          label="Email"
-                          placeholder="hello@creative-tim.com"
-                        />
-                      </div>
-                    </div>
-                    <div class="form-group mb-0 mt-md-0 mt-4">
-                      <MaterialTextArea
-                        id="message"
+            </div>
+            <div class="card-body">
+              <p class="pb-3">
+                For any inquiries or support, feel free to reach out to us at
+                <strong>mailshuffle@mailshuffle.xyz</strong> or contact us using
+                our contact form.
+              </p>
+              <form id="contact-form" method="post" autocomplete="off">
+                <div class="card-body p-0 my-3">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <MaterialInput
                         class="input-group-static mb-4"
-                        :rows="6"
-                        placeholder="Describe your problem in at least 250 characters"
-                        >How can we help you?</MaterialTextArea
-                      >
+                        type="text"
+                        label="Full Name"
+                        placeholder="Full Name"
+                      />
                     </div>
-                    <div class="row">
-                      <div class="col-md-12 text-center">
-                        <MaterialButton
-                          variant="gradient"
-                          :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
-                          class="mt-3 mb-0"
-                          >Send Message</MaterialButton
-                        >
-                      </div>
+                    <div class="col-md-6 ps-md-2">
+                      <MaterialInput
+                        class="input-group-static mb-4"
+                        type="email"
+                        label="Email"
+                        placeholder="hello@creative-tim.com"
+                      />
                     </div>
                   </div>
-                </form>
-              </div>
+                  <div class="form-group mb-0 mt-md-0 mt-4">
+                    <MaterialTextArea
+                      id="message"
+                      class="input-group-static mb-4"
+                      :rows="6"
+                      placeholder="Describe your problem in at least 250 characters"
+                      >How can we help you?</MaterialTextArea
+                    >
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <MaterialButton
+                        variant="gradient"
+                        :style="{
+                          backgroundColor: '#98FE98',
+                          borderColor: '#98FE98',
+                          color: '#344767',
+                          'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+                        }"
+                        class="mt-3 mb-0"
+                        >Send Message</MaterialButton
+                      >
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <DefaultFooter />
+    <footer class="footer position-absolute bottom-2 py-2 w-100">
+      <div class="container">
+        <div class="row align-items-center justify-content-lg-between">
+          <div class="col-12 col-md-6 my-auto">
+            <div
+              class="copyright text-center text-sm text-white text-lg-start"
+            >
+              © {{ new Date().getFullYear() }}, made with
+              <i class="fa fa-heart" aria-hidden="true"></i> by
+              <a
+                href="https://github.com/HrnyGranny"
+                class="font-weight-bold text-white"
+                target="_blank"
+                >HornyGranny</a
+              >
+              for a life free of spam.
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <ul
+              class="nav nav-footer justify-content-center justify-content-lg-end"
+            >
+              <li class="nav-item">
+                <a
+                  href="/contact"
+                  class="nav-link text-white"
+                  target="_blank"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <style scoped>

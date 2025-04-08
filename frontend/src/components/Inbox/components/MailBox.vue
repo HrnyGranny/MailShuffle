@@ -132,11 +132,17 @@ const copyToClipboard = async (event) => {
     Swal.fire({
       toast: true,
       position: 'bottom-end',
-      icon: 'success', 
       title: 'Email copied successfully!',
-      showConfirmButton: false, 
+      color: "#3a526a",
+      background: '#98fe98',
+      showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true
+      timerProgressBar: true,
+      didOpen: (popup) => {
+        popup.style.width = '235px'; // Cambia el ancho de la alerta
+        popup.style.padding = '5px'; // Ajusta el padding interno
+        popup.style.borderRadius = '10px'; // Opcional: redondea las esquinas
+      }
     });
   } catch (error) {
     console.error("Error copying to clipboard:", error);

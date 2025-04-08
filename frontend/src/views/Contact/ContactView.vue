@@ -2,8 +2,7 @@
 import { onMounted } from "vue";
 
 // Example components
-import DefaultNavbar from "@/components/Navbar.vue";
-import DefaultFooter from "@/components/Footer.vue";
+import DefaultNavbar from "./components/Navbar.vue";
 
 // Material components
 import MaterialInput from "@/material_components/MaterialInput.vue";
@@ -22,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <DefaultNavbar transparent />
+  <DefaultNavbar transparent darkText/>
   <div
     class="page-header align-items-start min-vh-100"
     :style="{
@@ -33,15 +32,22 @@ onMounted(() => {
     <span class="mask bg-gradient-dark opacity-6"></span>
     <div class="container my-auto">
       <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-7 col-10">
+        <div class="col-lg-5 col-md-7 col-10 custom-container">
           <div
             class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
           >
             <div
               class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
             >
-              <div class="custom-gradient border-radius-lg p-3">
+             <div class="custom-gradient border-radius-lg p-3 d-flex align-items-center justify-content-between">
                 <h3 class="mb-0">Contact us</h3>
+              <!-- Imagen al lado del texto -->
+                <img
+                  src="../../assets/img/logos/MailShuffleIcoAlone.png"
+                  alt="Contact Icon"
+                  class="me-2"
+                  style="width: 40px; height: 40px;"
+                />
               </div>
             </div>
             <div class="card-body">
@@ -123,12 +129,13 @@ onMounted(() => {
             <ul
               class="nav nav-footer justify-content-center justify-content-lg-end"
             >
+            <!--Por si quieres meter algo a la derecha-->
               <li class="nav-item">
                 <a
                   href="/contact"
                   class="nav-link text-white"
                   target="_blank"
-                  >Contact Us</a
+                  ></a
                 >
               </li>
             </ul>
@@ -144,5 +151,9 @@ onMounted(() => {
   background: #98FE98;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
   color: #344767;
+}
+
+.custom-container {
+  max-width: 500px; /* Ajusta este valor según sea necesario */
 }
 </style>

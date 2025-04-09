@@ -1,23 +1,25 @@
 <script setup>
-import { ref, computed } from 'vue'
-import Swal from 'sweetalert2'
+import { ref, computed } from "vue";
+import Swal from "sweetalert2";
 
 // PrismJS
-import { PrismEditor } from 'vue-prism-editor'
-import 'prismjs/themes/prism.css'
-import 'vue-prism-editor/dist/prismeditor.min.css'
-import prism from 'prismjs'
-import 'prismjs/components/prism-javascript'
-import 'prismjs/components/prism-json'
+import { PrismEditor } from "vue-prism-editor";
+import "prismjs/themes/prism.css";
+import "vue-prism-editor/dist/prismeditor.min.css";
+import prism from "prismjs";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-json";
 
 // Props
-const props = defineProps({ email: String, apiKey: String })
+const props = defineProps({ email: String, apiKey: String });
 
-const apiUri = computed(() =>
-  `https://mailshuffle.xyz/api/emails/inbox?email=${props.email}&apiKey=${props.apiKey}`
-)
+const apiUri = computed(
+  () =>
+    `https://mailshuffle.xyz/api/emails/inbox?email=${props.email}&apiKey=${props.apiKey}`
+);
 
-const codeJS = computed(() => `
+const codeJS = computed(() =>
+  `
 fetch('${apiUri.value}', {
   method: 'GET',
   headers: {
@@ -28,9 +30,11 @@ fetch('${apiUri.value}', {
 .then(response => response.json())
 .then(data => console.log(data))
 .catch(error => console.error(error));
-`.trim())
+`.trim()
+);
 
-const outputJSON = computed(() => `
+const outputJSON = computed(() =>
+  `
 [
   {
     "id": "123",
@@ -39,36 +43,51 @@ const outputJSON = computed(() => `
     "date": "2025-04-01T12:34:56Z"
   }
 ]
-`.trim())
+`.trim()
+);
 
-const highlightJS = (code) => prism.highlight(code, prism.languages.javascript, 'javascript')
-const highlightJSON = (code) => prism.highlight(code, prism.languages.json, 'json')
+const highlightJS = (code) =>
+  prism.highlight(code, prism.languages.javascript, "javascript");
+const highlightJSON = (code) =>
+  prism.highlight(code, prism.languages.json, "json");
 
 // Función copiar
 const copy = async (text) => {
   try {
-    await navigator.clipboard.writeText(text)
+    await navigator.clipboard.writeText(text);
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      icon: 'success',
-      title: 'Copied!',
+      position: "bottom-end",
+      title: "Copied!",
+      color: "#3a526a",
+      background: "#98fe9857",
       showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true
-    })
+      timer: 3000,
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "225px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
+    });
   } catch {
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      icon: 'error',
-      title: 'Error copying!',
+      position: "bottom-end",
+      title: "An error occurred!",
+      color: "#3a526a",
+      background: "#b9424261",
       showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true
-    })
+      timer: 3000,
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "200px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
+    });
   }
-}
+};
 </script>
 
 <template>
@@ -84,7 +103,9 @@ const copy = async (text) => {
     <div class="row g-4">
       <!-- Left: Code block -->
       <div class="col-md-6">
-        <div class="bg-white rounded shadow-sm p-3 border position-relative h-100">
+        <div
+          class="bg-white rounded shadow-sm p-3 border position-relative h-100"
+        >
           <small class="text-muted">API Call (JavaScript)</small>
           <button class="copy-btn" @click="copy(codeJS)">Copy</button>
           <PrismEditor
@@ -99,7 +120,9 @@ const copy = async (text) => {
 
       <!-- Right: Output -->
       <div class="col-md-6">
-        <div class="bg-white rounded shadow-sm p-3 border position-relative h-100">
+        <div
+          class="bg-white rounded shadow-sm p-3 border position-relative h-100"
+        >
           <small class="text-muted">Expected Output (JSON)</small>
           <button class="copy-btn" @click="copy(outputJSON)">Copy</button>
           <PrismEditor
@@ -117,7 +140,7 @@ const copy = async (text) => {
 
 <style scoped>
 .code-block {
-  background-color: #f8f9fa;  /* Fondo gris claro para resaltar el código */
+  background-color: #f8f9fa; /* Fondo gris claro para resaltar el código */
   color: #2c3e50;
   font-family: Consolas, Fira Mono, Menlo, Courier, monospace;
   font-size: 0.875rem;
@@ -126,8 +149,8 @@ const copy = async (text) => {
   border-radius: 0.5rem;
   overflow-x: auto;
   white-space: pre;
-  height: 100%;  /* Asegura que ocupe toda la altura disponible dentro del contenedor */
-  overflow-y: auto;  /* Si el contenido es más grande que el contenedor, se habilita el scroll */
+  height: 100%; /* Asegura que ocupe toda la altura disponible dentro del contenedor */
+  overflow-y: auto; /* Si el contenido es más grande que el contenedor, se habilita el scroll */
 }
 
 .copy-btn {

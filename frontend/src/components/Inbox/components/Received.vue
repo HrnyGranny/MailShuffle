@@ -56,14 +56,20 @@ const deleteEmail = async (emailId) => {
 
       // Mostrar alerta de éxito al eliminar
       Swal.fire({
-        toast: true,
-        position: 'bottom-end',
-        icon: 'success',
-        title: 'Email deleted successfully!',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-      });
+      toast: true,
+      position: "bottom-end",
+      title: "Email deleted successfully!",
+      color: "#3a526a",
+      background: "#98fe9857",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "220px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
+    });
     }
   } catch (error) {
     console.error("Error deleting email:", error);
@@ -71,12 +77,18 @@ const deleteEmail = async (emailId) => {
     // Mostrar alerta de error
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      icon: 'error',
-      title: 'Error deleting email!',
+      position: "bottom-end",
+      title: "Error deleting email!",
+      color: "#3a526a",
+      background: "#b9424261",
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "205px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
     });
   }
 };
@@ -96,24 +108,23 @@ onMounted(() => {
 onUnmounted(stopPolling);
 
 // Verificar cambios en las props
-watch(() => props.email, async () => {
-  stopPolling();
-  emails.value = [];
-  isViewingEmail.value = false;
-  selectedEmail.value = null;
-  await fetchEmails();
-  startPolling();
-});
+watch(
+  () => props.email,
+  async () => {
+    stopPolling();
+    emails.value = [];
+    isViewingEmail.value = false;
+    selectedEmail.value = null;
+    await fetchEmails();
+    startPolling();
+  }
+);
 </script>
 
 <template>
   <div class="received-container">
     <ul v-if="!isViewingEmail && emails.length" class="email-list">
-      <li
-        v-for="(email, index) in emails"
-        :key="email._id"
-        class="email-box"
-      >
+      <li v-for="(email, index) in emails" :key="email._id" class="email-box">
         <!-- Botón de eliminar -->
         <MaterialButton
           variant="gradient"
@@ -139,7 +150,6 @@ watch(() => props.email, async () => {
     />
   </div>
 </template>
-
 
 <style scoped>
 .received-container {
@@ -182,8 +192,8 @@ watch(() => props.email, async () => {
   right: 12px;
   transform: translateY(-50%);
   padding: 8px;
-  background-color: #98FE98 !important;
-  border-color: #98FE98 !important;
+  background-color: #98fe98 !important;
+  border-color: #98fe98 !important;
   color: #ffffff !important;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
@@ -194,4 +204,3 @@ watch(() => props.email, async () => {
   font-size: 24px;
 }
 </style>
-

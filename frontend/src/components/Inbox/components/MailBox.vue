@@ -14,7 +14,9 @@ import setMaterialInput from "@/assets/js/material-input";
 
 // Función para manejar cookies
 const setCookie = (name, value, days) => {
-  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  const expires = new Date(
+    Date.now() + days * 24 * 60 * 60 * 1000
+  ).toUTCString();
   document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 };
 
@@ -38,14 +40,14 @@ const generateEmail = async () => {
       const result = await Swal.fire({
         title: '<span style="color:#344767;">Are you sure?</span>',
         text: "This will delete the current email address and all associated emails!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#4e64ee',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: "#4e64ee",
+        cancelButtonColor: "#d33",
         color: "#7b809a",
-        background: '#fff',
-        confirmButtonText: 'Yes, delete it!',
-        position: 'center',
+        background: "#fff",
+        confirmButtonText: "Yes, delete it!",
+        position: "center",
       });
 
       if (result.isConfirmed) {
@@ -69,9 +71,9 @@ const generateEmail = async () => {
           console.error("Error deleting email address:", deleteError);
           Swal.fire({
             toast: true,
-            position: 'bottom-end',
-            icon: 'error',
-            title: 'Error deleting email address!',
+            position: "bottom-end",
+            icon: "error",
+            title: "Error deleting email address!",
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
@@ -100,12 +102,18 @@ const generateEmail = async () => {
     // Mostrar alerta de éxito
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      icon: 'success',
-      title: 'Email generated successfully!',
+      position: "bottom-end",
+      title: "Email generated successfully!",
+      color: "#3a526a",
+      background: "#98fe9857",
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true,
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "230px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
     });
   } catch (error) {
     console.error("Error generating email:", error);
@@ -113,12 +121,18 @@ const generateEmail = async () => {
     // Mostrar alerta de error
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      icon: 'error',
-      title: 'Error generating email!',
+      position: "bottom-end",
+      title: "Error generating email!",
+      color: "#3a526a",
+      background: "#b9424261",
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true,
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "205px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
     });
   }
 };
@@ -131,18 +145,18 @@ const copyToClipboard = async (event) => {
     // Mostrar alerta de éxito
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      title: 'Email copied successfully!',
+      position: "bottom-end",
+      title: "Email copied successfully!",
       color: "#3a526a",
-      background: '#98fe98',
+      background: "#98fe9857",
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true,
+      timerProgressBar: false,
       didOpen: (popup) => {
-        popup.style.width = '235px'; // Cambia el ancho de la alerta
-        popup.style.padding = '5px'; // Ajusta el padding interno
-        popup.style.borderRadius = '10px'; // Opcional: redondea las esquinas
-      }
+        popup.style.width = "225px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
     });
   } catch (error) {
     console.error("Error copying to clipboard:", error);
@@ -150,12 +164,18 @@ const copyToClipboard = async (event) => {
     // Mostrar alerta de error
     Swal.fire({
       toast: true,
-      position: 'bottom-end',
-      icon: 'error',
-      title: 'An error occurred!',
+      position: "bottom-end",
+      title: "An error occurred!",
+      color: "#3a526a",
+      background: "#b9424261",
       showConfirmButton: false,
       timer: 3000,
-      timerProgressBar: true
+      timerProgressBar: false,
+      didOpen: (popup) => {
+        popup.style.width = "200px";
+        popup.style.padding = "5px";
+        popup.style.borderRadius = "10px"; // redondeo
+      },
     });
   }
 };
@@ -201,7 +221,12 @@ onMounted(async () => {
                 <div class="col-6">
                   <MaterialButton
                     variant="gradient"
-                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
+                    :style="{
+                      backgroundColor: '#98FE98',
+                      borderColor: '#98FE98',
+                      color: '#344767',
+                      'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+                    }"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2 floating-button"
                     @click="copyToClipboard"
                   >
@@ -211,7 +236,12 @@ onMounted(async () => {
                 <div class="col-6">
                   <MaterialButton
                     variant="gradient"
-                    :style="{ backgroundColor: '#98FE98', borderColor: '#98FE98', color: '#344767', 'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)' }"
+                    :style="{
+                      backgroundColor: '#98FE98',
+                      borderColor: '#98FE98',
+                      color: '#344767',
+                      'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+                    }"
                     class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2 floating-button"
                     @click="generateEmail"
                   >
@@ -233,7 +263,7 @@ onMounted(async () => {
   height: 22px;
 }
 .floating-button:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 /* Estilo para mantener el campo enfocado */
@@ -245,5 +275,4 @@ input:focus {
 input[readonly] {
   cursor: default;
 }
-
 </style>

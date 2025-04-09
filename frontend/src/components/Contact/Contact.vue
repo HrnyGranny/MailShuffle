@@ -1,3 +1,32 @@
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import ContactModal from "./components/ContactModal.vue";
+import iconImage from "@/assets/img/iconos/ContactIco.png";
+import activeIconImage from "@/assets/img/iconos/copiar.png";
+
+const iconPath = iconImage;
+const activeIconPath = activeIconImage;
+const isModalActive = ref(false);
+
+const toggleModal = () => {
+  isModalActive.value = true;
+};
+
+const closeModal = () => {
+  isModalActive.value = false;
+};
+
+onMounted(() => {
+  const modalElement = document.getElementById("contactModal");
+  modalElement.addEventListener("hidden.bs.modal", closeModal);
+});
+
+onBeforeUnmount(() => {
+  const modalElement = document.getElementById("contactModal");
+  modalElement.removeEventListener("hidden.bs.modal", closeModal);
+});
+</script>
+
 <template>
   <a
     href="#"
@@ -5,18 +34,12 @@
     aria-label="Ayuda"
     data-bs-toggle="modal"
     data-bs-target="#contactModal"
+    @click="toggleModal"
   >
-    <img :src="iconPath" alt="Ícono" class="icon" />
+    <img :src="isModalActive ? activeIconPath : iconPath" alt="Ícono" class="icon" />
   </a>
-  <ContactModal />
+  <ContactModal id="contactModal" />
 </template>
-
-<script setup>
-import ContactModal from "./components/ContactModal.vue";
-import iconImage from "@/assets/img/iconos/ContactIco.png";
-
-const iconPath = iconImage;
-</script>
 
 <style scoped>
 /* Botón flotante con estilo Material */

@@ -36,6 +36,10 @@ const props = defineProps({
   darkText: {
     type: Boolean,
     default: false
+  },
+  showLogin: {
+    type: Boolean,
+    default: true,
   }
 });
 
@@ -176,7 +180,7 @@ watch(
           </li>
           <!-- GITHUB END -->
           <!-- LOGIN -->
-          <li class="nav-item mx-2">
+          <li v-if="props.showLogin" class="nav-item mx-2">
             <RouterLink
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
               :class="getTextColor()"

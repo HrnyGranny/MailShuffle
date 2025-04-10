@@ -9,6 +9,7 @@ import Header from "@/components/Header.vue";
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialSwitch from "@/material_components/MaterialSwitch.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
+import Contact from "../../components/Contact/Contact.vue";
 
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
@@ -21,7 +22,8 @@ onMounted(() => {
 });
 </script>
 <template>
-  <DefaultNavbar transparent />
+  <DefaultNavbar transparent :showLogin="false" />
+  <Contact/>
   <Header>
     <div
       class="page-header align-items-start min-vh-100"
@@ -117,8 +119,8 @@ onMounted(() => {
               <div
                 class="copyright text-center text-sm text-white text-lg-start"
               >
-                © {{ new Date().getFullYear() }}, made
-                <i class="fa fa-heart" aria-hidden="true"></i> by
+                © {{ new Date().getFullYear() }}, made with 
+                <i class="fa fa-heart" aria-hidden="true"></i>   by
                 <a
                   href="https://github.com/HrnyGranny"
                   class="font-weight-bold text-white"
@@ -137,7 +139,7 @@ onMounted(() => {
                     href="/contact"
                     class="nav-link text-white"
                     target="_blank"
-                    >Contact Us</a
+                    ></a
                   >
                 </li>
               </ul>

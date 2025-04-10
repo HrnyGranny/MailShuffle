@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import ContactModal from "./components/ContactModal.vue";
 import iconImage from "@/assets/img/iconos/ContactIco.png";
-import activeIconImage from "@/assets/img/iconos/copiar.png";
+import activeIconImage from "@/assets/img/iconos/x.png";
 
 const iconPath = iconImage;
 const activeIconPath = activeIconImage;

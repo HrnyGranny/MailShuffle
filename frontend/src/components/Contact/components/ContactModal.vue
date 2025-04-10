@@ -23,13 +23,6 @@ import MaterialButton from "@/material_components/MaterialButton.vue";
             class="custom-gradient border-radius-lg p-3 d-flex align-items-center justify-content-between"
           >
             <h3 class="mb-0">Contact us</h3>
-            <!-- Botón de cierre -->
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
         </div>
 

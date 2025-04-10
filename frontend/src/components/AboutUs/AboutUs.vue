@@ -3,7 +3,7 @@ import { onMounted } from "vue";
 import AboutUsOption from "../AboutUs/Components/AboutUsOption.vue";
 
 // Importar iconos desde assets
-import Button from "../../assets/img/buttons/SupportUs_button.png";
+import Button from "../../assets/img/buttons/SupportMe.png";
 
 // Función para cargar el botón de donación de PayPal
 const loadPayPalButton = () => {
@@ -42,7 +42,7 @@ onMounted(() => {
             without exposing your personal email address.
           </p>
           <!-- Botón de soporte -->
-          <div id="donate-button-container" style="display: inline-block;"></div>
+          <div id="donate-button-container" style="display: inline-block"></div>
         </div>
         <!-- Columna de opciones -->
         <div class="col-lg-6 mt-lg-0 mt-5 ps-lg-0 ps-0">

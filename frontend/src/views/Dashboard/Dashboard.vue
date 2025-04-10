@@ -40,7 +40,7 @@ const navClasses = computed(() => {
 
     <navbar :class="[navClasses]" v-if="showNavbar" />
 
-    <router-view />
+
 
     <app-footer v-show="showFooter" />
   </main>

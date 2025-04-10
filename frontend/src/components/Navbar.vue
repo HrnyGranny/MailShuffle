@@ -136,7 +136,7 @@ watch(
       </RouterLink>
       <!--Collapsed premium-->
       <a
-        href="https://www.creative-tim.com/product/vue-material-kit-pro"
+        href="/Dashboard"
         class="btn btn-sm mb-0 ms-auto d-lg-none d-block"
         style="background-color: #feb602; border: none; color: black;"
       >

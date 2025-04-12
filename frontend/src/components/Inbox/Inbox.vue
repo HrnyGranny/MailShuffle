@@ -52,7 +52,7 @@ watch(recipient, () => {
 <style scoped>
 .received-container {
   position: relative;
-  min-height: 540px; /* Tamaño mínimo */
+  min-height: 530px; /* Tamaño mínimo */
   height: auto; /* Crece dinámicamente */
 }
 

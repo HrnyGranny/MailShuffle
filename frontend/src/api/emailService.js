@@ -68,3 +68,17 @@ export const deleteEmailAddress = async (id, apiKey) => {
     throw error;
   }
 };
+
+// Función para obtener la información de expiración de un correo
+export const getEmailExpiration = async (email, apiKey) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/expiration`, {
+      params: { email, apiKey },
+    });
+    return response.data; // Devuelve expiresAt, isPermanent y remainingDays
+  } catch (error) {
+    console.error("Error fetching email expiration:", error);
+    throw error;
+  }
+};
+

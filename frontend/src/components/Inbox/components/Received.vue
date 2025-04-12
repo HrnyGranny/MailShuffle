@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted, watch } from "vue";
 import { getInbox, deleteEmailById } from "@/api/emailService";
 import EmailOpened from "./EmailOpened.vue";
 import Swal from "sweetalert2";
-import MaterialButton from "@/material_components/MaterialButton.vue";
 
 const props = defineProps({ email: String, apiKey: String });
 const emit = defineEmits(["hasEmails"]);
@@ -11,6 +10,8 @@ const emails = ref([]);
 const selectedEmail = ref(null);
 const isViewingEmail = ref(false);
 let pollingInterval = null;
+// Conjunto para almacenar IDs de correos visualizados
+const viewedEmails = ref(new Set());
 
 // Función para obtener la bandeja de entrada
 const fetchEmails = async () => {
@@ -44,6 +45,39 @@ const stopPolling = () => {
 const openEmail = (email) => {
   selectedEmail.value = email;
   isViewingEmail.value = true;
+  // Marcar correo como visto
+  viewedEmails.value.add(email._id);
+};
+
+// Verificar si un correo ha sido visto
+const isEmailViewed = (emailId) => {
+  return viewedEmails.value.has(emailId);
+};
+
+// Formatear fecha de manera amigable
+const formatTime = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  
+  // Si es hoy, mostrar la hora
+  if (date.toDateString() === now.toDateString()) {
+    return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  }
+  
+  // Si es ayer, mostrar "Ayer"
+  const yesterday = new Date();
+  yesterday.setDate(now.getDate() - 1);
+  if (date.toDateString() === yesterday.toDateString()) {
+    return 'Ayer';
+  }
+  
+  // Si es este año pero no hoy ni ayer, mostrar día y mes
+  if (date.getFullYear() === now.getFullYear()) {
+    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+  }
+  
+  // Otro año, mostrar día/mes/año
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric', year: '2-digit' });
 };
 
 // Eliminar un correo específico
@@ -113,6 +147,7 @@ watch(
   async () => {
     stopPolling();
     emails.value = [];
+    viewedEmails.value = new Set(); // Limpiar correos vistos
     isViewingEmail.value = false;
     selectedEmail.value = null;
     await fetchEmails();
@@ -123,22 +158,22 @@ watch(
 
 <template>
   <div class="received-container">
-    <ul v-if="!isViewingEmail && emails.length" class="email-list">
-      <li v-for="(email, index) in emails" :key="email._id" class="email-box">
-        <!-- Botón de eliminar -->
-        <MaterialButton
-          variant="gradient"
-          color="danger"
-          class="delete-btn"
-          @click.stop="deleteEmail(email._id)"
-        >
-          <span class="material-icons delete-icon">delete</span>
-        </MaterialButton>
-
+    <ul v-if="!isViewingEmail && emails.length" class="email-list list-unstyled mb-0">
+      <li v-for="(email, index) in emails" 
+          :key="email._id" 
+          class="email-box card mb-2"
+          :class="{ 'email-unread': !isEmailViewed(email._id) }">
+        
         <!-- Contenido del email -->
-        <div class="email-body" @click="openEmail(email)">
-          <div class="text-dark fw-bold">{{ email.subject }}</div>
-          <div class="text-secondary">{{ email.sender }}</div>
+        <div class="card-body py-2" @click="openEmail(email)">
+          <!-- Indicador de no leído -->
+          <div v-if="!isEmailViewed(email._id)" class="unread-dot"></div>
+          
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <div class="fw-bold">{{ email.subject }}</div>
+            <small class="text-muted ms-2">{{ formatTime(email.receivedAt) }}</small>
+          </div>
+          <div class="text-muted small">{{ email.sender }}</div>
         </div>
       </li>
     </ul>
@@ -152,55 +187,36 @@ watch(
 </template>
 
 <style scoped>
-.received-container {
-  width: 100%;
-  min-height: 300px;
-}
-
-.email-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 16px;
-}
-
 .email-box {
   position: relative;
-  background-color: white;
-  border: 1px solid #dee2e6;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.075);
+  border-radius: 0.5rem;
   transition: box-shadow 0.2s ease;
+  overflow: hidden;
   cursor: pointer;
+  min-height: 50px; /* Reducido para tarjetas más compactas */
 }
 
 .email-box:hover {
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
-.email-body {
-  display: flex;
-  flex-direction: column;
-  word-break: break-word;
+.email-unread .fw-bold {
+  font-weight: 600 !important;
 }
 
-.delete-btn {
+.unread-dot {
   position: absolute;
+  left: 0.5rem;
   top: 50%;
-  right: 12px;
   transform: translateY(-50%);
-  padding: 8px;
-  background-color: #98fe98 !important;
-  border-color: #98fe98 !important;
-  color: #ffffff !important;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  z-index: 2;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #2ecc71;
 }
 
-.delete-icon {
-  font-size: 24px;
+/* Contenido con margen para el punto */
+.email-unread .card-body {
+  padding-left: 1.5rem;
 }
 </style>

@@ -110,7 +110,7 @@ const generateEmail = async () => {
       timer: 3000,
       timerProgressBar: false,
       didOpen: (popup) => {
-        popup.style.width = "230px";
+        popup.style.width = "250px";
         popup.style.padding = "5px";
         popup.style.borderRadius = "10px"; // redondeo
       },

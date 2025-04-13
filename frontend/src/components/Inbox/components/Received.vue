@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import { getInbox, deleteEmailById } from "@/api/emailService";
+import { getInbox } from "@/api/emailService";
 import EmailOpened from "./EmailOpened.vue";
-import Swal from "sweetalert2";
 
 const props = defineProps({ email: String, apiKey: String });
 const emit = defineEmits(["hasEmails"]);
@@ -10,8 +9,22 @@ const emails = ref([]);
 const selectedEmail = ref(null);
 const isViewingEmail = ref(false);
 let pollingInterval = null;
+
 // Conjunto para almacenar IDs de correos visualizados
 const viewedEmails = ref(new Set());
+
+// Cargar correos visualizados desde localStorage
+const loadViewedEmails = () => {
+  const storedViewedEmails = localStorage.getItem("viewedEmails");
+  if (storedViewedEmails) {
+    viewedEmails.value = new Set(JSON.parse(storedViewedEmails));
+  }
+};
+
+// Guardar correos visualizados en localStorage
+const saveViewedEmails = () => {
+  localStorage.setItem("viewedEmails", JSON.stringify([...viewedEmails.value]));
+};
 
 // Función para obtener la bandeja de entrada
 const fetchEmails = async () => {
@@ -47,6 +60,7 @@ const openEmail = (email) => {
   isViewingEmail.value = true;
   // Marcar correo como visto
   viewedEmails.value.add(email._id);
+  saveViewedEmails(); // Guardar en localStorage
 };
 
 // Verificar si un correo ha sido visto
@@ -80,53 +94,6 @@ const formatTime = (dateString) => {
   return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric', year: '2-digit' });
 };
 
-// Eliminar un correo específico
-const deleteEmail = async (emailId) => {
-  console.log("Deleting email with ID:", emailId);
-  try {
-    if (props.email && props.apiKey) {
-      await deleteEmailById(props.email, props.apiKey, emailId); // Llamar a la API para eliminar el correo
-      emails.value = emails.value.filter((email) => email._id !== emailId); // Actualizar la lista local
-
-      // Mostrar alerta de éxito al eliminar
-      Swal.fire({
-      toast: true,
-      position: "bottom-end",
-      title: "Email deleted successfully!",
-      color: "#3a526a",
-      background: "#98fe9857",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "220px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
-      },
-    });
-    }
-  } catch (error) {
-    console.error("Error deleting email:", error);
-
-    // Mostrar alerta de error
-    Swal.fire({
-      toast: true,
-      position: "bottom-end",
-      title: "Error deleting email!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "205px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
-      },
-    });
-  }
-};
-
 // Volver a la lista de correos
 const backToList = () => {
   isViewingEmail.value = false;
@@ -135,11 +102,15 @@ const backToList = () => {
 
 // Ciclo de vida del componente
 onMounted(() => {
+  loadViewedEmails(); // Cargar correos visualizados desde localStorage
   fetchEmails();
   startPolling();
 });
 
-onUnmounted(stopPolling);
+onUnmounted(() => {
+  stopPolling();
+  saveViewedEmails(); // Guardar correos visualizados en localStorage al desmontar
+});
 
 // Verificar cambios en las props
 watch(
@@ -147,7 +118,6 @@ watch(
   async () => {
     stopPolling();
     emails.value = [];
-    viewedEmails.value = new Set(); // Limpiar correos vistos
     isViewingEmail.value = false;
     selectedEmail.value = null;
     await fetchEmails();

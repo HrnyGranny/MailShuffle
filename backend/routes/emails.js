@@ -9,7 +9,13 @@ const router = express.Router();
 // Ruta para recibir correos desde Mailgun
 router.post('/mailgun', async (req, res) => {
     try {
-        const { recipient, sender, subject, 'body-plain':body } = req.body; // Datos enviados por Mailgun
+        const { 
+            recipient, 
+            sender, 
+            subject, 
+            'body-plain': bodyPlain, 
+            'body-html': bodyHtml 
+        } = req.body; // Datos enviados por Mailgun
 
         // Buscar el correo en la base de datos (mayus/minus)
         const emailDoc = await Email.findOne({ address: new RegExp(`^${recipient}$`, 'i') });
@@ -28,7 +34,7 @@ router.post('/mailgun', async (req, res) => {
         emailDoc.inbox.push({
             sender: sender,
             subject: subject,
-            body: body,
+            body: bodyHtml || bodyPlain, // Preferir HTML si está disponible, texto plano como respaldo
             receivedAt: new Date()
         });
 

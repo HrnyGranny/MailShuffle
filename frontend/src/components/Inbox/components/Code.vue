@@ -57,7 +57,7 @@ const copy = async (text) => {
     await navigator.clipboard.writeText(text);
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "Copied!",
       color: "#3a526a",
       background: "#98fe9857",
@@ -65,7 +65,7 @@ const copy = async (text) => {
       timer: 3000,
       timerProgressBar: false,
       didOpen: (popup) => {
-        popup.style.width = "225px";
+        popup.style.width = "95px";
         popup.style.padding = "5px";
         popup.style.borderRadius = "10px"; // redondeo
       },
@@ -73,7 +73,7 @@ const copy = async (text) => {
   } catch {
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "An error occurred!",
       color: "#3a526a",
       background: "#b9424261",

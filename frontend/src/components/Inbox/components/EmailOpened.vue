@@ -143,7 +143,7 @@ const deleteEmail = async (emailId) => {
       // Mostrar alerta de éxito al eliminar
       Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "Email deleted successfully!",
       color: "#3a526a",
       background: "#98fe9857",
@@ -163,7 +163,7 @@ const deleteEmail = async (emailId) => {
     // Mostrar alerta de error
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "Error deleting email!",
       color: "#3a526a",
       background: "#b9424261",

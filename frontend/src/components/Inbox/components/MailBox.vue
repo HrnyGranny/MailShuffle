@@ -71,7 +71,7 @@ const generateEmail = async () => {
           console.error("Error deleting email address:", deleteError);
           Swal.fire({
             toast: true,
-            position: "bottom-end",
+            position: "bottom-start",
             icon: "error",
             title: "Error deleting email address!",
             showConfirmButton: false,
@@ -102,7 +102,7 @@ const generateEmail = async () => {
     // Mostrar alerta de éxito
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "Email generated successfully!",
       color: "#3a526a",
       background: "#98fe9857",
@@ -121,7 +121,7 @@ const generateEmail = async () => {
     // Mostrar alerta de error
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "Error generating email!",
       color: "#3a526a",
       background: "#b9424261",
@@ -145,7 +145,7 @@ const copyToClipboard = async (event) => {
     // Mostrar alerta de éxito
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "Email copied successfully!",
       color: "#3a526a",
       background: "#98fe9857",
@@ -164,7 +164,7 @@ const copyToClipboard = async (event) => {
     // Mostrar alerta de error
     Swal.fire({
       toast: true,
-      position: "bottom-end",
+      position: "bottom-start",
       title: "An error occurred!",
       color: "#3a526a",
       background: "#b9424261",

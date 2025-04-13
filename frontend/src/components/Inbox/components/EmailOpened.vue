@@ -198,19 +198,35 @@ const deleteEmail = async (emailId) => {
         </div>
         <div class="d-flex gap-2">
           <!-- Botón de volver -->
-          <button
+          <MaterialButton
+            variant="gradient"
+            size="sm"
+            :style="{
+              backgroundColor: '#98FE98',
+              borderColor: '#98FE98',
+              color: '#344767',
+              'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+            }"
             class="btn btn-back d-flex align-items-center justify-content-center"
             @click="$emit('back')"
           >
             <span class="material-icons">arrow_back</span>
-          </button>
+          </MaterialButton>
           <!-- Botón de eliminar -->
-          <button
+          <MaterialButton
+            variant="gradient"
+            size="md"
+            :style="{
+              backgroundColor: '#F28B82',
+              borderColor: '#F28B82',
+              color: '#344767',
+              'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+            }"
             class="btn btn-delete d-flex align-items-center justify-content-center"
             @click="deleteEmail"
           >
             <span class="material-icons">delete</span>
-          </button>
+          </MaterialButton>
         </div>
       </div>
 
@@ -245,8 +261,6 @@ const deleteEmail = async (emailId) => {
 }
 
 .btn-back {
-  background-color: #98fe98;
-  color: #344767;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -258,15 +272,7 @@ const deleteEmail = async (emailId) => {
   transform: scale(1.1);
 }
 
-.btn-delete {
-  background-color: #f8d7da;
-  color: #721c24;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
-}
+
 
 .btn-delete:hover {
   transform: scale(1.1);

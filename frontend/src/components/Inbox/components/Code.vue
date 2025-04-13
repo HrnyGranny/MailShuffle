@@ -23,13 +23,19 @@ const codeJS = computed(() =>
 fetch('${apiUri.value}', {
   method: 'GET',
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ${props.apiKey}'
+    'Content-Type': 'application/json'
   }
 })
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error(error));
+.then(res => {
+  if (!res.ok) throw new Error('Error in server response');
+  return res.json();
+})
+.then(data => {
+  console.log('✅ Server response:', data);
+})
+.catch(err => {
+  console.error('❌ Error:', err.message);
+});
 `.trim()
 );
 
@@ -37,10 +43,18 @@ const outputJSON = computed(() =>
   `
 [
   {
-    "id": "123",
-    "from": "news@example.com",
-    "subject": "Welcome!",
-    "date": "2025-04-01T12:34:56Z"
+    "sender": "example1@mail.com",
+    "subject": "Welcome to Our Service!",
+    "body": "Thank you for signing up for our service. We are excited to have you on board!",
+    "receivedAt": "2025-04-12T08:00:00.000Z",
+    "_id": "email1"
+  },
+  {
+    "sender": "newsletter@company.com",
+    "subject": "Your Weekly Newsletter",
+    "body": "Here is your weekly newsletter with the latest updates and news.",
+    "receivedAt": "2025-04-12T09:00:00.000Z",
+    "_id": "email2"
   }
 ]
 `.trim()

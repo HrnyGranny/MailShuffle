@@ -9,7 +9,15 @@ import Swal from "sweetalert2";
 const props = defineProps({
   email: {
     type: Object,
-    required: true,
+    required: true, // Objeto de correo que se esta manejando
+  },
+    address: {
+    type: String,
+    required: true, // Dirección de correo
+  },
+  apiKey: {
+    type: String,
+    required: true, // API key
   },
 });
 
@@ -133,15 +141,21 @@ const formattedDate = computed(() => {
 });
 
 // Eliminar un correo específico
-const deleteEmail = async (emailId) => {
-  console.log("Deleting email with ID:", emailId);
+const deleteEmail = async () => {
   try {
-    if (props.email && props.apiKey) {
-      await deleteEmailById(props.email, props.apiKey, emailId); // Llamar a la API para eliminar el correo
-      emails.value = emails.value.filter((email) => email._id !== emailId); // Actualizar la lista local
+    // Validar que las props necesarias estén definidas
+    if (!props.email?._id || !props.address || !props.apiKey) {
+      console.error("Missing required data: email ID, address, or API key is undefined.");
+      return;
+    }
 
-      // Mostrar alerta de éxito al eliminar
-      Swal.fire({
+    console.log("Deleting email with ID:", props.email._id, "Address:", props.address, "API Key:", props.apiKey);
+
+    // Llamar a la API para eliminar el correo
+    await deleteEmailById(props.address, props.apiKey, props.email._id);
+
+    // Mostrar alerta de éxito al eliminar
+    Swal.fire({
       toast: true,
       position: "bottom-start",
       title: "Email deleted successfully!",
@@ -151,12 +165,16 @@ const deleteEmail = async (emailId) => {
       timer: 3000,
       timerProgressBar: false,
       didOpen: (popup) => {
-        popup.style.width = "220px";
+        popup.style.width = "250px";
         popup.style.padding = "5px";
         popup.style.borderRadius = "10px"; // redondeo
       },
     });
-    }
+
+    // Emitir evento de eliminación para notificar al componente padre
+    emit("delete", props.email._id);
+    // Emitir evento de volver para cerrar la vista del correo
+    emit("back");
   } catch (error) {
     console.error("Error deleting email:", error);
 

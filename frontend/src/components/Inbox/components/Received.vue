@@ -151,7 +151,10 @@ watch(
     <EmailOpened
       v-if="isViewingEmail && selectedEmail"
       :email="selectedEmail"
+      :address="props.email"
+      :apiKey="props.apiKey"
       @back="backToList"
+      @delete="fetchEmails"
     />
   </div>
 </template>

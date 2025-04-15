@@ -15,7 +15,7 @@ import Contact from "../../components/Contact/Contact.vue";
 import setMaterialInput from "@/assets/js/material-input";
 
 //image
-import image from "@/assets/img/LoginPlane.jpg";
+import BackImage from "@/assets/img/LoginPlane.jpg";
 
 onMounted(() => {
   setMaterialInput();
@@ -28,7 +28,7 @@ onMounted(() => {
     <div
       class="page-header align-items-start min-vh-100"
       :style="{
-        backgroundImage: `url(${image})`
+        backgroundImage: `url(${BackImage})`
       }"
       loading="lazy"
     >
@@ -43,28 +43,19 @@ onMounted(() => {
                 <div
                   class="custom-gradient border-radius-lg py-3 pe-1"
                 >
+                  <div class="d-flex justify-content-center mb-3">
+                    <img
+                      src="@/assets/img/logos/MailShuffleIcoFullO.png"
+                      alt="MailShuffle Icon"
+                      class="img-fluid"
+                      style="width: 60px; height: auto;"
+                    />
+                  </div>
                   <h4
                     class="text-dark font-weight-bolder text-center mt-2 mb-0"
                   >
                     Sign in
                   </h4>
-                  <div class="row mt-3">
-                    <div class="col-2 text-center ms-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-facebook text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center px-1">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-github text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center me-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-google text-white text-lg"></i>
-                      </a>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="card-body">
@@ -119,15 +110,13 @@ onMounted(() => {
               <div
                 class="copyright text-center text-sm text-white text-lg-start"
               >
-                © {{ new Date().getFullYear() }}, made with 
-                <i class="fa fa-heart" aria-hidden="true"></i>   by
+                © {{ new Date().getFullYear() }}, made by
                 <a
                   href="https://github.com/HrnyGranny"
                   class="font-weight-bold text-white"
                   target="_blank"
                   >HornyGranny</a
                 >
-                for a life free of spam.
               </div>
             </div>
             <div class="col-12 col-md-6">

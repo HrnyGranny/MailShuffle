@@ -21,6 +21,7 @@ defineProps({
         "white",
         "dark",
         "none",
+        "mailshuffle",
       ].includes(color);
     },
     default: "#98FE98",

@@ -30,7 +30,7 @@ defineProps({
             target="_blank" 
             class="text-secondary"
           >
-            HornyGranny
+            HrnyGranny
           </a>.
         </div>
       </div>

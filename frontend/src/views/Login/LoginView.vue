@@ -5,7 +5,7 @@ import { onMounted } from "vue";
 import DefaultNavbar from "@/components/Navbar.vue";
 import Header from "@/components/Header.vue";
 
-//Vue Material Kit 2 components
+//Vue material components
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialSwitch from "@/material_components/MaterialSwitch.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
@@ -45,7 +45,7 @@ onMounted(() => {
                 >
                   <div class="d-flex justify-content-center mb-3">
                     <img
-                      src="@/assets/img/logos/MailShuffleIcoFullO.png"
+                      src="@/assets/img/logos/MailShuffleIcoFull.png"
                       alt="MailShuffle Icon"
                       class="img-fluid"
                       style="width: 60px; height: auto;"

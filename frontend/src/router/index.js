@@ -3,6 +3,7 @@ import PresentationView from "../views/Presentation/PresentationView.vue";
 import LoginView from "../views/Login/LoginView.vue";
 import UpgradeView from "../views/Upgrade/UpgradeView.vue";
 import DashboardView from "../views/Dashboard/Dashboard.vue";
+import Error404 from "../views/Error/Error404.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,8 +29,9 @@ const router = createRouter({
       component: DashboardView,
     },
     {
-      path: "/:pathMatch(.*)*",
-      redirect: "/",
+      path: "/:pathMatch(.*)*", // 404
+      name: "Error404",
+      component: Error404,
     },
   ],
 });

@@ -7,13 +7,23 @@
             Oops, it seems that this page does not exist.
           </p>
           <router-link class="mt-3 d-block" to="/">
-            <button class="btn btn-primary" type="button">
-              To main page
-            </button>
+            <MaterialButton
+            variant="gradient"
+            size="md"
+            :style="{
+              backgroundColor: '#98FE98',
+              borderColor: '#98FE98',
+              color: '#344767',
+              'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+            }"
+            class="btn btn-primary errorBtn"
+          >
+            <span>To main page</span>
+          </MaterialButton>
           </router-link>
         </div>
         <footer class="pageFooter">
-          2025 &copy; MailShuffle. All rights reserved.
+          2025 &copy; HrnyGranny. All rights reserved.
         </footer>
       </b-container>
     </div>
@@ -58,7 +68,7 @@
       transition: background-color 0.3s ease;
   
       &:hover {
-        background-color: #7edc7e; /* Color más oscuro al pasar el cursor */
+        transform: scale(1.1);
       }
     }
   

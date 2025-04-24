@@ -12,26 +12,50 @@ const router = createRouter({
       path: "/",
       name: "presentation",
       component: PresentationView,
+      meta: {
+        title: "MailShuffle | Home",
+        metaDescription:
+          "Welcome to MailShuffle, generate temporary emails and protect your privacy.",
+      },
     },
     {
       path: "/login",
       name: "login",
       component: LoginView,
+      meta: {
+        title: "MailShuffle | Login",
+        metaDescription:
+          "Log in to your MailShuffle account to manage your temporary emails.",
+      },
     },
     {
       path: "/upgrade",
       name: "upgrade",
       component: UpgradeView,
+      meta: {
+        title: "MailShuffle | Upgrade Account",
+        metaDescription:
+          "Upgrade your MailShuffle account and get more features.",
+      },
     },
     {
       path: "/Dashboard",
       name: "Dashboard",
       component: DashboardView,
+      meta: {
+        title: "MailShuffle | Dashboard",
+        metaDescription:
+          "Manage your temporary emails from the MailShuffle dashboard.",
+      },
     },
     {
-      path: "/:pathMatch(.*)*", // 404
+      path: "/:pathMatch(.*)*",
       name: "Error404",
       component: Error404,
+      meta: {
+        title: "MailShuffle | Page Not Found",
+        metaDescription: "Sorry, the page you are looking for does not exist.",
+      },
     },
   ],
 });

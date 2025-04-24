@@ -43,13 +43,7 @@ onMounted(() => {
                 <div
                   class="custom-gradient border-radius-lg py-3 pe-1"
                 >
-                  <div class="d-flex justify-content-center mb-3">
-                    <img
-                      src="@/assets/img/logos/MailShuffleIcoFull.png"
-                      alt="MailShuffle Icon"
-                      class="img-fluid"
-                      style="width: 60px; height: auto;"
-                    />
+                  <div class="d-flex justify-content-center mb-2">
                   </div>
                   <h4
                     class="text-dark font-weight-bolder text-center mt-2 mb-0"
@@ -84,9 +78,15 @@ onMounted(() => {
                     <MaterialButton
                       class="my-4 mb-2"
                       variant="gradient"
-                      color="success"
                       fullWidth
-                      >Sign in</MaterialButton
+                      :style="{
+                        backgroundColor: '#98FE98',
+                        borderColor: '#98FE98',
+                        color: '#344767',
+                        'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
+                      }"
+                      >Sign in
+                      </MaterialButton
                     >
                   </div>
                   <p class="mt-4 text-sm text-center">

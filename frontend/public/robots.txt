@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mailshuffle.xyz/sitemap.xml

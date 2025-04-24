@@ -23,7 +23,13 @@
           </router-link>
         </div>
         <footer class="pageFooter">
-          2025 &copy; HrnyGranny. All rights reserved.
+          © {{ new Date().getFullYear() }}, made by
+                <a
+                  href="https://github.com/HrnyGranny"
+                  class="font-weight-bold"
+                  target="_blank"
+                  >HornyGranny</a
+                >
         </footer>
       </b-container>
     </div>
@@ -65,7 +71,6 @@
       font-weight: bold;
       padding: 10px 20px;
       border-radius: 5px;
-      transition: background-color 0.3s ease;
   
       &:hover {
         transform: scale(1.1);

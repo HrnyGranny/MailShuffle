@@ -121,32 +121,41 @@ router.post('/generate-permanent', authMiddleware, async (req, res) => {
 // Ruta para obtener la bandeja de entrada
 router.get("/inbox", async (req, res) => {
     try {
-        const { email, apiKey } = req.query;  // Obtener la dirección de correo y la API Key
+        const { email, apiKey, lastEmailId } = req.query; // Obtener la dirección de correo, API Key y el último ID de correo
 
         // Si el usuario está autenticado (es un usuario premium)
         if (req.user) {
-            // Buscar el correo asociado al usuario premium
             const emailDoc = await Email.findOne({ address: email, owner: req.user.id });
 
-            // Si no existe o no pertenece al usuario premium, denegar acceso
             if (!emailDoc) {
                 return res.status(403).json({ message: "No tienes acceso a esta dirección de correo" });
             }
 
-            // Si pertenece al usuario premium, devolver los correos de la bandeja de entrada
-            return res.json(emailDoc.inbox); // Devolver los correos recibidos en esa dirección
+            // Si se proporciona `lastEmailId`, devolver solo los correos más recientes
+            if (lastEmailId) {
+                const newEmails = emailDoc.inbox.filter(email => email._id > lastEmailId);
+                return res.json(newEmails);
+            }
+
+            // Si no se proporciona `lastEmailId`, devolver todos los correos
+            return res.json(emailDoc.inbox);
         }
 
         // Si no está autenticado (es un usuario anónimo), verificar por la API Key
         const emailDoc = await Email.findOne({ address: email, apiKey: apiKey });
 
-        // Si no existe el correo o la API Key no es válida
         if (!emailDoc) {
             return res.status(404).json({ message: "Correo no encontrado o API Key incorrecta" });
         }
 
-        // Si la dirección de correo temporal existe y la API Key coincide, devolver los correos
-        res.json(emailDoc.inbox); // Devolver los correos recibidos
+        // Si se proporciona `lastEmailId`, devolver solo los correos más recientes
+        if (lastEmailId) {
+            const newEmails = emailDoc.inbox.filter(email => email._id > lastEmailId);
+            return res.json(newEmails);
+        }
+
+        // Si no se proporciona `lastEmailId`, devolver todos los correos
+        res.json(emailDoc.inbox);
     } catch (err) {
         res.status(500).json({ message: "Error al obtener los correos" });
     }

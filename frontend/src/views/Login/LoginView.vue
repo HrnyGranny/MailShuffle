@@ -93,8 +93,8 @@ onMounted(() => {
                     Don't have an account?
                     <a
                       href="#"
-                      class="text-success text-gradient font-weight-bold"
-                      >Sign up</a
+                      class="text-warning text-gradient font-weight-bold"
+                      >Upgrade</a
                     >
                   </p>
                 </form>

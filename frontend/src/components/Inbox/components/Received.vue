@@ -30,15 +30,34 @@ const saveViewedEmails = () => {
 const fetchEmails = async () => {
   try {
     if (props.email && props.apiKey) {
-      const inbox = await getInbox(props.email, props.apiKey); // Llamar a la API para obtener la bandeja de entrada
-      emails.value = inbox; // Actualizar la lista de correos
+      const lastEmailId = emails.value.length ? emails.value[emails.value.length - 1]._id : null; // ID del correo más reciente
+      const inbox = await getInbox(props.email, props.apiKey, lastEmailId); // Pasar el ID del último correo
+      console.log("Inbox:", inbox);
+      if (inbox && inbox.length) {
+        // Filtrar correos duplicados
+        const newEmails = inbox.filter(
+          (newEmail) => !emails.value.some((existingEmail) => existingEmail._id === newEmail._id)
+        );
+        emails.value = [...newEmails, ...emails.value]; // Agregar solo los correos nuevos
+      }
       emit("hasEmails", emails.value.length > 0);
     }
   } catch (error) {
     console.error("Error fetching emails:", error);
-    emails.value = [];
     emit("hasEmails", false);
   }
+};
+
+// Función para eliminar un correo de la bandeja de entrada
+const handleDeleteEmail = (emailId) => {
+  // Filtrar el correo eliminado de la lista
+  emails.value = emails.value.filter((email) => email._id !== emailId);
+
+  // Emitir el evento para notificar que la lista ha cambiado
+  emit("hasEmails", emails.value.length > 0);
+
+  // Volver a la lista de correos
+  backToList();
 };
 
 // Iniciar el polling para actualizar la bandeja de entrada
@@ -154,7 +173,7 @@ watch(
       :address="props.email"
       :apiKey="props.apiKey"
       @back="backToList"
-      @delete="fetchEmails"
+      @delete="handleDeleteEmail"
     />
   </div>
 </template>

@@ -3,10 +3,10 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost:3000/api/emails";
 
 // Función para obtener la bandeja de entrada
-export const getInbox = async (email, apiKey) => {
+export const getInbox = async (email, apiKey, lastEmailId = null) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/inbox`, {
-      params: { email, apiKey },
+      params: { email, apiKey, lastEmailId },
     });
     return response.data;
   } catch (error) {

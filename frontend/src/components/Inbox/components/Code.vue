@@ -15,7 +15,7 @@ const props = defineProps({ email: String, apiKey: String });
 
 const apiUri = computed(
   () =>
-    `https://mailshuffle.xyz/api/emails/inbox?email=${props.email}&apiKey=${props.apiKey}`
+    `http://api.mailshuffle.xyz:3000/api/emails/inbox?email=${props.email}&apiKey=${props.apiKey}`
 );
 
 const codeJS = computed(() =>

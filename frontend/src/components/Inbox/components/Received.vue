@@ -26,11 +26,15 @@ const saveViewedEmails = () => {
   localStorage.setItem("viewedEmails", JSON.stringify([...viewedEmails.value]));
 };
 
+const sortEmails = () => {
+  emails.value.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
+};
+
 // Función para obtener la bandeja de entrada
 const fetchEmails = async () => {
   try {
     if (props.email && props.apiKey) {
-      const lastEmailId = emails.value.length ? emails.value[emails.value.length - 1]._id : null; // ID del correo más reciente
+      const lastEmailId = emails.value.length ? emails.value[0]._id : null; // ID del correo más reciente
       const inbox = await getInbox(props.email, props.apiKey, lastEmailId); // Pasar el ID del último correo
       console.log("Inbox:", inbox);
       if (inbox && inbox.length) {
@@ -39,6 +43,7 @@ const fetchEmails = async () => {
           (newEmail) => !emails.value.some((existingEmail) => existingEmail._id === newEmail._id)
         );
         emails.value = [...newEmails, ...emails.value]; // Agregar solo los correos nuevos
+        sortEmails();
       }
       emit("hasEmails", emails.value.length > 0);
     }
@@ -140,6 +145,7 @@ watch(
     isViewingEmail.value = false;
     selectedEmail.value = null;
     await fetchEmails();
+    sortEmails();
     startPolling();
   }
 );

@@ -37,7 +37,7 @@ defineProps({
       <div class="row">
         <div class="col-8 mx-auto text-center mt-1">
           <p class="mb-0 text-secondary">
-            v1.9.2
+            v1.0
           </p>
         </div>
       </div>

@@ -249,7 +249,7 @@ const deleteEmail = async () => {
       </div>
 
       <!-- Asunto -->
-      <div class="card-body py-3 border-bottom">
+      <div class="p-4 border-bottom"> <!-- Reducir padding arriba y abajo -->
         <h4 class="mb-0 fw-medium">{{ email.subject || "(No subject)" }}</h4>
       </div>
 
@@ -274,10 +274,6 @@ const deleteEmail = async () => {
   border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
-.min-vh-50 {
-  min-height: 50vh;
-}
-
 .btn-back {
   border-radius: 50%;
   width: 40px;
@@ -289,8 +285,6 @@ const deleteEmail = async () => {
 .btn-back:hover {
   transform: scale(1.1);
 }
-
-
 
 .btn-delete:hover {
   transform: scale(1.1);

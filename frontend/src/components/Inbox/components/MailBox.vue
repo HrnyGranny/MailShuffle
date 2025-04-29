@@ -195,7 +195,7 @@ onMounted(async () => {
     emailId.value = savedEmailId;
     emit("emailGenerated", { email: email.value, apiKey: apiKey.value }); // Emitir el correo al componente padre
   } else {
-    await generateFirstEmail(); // Generar un nuevo correo si no hay cookie
+    await generateEmail(); // Generar un nuevo correo si no hay cookie
   }
 });
 </script>

@@ -204,7 +204,7 @@ const deleteEmail = async () => {
     <!-- Tarjeta única -->
     <div class="card shadow-sm rounded-3 bg-white flex-grow-1">
       <!-- Cabecera -->
-      <div class="card-body py-3 d-flex align-items-center border-bottom">
+      <div class="card-body py-4 d-flex align-items-center border-bottom">
         <div class="d-flex align-items-center flex-grow-1">
           <div class="avatar-circle d-flex align-items-center justify-content-center me-3">
             {{ email.sender?.charAt(0).toUpperCase() || "?" }}

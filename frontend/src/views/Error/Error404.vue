@@ -28,7 +28,7 @@
                   href="https://github.com/HrnyGranny"
                   class="font-weight-bold"
                   target="_blank"
-                  >HornyGranny</a
+                  >HrnyGranny</a
                 >
         </footer>
       </b-container>

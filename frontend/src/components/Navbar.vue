@@ -40,6 +40,14 @@ const props = defineProps({
   showLogin: {
     type: Boolean,
     default: true,
+  },
+  showGitHub: {
+    type: Boolean,
+    default: true,
+  },
+  showHamburger: {
+    type: Boolean,
+    default: true,
   }
 });
 
@@ -168,7 +176,11 @@ watch(
       </div>
       
       <!--Hamburguesa-->
-      <button class="navbar-toggler shadow-none ms-2" @click="menuOpen = !menuOpen">
+      <button 
+        v-if="props.showHamburger"
+        class="navbar-toggler shadow-none ms-2" 
+        @click="menuOpen = !menuOpen"
+      >
         <span class="navbar-toggler-icon mt-2" :class="{'is-active': menuOpen}">
           <span class="navbar-toggler-bar bar1"></span>
           <span class="navbar-toggler-bar bar2"></span>
@@ -178,7 +190,7 @@ watch(
       <div :class="['navbar-collapse', 'w-100', 'pt-3', 'pb-2', 'py-lg-0', { collapse: !menuOpen }]" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <!-- GITHUB -->
-          <li class="nav-item dropdown dropdown-hover mx-2">
+          <li v-if="props.showGitHub" class="nav-item dropdown dropdown-hover mx-2">
             <a
               href="https://github.com/HrnyGranny"
               class="nav-link d-flex cursor-pointer align-items-center"

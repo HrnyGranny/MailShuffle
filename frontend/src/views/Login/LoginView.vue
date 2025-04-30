@@ -22,7 +22,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <DefaultNavbar transparent :showLogin="false" />
+  <DefaultNavbar transparent :showLogin="false" :showGitHub="false" :showHamburger="false" />
   <Contact/>
   <Header>
     <div
@@ -115,7 +115,7 @@ onMounted(() => {
                   href="https://github.com/HrnyGranny"
                   class="font-weight-bold text-white"
                   target="_blank"
-                  >HornyGranny</a
+                  >HrnyGranny</a
                 >
               </div>
             </div>

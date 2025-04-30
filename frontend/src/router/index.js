@@ -13,7 +13,7 @@ const router = createRouter({
       name: "presentation",
       component: PresentationView,
       meta: {
-        title: "MailShuffle | Home",
+        title: "Home | MailShuffle",
         metaDescription:
           "Welcome to MailShuffle, generate temporary emails and protect your privacy.",
       },
@@ -23,7 +23,7 @@ const router = createRouter({
       name: "login",
       component: LoginView,
       meta: {
-        title: "MailShuffle | Login",
+        title: "Login | MailShuffle",
         metaDescription:
           "Log in to your MailShuffle account to manage your temporary emails.",
       },
@@ -33,7 +33,7 @@ const router = createRouter({
       name: "upgrade",
       component: UpgradeView,
       meta: {
-        title: "MailShuffle | Upgrade Account",
+        title: "Upgrade Account | MailShuffle",
         metaDescription:
           "Upgrade your MailShuffle account and get more features.",
       },
@@ -43,7 +43,7 @@ const router = createRouter({
       name: "Dashboard",
       component: DashboardView,
       meta: {
-        title: "MailShuffle | Dashboard",
+        title: "Dashboard | MailShuffle",
         metaDescription:
           "Manage your temporary emails from the MailShuffle dashboard.",
       },
@@ -53,7 +53,7 @@ const router = createRouter({
       name: "Error404",
       component: Error404,
       meta: {
-        title: "MailShuffle | Page Not Found",
+        title: "Page Not Found | MailShuffle",
         metaDescription: "Sorry, the page you are looking for does not exist.",
       },
     },

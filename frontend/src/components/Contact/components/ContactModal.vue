@@ -64,23 +64,8 @@ const handleSubmit = async (event) => {
   // Direct validation
   const isFormValid = isValidFullName() && isValidEmail() && isValidMessage();
 
-  // Show error if form is invalid
+  // return if form is invalid
   if (!isFormValid) {
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
-      title: "Please fill all required fields!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "205px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px";
-      },
-    });
     return;
   }
 
@@ -105,7 +90,7 @@ const handleSubmit = async (event) => {
       timer: 3000,
       timerProgressBar: false,
       didOpen: (popup) => {
-        popup.style.width = "250px";
+        popup.style.width = "230px";
         popup.style.padding = "5px";
         popup.style.borderRadius = "10px";
       },
@@ -130,7 +115,7 @@ const handleSubmit = async (event) => {
       timer: 3000,
       timerProgressBar: false,
       didOpen: (popup) => {
-        popup.style.width = "205px";
+        popup.style.width = "225px";
         popup.style.padding = "5px";
         popup.style.borderRadius = "10px";
       },

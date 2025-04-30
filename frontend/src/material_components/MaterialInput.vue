@@ -1,78 +1,28 @@
 <script setup>
-defineProps({
-  id: {
-    type: String,
-    default: "",
-  },
-  type: {
-    type: String,
-    default: "text",
-  },
-  label: {
-    type: [String, Object],
-    text: String,
-    class: String,
-    default: () => ({
-      class: "",
-    }),
-  },
-  value: {
-    type: String,
-    default: "",
-  },
-  placeholder: {
-    type: String,
-    default: "",
-  },
-  size: {
-    type: String,
-    default: "md",
-  },
-  error: {
-    type: Boolean,
-    default: false,
-  },
-  success: {
-    type: Boolean,
-    default: false,
-  },
-  isRequired: {
-    type: Boolean,
-    default: false,
-  },
-  isDisabled: {
-    type: Boolean,
-    default: false,
-  },
-  inputClass: {
-    type: String,
-    default: "",
-  },
-  icon: {
-    type: String,
-    default: "",
-  },
-  readonly: {
-    type: Boolean,
-    default: false,
-  },
+const props = defineProps({
+  id: { type: String, default: "" },
+  type: { type: String, default: "text" },
+  label: { type: [String, Object], default: "" },
+  modelValue: { type: String, default: "" },
+  placeholder: { type: String, default: "" },
+  size: { type: String, default: "md" },
+  error: { type: Boolean, default: false },
+  success: { type: Boolean, default: false },
+  isRequired: { type: Boolean, default: false },
+  isDisabled: { type: Boolean, default: false },
+  inputClass: { type: String, default: "" },
+  icon: { type: String, default: "" },
+  readonly: { type: Boolean, default: false },
 });
+const emit = defineEmits(["update:modelValue"]);
+
 function getClasses(size, success, error) {
-  let sizeValue, isValidValue;
-
-  sizeValue = size && `form-control-${size}`;
-
-  if (error) {
-    isValidValue = "is-invalid";
-  } else if (success) {
-    isValidValue = "is-valid";
-  } else {
-    isValidValue = "";
-  }
-
+  let sizeValue = size && `form-control-${size}`;
+  let isValidValue = error ? "is-invalid" : success ? "is-valid" : "";
   return `${sizeValue} ${isValidValue}`;
 }
 </script>
+
 <template>
   <div class="input-group">
     <label v-if="label" :class="label.class">{{
@@ -86,11 +36,12 @@ function getClasses(size, success, error) {
       :type="type"
       class="form-control"
       :class="[getClasses(size, success, error), inputClass]"
-      :value="value"
+      :value="modelValue"
       :placeholder="placeholder"
-      :isRequired="isRequired"
+      :required="isRequired"
       :disabled="isDisabled"
       :readonly="readonly"
+      @input="emit('update:modelValue', $event.target.value)"
     />
   </div>
 </template>

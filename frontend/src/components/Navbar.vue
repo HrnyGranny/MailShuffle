@@ -134,21 +134,42 @@ watch(
       >
         MailShuffle
       </RouterLink>
-      <!--Collapsed premium-->
-      <a
-        href="/Dashboard"
-        class="btn btn-sm mb-0 ms-auto d-lg-none d-block"
-        style="background-color: #feb602; border: none; color: black;"
-      >
-        <img
-          src="../assets/img/iconos/crown.png"
-          alt="Crown Icon"
-          style="width: 20px; height: 20px; transform: translateY(-2px);"
-        />
-      </a>
+      
+      <!-- Login and Premium buttons in mobile navbar -->
+      <div class="ms-auto d-flex d-lg-none align-items-center">
+        <!-- Login button - mobile version with desktop styling -->
+        <RouterLink
+          v-if="props.showLogin"
+          to="/login"
+          class="nav-link d-flex cursor-pointer align-items-center"
+          :class="getTextColor()"
+        >
+          <i
+            class="material-icons opacity-6 me-2 text-md"
+            :class="getTextColor()"
+          >
+            login
+          </i>
+          Login
+        </RouterLink>
+        
+        <!-- Premium button -->
+        <a
+          href="/Dashboard"
+          class="btn btn-sm mb-0"
+          style="background-color: #feb602; border: none; color: black;"
+        >
+          <img
+            src="../assets/img/iconos/crown.png"
+            alt="Crown Icon"
+            style="width: 20px; height: 20px; transform: translateY(-2px);"
+          />
+        </a>
+      </div>
+      
       <!--Hamburguesa-->
       <button class="navbar-toggler shadow-none ms-2" @click="menuOpen = !menuOpen">
-        <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-icon mt-2" :class="{'is-active': menuOpen}">
           <span class="navbar-toggler-bar bar1"></span>
           <span class="navbar-toggler-bar bar2"></span>
           <span class="navbar-toggler-bar bar3"></span>
@@ -179,8 +200,8 @@ watch(
             </a>
           </li>
           <!-- GITHUB END -->
-          <!-- LOGIN -->
-          <li v-if="props.showLogin" class="nav-item mx-2">
+          <!-- LOGIN - only visible on desktop -->
+          <li v-if="props.showLogin" class="nav-item mx-2 d-none d-lg-block">
             <RouterLink
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
               :class="getTextColor()"
@@ -218,3 +239,31 @@ watch(
   </nav>
   <!-- End Navbar -->
 </template>
+
+<style scoped>
+/* Animation for the hamburger icon to arrow transition */
+.navbar-toggler-bar {
+  display: block;
+  position: relative;
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin: 5px 0;
+}
+
+/* Down arrow animation when menu is open */
+.navbar-toggler-icon.is-active .bar1 {
+  transform: translateY(9px) rotate(45deg);
+  background-color: #000;
+}
+
+.navbar-toggler-icon.is-active .bar2 {
+  opacity: 0;
+}
+
+.navbar-toggler-icon.is-active .bar3 {
+  transform: translateY(-7px) rotate(-48deg);
+  background-color: #000;
+}
+</style>

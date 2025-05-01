@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
+import { API_BASE_URL } from "@/api/emailService";
 import Swal from "sweetalert2";
 
 // PrismJS
@@ -15,7 +16,7 @@ const props = defineProps({ email: String, apiKey: String });
 
 const apiUri = computed(
   () =>
-    `http://api.mailshuffle.xyz:3000/api/emails/inbox?email=${props.email}&apiKey=${props.apiKey}`
+    `${API_BASE_URL}/inbox?email=${props.email}&apiKey=${props.apiKey}`
 );
 
 const codeJS = computed(() =>

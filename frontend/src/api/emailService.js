@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api/emails";
+export const API_BASE_URL = "https://api.mailshuffle.xyz/api/emails";
 
 // Función para obtener la bandeja de entrada
 export const getInbox = async (email, apiKey, lastEmailId = null) => {

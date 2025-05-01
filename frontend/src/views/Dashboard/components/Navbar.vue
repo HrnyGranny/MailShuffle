@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
     <div class="container-fluid">
       <button 
         class="hamburger-button me-3" 
@@ -108,6 +108,11 @@ export default {
   height: 64px;
   padding: 0 16px;
   z-index: 1000;
+  border-radius: 8px;
+  margin: 16px auto 0;
+  width: calc(100% - 32px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .hamburger-button {

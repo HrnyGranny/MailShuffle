@@ -119,17 +119,18 @@ export default {
 
 <style scoped>
 .sidebar {
-  height: 100vh;
+  height: calc(100vh - 32px);
   width: 250px;
   background-color: white;
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 16px;
+  top: 16px;
   z-index: 1010;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  border-radius: 8px;
 }
 
 .sidebar.collapsed {
@@ -143,6 +144,8 @@ export default {
   justify-content: center;
   border-bottom: 1px solid #e0e0e0;
   padding: 0 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .logo-container {
@@ -325,6 +328,8 @@ export default {
   border-top: 1px solid #e0e0e0;
   padding: 14px 16px;
   margin-top: auto;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .user-container {
@@ -358,5 +363,6 @@ export default {
   padding: 2px 6px;
   border-radius: 4px;
   white-space: nowrap;
+  margin-top: 8px;
 }
 </style>

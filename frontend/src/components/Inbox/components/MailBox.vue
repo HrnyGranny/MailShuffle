@@ -211,7 +211,7 @@ onMounted(async () => {
                 class="input-group-outline border-danger"
                 id="email"
                 type="email"
-                :value="email"
+                v-model="email"
                 :error="true"
                 readonly
               />

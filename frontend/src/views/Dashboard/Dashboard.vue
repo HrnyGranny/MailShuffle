@@ -2,10 +2,12 @@
   <div class="dashboard-container">
     <Sidebar :isExpanded="sidebarExpanded" />
     <div class="main-content" :class="{ 'sidebar-expanded': sidebarExpanded }">
-      <Navbar 
-        :title="pageTitle" 
-        @toggle-sidebar="toggleSidebar" 
-      />
+      <div class="navbar-container">
+        <Navbar 
+          :title="pageTitle" 
+          @toggle-sidebar="toggleSidebar" 
+        />
+      </div>
       <div class="content-wrapper">
         <div class="content-area">
           <slot></slot>
@@ -52,13 +54,11 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
 .dashboard-container {
   display: flex;
   height: 100vh;
   width: 100%;
-  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
 }
 
 .main-content {
@@ -66,16 +66,20 @@ export default {
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s;
-  margin-left: 250px;
+  margin-left: 266px; /* 250px (ancho) + 16px (margen izquierdo) */
   background-color: #f0f2f5;
 }
 
 .main-content.sidebar-expanded {
-  margin-left: 250px;
+  margin-left: 266px;
 }
 
 .main-content:not(.sidebar-expanded) {
-  margin-left: 65px;
+  margin-left: 81px; /* 65px (ancho colapsado) + 16px (margen izquierdo) */
+}
+
+.navbar-container {
+  padding: 0 20px;
 }
 
 .content-wrapper {
@@ -84,6 +88,7 @@ export default {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  margin-top: 4px;
 }
 
 .content-area {
@@ -95,14 +100,13 @@ export default {
   transition: all 0.3s ease;
 }
 
-/* Estilos adicionales para mejorar la apariencia de tarjeta */
-.content-area:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
 @media (max-width: 768px) {
   .content-area {
     padding: 16px;
+  }
+  
+  .main-content, .main-content.sidebar-expanded {
+    margin-left: 0;
   }
 }
 </style>

@@ -16,7 +16,7 @@ Email: [Alvaro.Ruiz12@alu.uclm.es](mailto:Alvaro.Ruiz12@alu.uclm.es)
 
 ## Running Locally
 
-To run Listify locally, follow these steps:
+To run MailShuffle locally, follow these steps:
 
 ### **Install Dependencies**
 
@@ -41,7 +41,7 @@ In the `backend` folder, run:
 npm start
 ```
 
-The backend will run on **port 3000**.
+The backend will run on **port 8080**.
 
 #### **Frontend:**
 In the `frontend` folder, run:

@@ -1,6 +1,10 @@
 <template>
   <div class="dashboard-container">
-    <Sidebar :isExpanded="sidebarExpanded" />
+    <Sidebar 
+      :isExpanded="sidebarExpanded" 
+      :activePath="currentPath"
+      @navigate="handleNavigation" 
+    />
     <div class="main-content" :class="{ 'sidebar-expanded': sidebarExpanded }">
       <div class="navbar-container">
         <Navbar 
@@ -42,12 +46,39 @@ export default {
   },
   data() {
     return {
-      sidebarExpanded: true
+      sidebarExpanded: true,
+      currentPath: this.$route ? this.$route.path : '/'
     }
   },
   methods: {
     toggleSidebar() {
       this.sidebarExpanded = !this.sidebarExpanded;
+    },
+    handleNavigation(path) {
+      // Actualizar el path actual para el resaltado de menú
+      this.currentPath = path;
+      
+      // Si estamos usando Vue Router
+      if (this.$router) {
+        this.$router.push(path);
+      } else {
+        // Alternativa si no hay Vue Router: cambiar la URL
+        window.location.href = path;
+      }
+    }
+  },
+  watch: {
+    // Si usamos Vue Router, actualizamos currentPath cuando cambia la ruta
+    '$route'(newRoute) {
+      if (newRoute) {
+        this.currentPath = newRoute.path;
+      }
+    }
+  },
+  created() {
+    // Capturar la ruta actual al cargar, si estamos usando Vue Router
+    if (this.$route) {
+      this.currentPath = this.$route.path;
     }
   }
 }

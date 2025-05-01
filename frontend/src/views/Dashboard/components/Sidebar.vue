@@ -1,6 +1,7 @@
 <template>
   <div class="sidebar" :class="{ 'collapsed': !isExpanded }">
-    <div class="sidebar-header">
+    <!-- Header clicable que dirige a la página de inicio -->
+    <div class="sidebar-header" @click="navigate('/')" role="button">
       <div class="logo-container">
         <div class="brand-container" v-if="isExpanded">
           <img src="@/assets/img/logos/MailShuffleIcoAlone.png" alt="MailShuffle Logo" class="logo-img" />
@@ -71,7 +72,7 @@
           <span class="material-icons user-icon">account_circle</span>
           <div class="user-name">HrnyGranny</div>
         </div>
-        <div class="last-login">30/04 11:49</div>
+        <div class="last-login">01/05 11:11</div>
       </div>
     </div>
   </div>
@@ -146,6 +147,8 @@ export default {
   padding: 0 8px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .logo-container {
@@ -255,7 +258,7 @@ export default {
 }
 
 .open .expand-icon {
-  transform: rotate(180deg);
+  transform: rotate(360deg);
 }
 
 .menu-text {

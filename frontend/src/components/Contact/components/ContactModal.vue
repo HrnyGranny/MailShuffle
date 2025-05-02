@@ -233,7 +233,7 @@ const updateField = (field) => {
                   color: '#344767',
                   'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
                 }"
-                class="mt-3 mb-0"
+                class="mt-3 mb-0 send-btn"
                 type="submit"
                 :disabled="isSubmitting"
               >
@@ -292,6 +292,10 @@ const updateField = (field) => {
   border-top: 1px solid #ffcc80;
   border-left: 1px solid #ffcc80;
   transform: rotate(45deg);
+}
+
+.send-btn:hover {
+  transform: scale(1.1);
 }
 
 @keyframes bubble-in {

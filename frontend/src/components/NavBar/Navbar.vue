@@ -15,11 +15,8 @@ onMounted(() => {
 const props = defineProps({
   action: {
     type: Object,
-    route: String,
-    color: String,
-    label: String,
     default: () => ({
-      route: "https://www.creative-tim.com/product/vue-material-kit",
+      route: "/upgrade",
       color: "bg-gradient-warning",
       label: "Upgrade",
     })
@@ -162,7 +159,7 @@ watch(
         
         <!-- Premium button -->
         <a
-          href="/Dashboard"
+          href="/upgrade"
           class="btn btn-sm mb-0"
           style="background-color: #feb602; border: none; color: black;"
         >

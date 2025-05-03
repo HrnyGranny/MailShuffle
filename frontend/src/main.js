@@ -3,10 +3,6 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 
-// Nucleo Icons
-import "./assets/css/nucleo-icons.css";
-import "./assets/css/nucleo-svg.css";
-
 // Bootstrap CSS y JS
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";

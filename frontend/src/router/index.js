@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import PresentationView from "../views/Presentation/PresentationView.vue";
-import UpgradeView from "../views/Upgrade/UpgradeView.vue";
 import DashboardView from "../views/Dashboard/Dashboard.vue";
 import Error404 from "../views/Error/Error404.vue";
 
@@ -15,16 +14,6 @@ const router = createRouter({
         title: "Home | MailShuffle",
         metaDescription:
           "Welcome to MailShuffle, generate temporary emails and protect your privacy.",
-      },
-    },
-    {
-      path: "/upgrade",
-      name: "upgrade",
-      component: UpgradeView,
-      meta: {
-        title: "Upgrade Account | MailShuffle",
-        metaDescription:
-          "Upgrade your MailShuffle account and get more features.",
       },
     },
     {

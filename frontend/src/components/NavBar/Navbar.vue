@@ -5,8 +5,22 @@ import { useWindowsWidth } from "@/assets/js/useWindowsWidth";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import setMaterialInput from "@/assets/js/material-input";
 import LoginDropdown from "../NavBar/components/Login.vue";
+import UpgradeModal from "../NavBar/components/Upgrade.vue";
 
 const menuOpen = ref(false);
+// Control modal visibility
+const showUpgradeModal = ref(false);
+
+// Function to open premium modal
+const openUpgradeModal = (e) => {
+  e.preventDefault();
+  showUpgradeModal.value = true;
+};
+
+// Function to close premium modal
+const closeUpgradeModal = () => {
+  showUpgradeModal.value = false;
+};
 
 onMounted(() => {
   setMaterialInput();
@@ -159,9 +173,10 @@ watch(
         
         <!-- Premium button -->
         <a
-          href="/upgrade"
+          href="#"
           class="btn btn-sm mb-0"
           style="background-color: #feb602; border: none; color: black;"
+          @click="openUpgradeModal"
         >
           <img
             src="@/assets/img/iconos/crown.png"
@@ -221,16 +236,17 @@ watch(
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
             <a
-              :href="action.route"
+              href="#"
               class="btn btn-sm d-flex align-items-center justify-content-center mb-0"
-              style="background-color: #feb602; border: none; color: black; "
+              style="background-color: #feb602; border: none; color: black;"
+              @click="openUpgradeModal"
             >
               <img
                 src="@/assets/img/iconos/crown.png"
                 alt="Crown Icon"
                 style="width: 20px; height: 20px; margin-right: 8px; transform: translateY(-1px);"
               />
-              <span style="font-weight: bold; line-height: 1.5; padding-top: 2px; ">{{ action.label }}</span>
+              <span style="font-weight: bold; line-height: 1.5; padding-top: 2px;">{{ action.label }}</span>
             </a>
           </li>
         </ul>
@@ -238,6 +254,9 @@ watch(
     </div>
   </nav>
   <!-- End Navbar -->
+  
+  <!-- Premium Upgrade Modal -->
+  <UpgradeModal :show="showUpgradeModal" @close="closeUpgradeModal" />
 </template>
 
 <style scoped>

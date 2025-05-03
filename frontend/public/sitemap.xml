@@ -6,11 +6,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mailshuffle.xyz/upgrade</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://mailshuffle.xyz/Dashboard</loc>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 </urlset>

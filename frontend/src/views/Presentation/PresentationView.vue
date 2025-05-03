@@ -2,12 +2,12 @@
 import { onMounted, onUnmounted } from "vue";
 
 //components
-import NavbarDefault from "../../components/NavBar/Navbar.vue";
-import DefaultFooter from "../../components/Footer.vue";
-import Header from "../../components/Header.vue";
-import Inbox from "../../components/Inbox/Inbox.vue";
-import AboutUs from "../../components/AboutUs/AboutUs.vue";
-import Contact from "../../components/Contact/Contact.vue";
+import NavbarDefault from "@/components/NavBar/Navbar.vue";
+import DefaultFooter from "@/components/Footer.vue";
+import Header from "@/components/Header.vue";
+import Inbox from "@/components/Inbox/Inbox.vue";
+import AboutUs from "@/components/AboutUs/AboutUs.vue";
+import Contact from "@/components/Contact/Contact.vue";
 
 //images
 import vueMkHeader from "@/assets/img/PaperPv.jpg";

@@ -1,11 +1,21 @@
 <template>
   <div class="dashboard-container">
+    <!-- Sidebar siempre visible cuando está expandido -->
     <Sidebar 
       :isExpanded="sidebarExpanded" 
       :activePath="currentPath"
-      @navigate="handleNavigation" 
+      @navigate="handleNavigation"
+      @toggle-sidebar="toggleSidebar" 
     />
-    <div class="main-content" :class="{ 'sidebar-expanded': sidebarExpanded }">
+    
+    <!-- Overlay para móvil cuando el sidebar está abierto -->
+    <div 
+      v-if="isMobile && sidebarExpanded" 
+      class="sidebar-overlay" 
+      @click="toggleSidebar"
+    ></div>
+    
+    <div class="main-content" :class="{ 'sidebar-expanded': sidebarExpanded, 'mobile': isMobile }">
       <div class="navbar-container">
         <Navbar 
           :title="pageTitle" 
@@ -16,6 +26,7 @@
         <div class="content-area">
           <slot></slot>
         </div>
+        <Contact />
       </div>
       <AppFooter :text="footerText" />
     </div>
@@ -26,13 +37,15 @@
 import Sidebar from './components/Sidebar.vue';
 import Navbar from './components/Navbar.vue';
 import AppFooter from './components/Footer.vue';
+import Contact from "@/components/Contact/Contact.vue";
 
 export default {
   name: 'Dashboard',
   components: {
     Sidebar,
     Navbar,
-    AppFooter
+    AppFooter,
+    Contact
   },
   props: {
     pageTitle: {
@@ -46,8 +59,9 @@ export default {
   },
   data() {
     return {
-      sidebarExpanded: true,
-      currentPath: this.$route ? this.$route.path : '/'
+      sidebarExpanded: !this.checkIfMobile(),
+      currentPath: this.$route ? this.$route.path : '/',
+      isMobile: this.checkIfMobile()
     }
   },
   methods: {
@@ -58,12 +72,29 @@ export default {
       // Actualizar el path actual para el resaltado de menú
       this.currentPath = path;
       
+      // Cerrar sidebar después de navegar en móvil
+      if (this.isMobile) {
+        this.sidebarExpanded = false;
+      }
+      
       // Si estamos usando Vue Router
       if (this.$router) {
         this.$router.push(path);
       } else {
         // Alternativa si no hay Vue Router: cambiar la URL
         window.location.href = path;
+      }
+    },
+    checkIfMobile() {
+      return window.innerWidth < 768;
+    },
+    handleResize() {
+      const wasMobile = this.isMobile;
+      this.isMobile = this.checkIfMobile();
+      
+      // Solo auto-colapsar sidebar cuando cambiamos de desktop a móvil
+      if (!wasMobile && this.isMobile) {
+        this.sidebarExpanded = false;
       }
     }
   },
@@ -80,6 +111,15 @@ export default {
     if (this.$route) {
       this.currentPath = this.$route.path;
     }
+  },
+  mounted() {
+    // Agregar listener de redimensionamiento
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize(); // Inicializar al montar
+  },
+  beforeUnmount() {
+    // Eliminar listener de redimensionamiento
+    window.removeEventListener('resize', this.handleResize);
   }
 }
 </script>
@@ -90,6 +130,7 @@ export default {
   height: 100vh;
   width: 100%;
   background-color: #f0f2f5;
+  position: relative; /* Para posicionamiento de elementos hijos */
 }
 
 .main-content {
@@ -131,13 +172,35 @@ export default {
   transition: all 0.3s ease;
 }
 
+/* Overlay para móvil cuando sidebar está abierto */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1005; /* Justo debajo del sidebar */
+}
+
+/* Estilos para móvil */
 @media (max-width: 768px) {
   .content-area {
     padding: 16px;
   }
   
-  .main-content, .main-content.sidebar-expanded {
-    margin-left: 0;
+  .main-content {
+    margin-left: 0 !important; /* Forzar margen cero en móvil */
+    width: 100%;
+  }
+  
+  .main-content.mobile {
+    margin-top: 64px; /* Espacio para la navbar fija */
+    height: calc(100vh - 64px); /* Ajustar altura para evitar scroll */
+  }
+  
+  .content-wrapper {
+    padding: 12px;
   }
 }
 </style>

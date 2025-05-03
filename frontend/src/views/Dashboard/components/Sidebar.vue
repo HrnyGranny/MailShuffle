@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" :class="{ 'collapsed': !isExpanded }">
+  <div class="sidebar" :class="{ 'collapsed': !isExpanded, 'mobile': isMobile, 'expanded': isExpanded }">
     <!-- Header clicable que dirige a la página de inicio -->
     <div class="sidebar-header" @click="navigate('/')" role="button">
       <div class="logo-container">
@@ -72,9 +72,14 @@
           <span class="material-icons user-icon">account_circle</span>
           <div class="user-name">HrnyGranny</div>
         </div>
-        <div class="last-login">01/05 11:11</div>
+        <div class="last-login">02/05 20:15</div>
       </div>
     </div>
+    
+    <!-- Botón para cerrar sidebar en móvil -->
+    <button v-if="isMobile && isExpanded" class="mobile-close-btn" @click="$emit('toggle-sidebar')">
+      <span class="material-icons">close</span>
+    </button>
   </div>
 </template>
 
@@ -93,7 +98,8 @@ export default {
   },
   data() {
     return {
-      emailsOpen: false
+      emailsOpen: false,
+      isMobile: false
     };
   },
   computed: {
@@ -113,7 +119,17 @@ export default {
         this.$emit('toggle-sidebar');
         this.emailsOpen = true;
       }
+    },
+    checkIfMobile() {
+      this.isMobile = window.innerWidth < 768;
     }
+  },
+  mounted() {
+    this.checkIfMobile();
+    window.addEventListener('resize', this.checkIfMobile);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.checkIfMobile);
   }
 }
 </script>
@@ -337,8 +353,7 @@ export default {
 
 .user-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .user-info {
@@ -367,5 +382,49 @@ export default {
   border-radius: 4px;
   white-space: nowrap;
   margin-top: 8px;
+  align-self: flex-start;
+}
+
+/* Botón de cierre para móvil */
+.mobile-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  z-index: 1020;
+}
+
+.mobile-close-btn .material-icons {
+  margin-right: 0;
+  font-size: 24px;
+  color: #344767;
+}
+
+/* Estilos para móvil */
+@media (max-width: 768px) {
+  .sidebar {
+    left: -280px; /* Ocultar por defecto */
+    top: 0;
+    height: 100vh;
+    border-radius: 0;
+    width: 280px;
+    transition: left 0.3s ease;
+  }
+  
+  .sidebar.collapsed {
+    left: -280px; /* Ocultar completamente cuando está colapsado */
+    width: 280px;
+  }
+  
+  .sidebar.expanded {
+    left: 0; /* Mostrar cuando está expandido */
+  }
 }
 </style>

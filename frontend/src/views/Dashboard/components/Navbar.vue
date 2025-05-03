@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow" :class="{ 'mobile': isMobile }">
     <div class="container-fluid">
       <button 
         class="hamburger-button me-3" 
@@ -13,8 +13,8 @@
       <span class="navbar-brand fw-medium">{{ title }}</span>
       
       <div class="d-flex ms-auto align-items-center">
-        <!-- Notification icon with dropdown -->
-        <div class="dropdown me-3">
+        <!-- Notification icon with dropdown - hide on very small mobile -->
+        <div class="dropdown me-3 d-none d-sm-block">
           <div class="position-relative notification-icon-container" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="material-icons notification-icon">notifications</span>
             <span class="notification-badge">5</span>
@@ -95,10 +95,25 @@ export default {
       default: 'Dashboard'
     }
   },
+  data() {
+    return {
+      isMobile: false
+    }
+  },
   methods: {
     toggleSidebar() {
       this.$emit('toggle-sidebar');
+    },
+    checkIfMobile() {
+      this.isMobile = window.innerWidth < 768;
     }
+  },
+  mounted() {
+    this.checkIfMobile();
+    window.addEventListener('resize', this.checkIfMobile);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.checkIfMobile);
   }
 }
 </script>
@@ -112,7 +127,6 @@ export default {
   margin: 16px auto 0;
   width: calc(100% - 32px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 .hamburger-button {
@@ -144,6 +158,10 @@ export default {
 .navbar-brand {
   font-size: 18px;
   color: #344767;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
 }
 
 /* Notification icon styles */
@@ -259,5 +277,43 @@ export default {
 .dropdown-divider {
   margin: 0;
   opacity: 0.2;
+}
+
+/* Estilos para móvil */
+@media (max-width: 768px) {
+  .navbar.mobile {
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1020; /* Mayor que el sidebar para evitar superposición */
+  }
+  
+  .hamburger-button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .hamburger-button .material-icons {
+    font-size: 24px;
+  }
+  
+  .navbar-brand {
+    max-width: 120px;
+  }
+  
+  .notification-dropdown {
+    width: 280px;
+  }
+}
+
+/* Ajustes para móviles muy pequeños */
+@media (max-width: 380px) {
+  .navbar-brand {
+    max-width: 100px;
+  }
 }
 </style>

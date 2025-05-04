@@ -1,20 +1,19 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import MaterialInput from "@/material_components/MaterialInput.vue";
+import { loginUser } from "@/api/userService"; // Importa tu servicio
 
+const router = useRouter();
 const loginDropdownOpen = ref(false);
 
-// Form data with reactive references
 const formData = reactive({
   email: "",
   password: "",
 });
 
-// Track if form has been submitted
 const formSubmitted = ref(false);
 
-// Simple validation functions
 const isValidEmail = () => {
   const email = formData.email.trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,92 +21,85 @@ const isValidEmail = () => {
 };
 const isValidPassword = () => formData.password.trim().length >= 6;
 
-// Check if a field has an error (only after form submission)
 const hasError = (field) => {
   if (!formSubmitted.value) return false;
-
   if (field === "email") return !isValidEmail();
   if (field === "password") return !isValidPassword();
-
   return false;
 };
 
-// Get error message for a field
 const getErrorMessage = (field) => {
   if (field === "email") {
     if (!formData.email.trim()) return "Email is required";
     if (!formData.email.includes("@")) return "Email must include @ symbol";
     return "Please enter a valid email";
   }
-
   if (field === "password") {
     if (!formData.password.trim()) return "Password is required";
     return "Password must be at least 6 characters";
   }
-
   return "";
 };
 
-// Función para manejar el envío del formulario de login
-const handleLogin = (e) => {
+// Lógica de login real
+const handleLogin = async (e) => {
   e.preventDefault();
-  
-  // Mark form as submitted (to show validation errors)
   formSubmitted.value = true;
+  if (!isValidEmail() || !isValidPassword()) return;
 
-  // Direct validation
-  const isFormValid = isValidEmail() && isValidPassword();
+    // Mostrar en consola los datos enviados al backend
+    console.log("Datos enviados al backend para login:", {
+    email: formData.email,
+    password: formData.password,
+  });
 
-  // return if form is invalid
-  if (!isFormValid) {
-    return;
+  try {
+    const { token } = await loginUser({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    // Decodifica el token para obtener el id (o haz una petición a /user si prefieres)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const userId = payload.id;
+
+    // Guarda token e id en localStorage
+    localStorage.setItem("token", token);
+    localStorage.setItem("userId", userId);
+
+    // Redirige a dashboard pasando el id
+    router.push({ path: `/dashboard`, query: { id: userId } });
+
+    loginDropdownOpen.value = false;
+    formSubmitted.value = false;
+  } catch (error) {
+    alert(error.message || "Error al iniciar sesión");
   }
-
-  // Aquí iría tu lógica de autenticación
-  console.log('Login attempt with:', formData.email, formData.password);
-  
-  // Cerrar dropdown después de enviar un formulario válido
-  loginDropdownOpen.value = false;
-  formSubmitted.value = false;
 };
 
-// Additional function to clear validation when a field is fixed
 const updateField = (field) => {
-  // If the form hasn't been submitted yet, no need to do anything
   if (!formSubmitted.value) return;
-
-  // For better UX, update the form validation state if all fields are now valid
   if (isValidEmail() && isValidPassword()) {
-    // All fields are valid, reset the form submitted state so errors disappear
     formSubmitted.value = false;
   }
 };
 
-// Función para cerrar el dropdown cuando se hace clic fuera
 const closeLoginDropdown = (e) => {
   if (!e.target.closest('.login-dropdown') && !e.target.closest('.login-trigger')) {
     loginDropdownOpen.value = false;
   }
 };
 
-// Configurar event listener para cerrar el dropdown al hacer clic afuera
 onMounted(() => {
   document.addEventListener('click', closeLoginDropdown);
 });
-
 onUnmounted(() => {
   document.removeEventListener('click', closeLoginDropdown);
 });
 
 const props = defineProps({
-  textColor: {
-    type: String,
-    default: "text-dark",
-  },
-  isMobile: {
-    type: Boolean,
-    default: false,
-  }
+  textColor: { type: String, default: "text-dark" },
+  isMobile: { type: Boolean, default: false }
 });
 
 const toggleDropdown = (event) => {

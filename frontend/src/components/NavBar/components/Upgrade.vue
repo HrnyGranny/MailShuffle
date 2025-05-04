@@ -198,7 +198,10 @@ const premiumFeatures = [
   <div v-if="props.show" class="modal-backdrop" @click="closeModal"></div>
   <div v-if="props.show" class="modal-container" @click.stop>
     <div class="modal-content">
-      <button class="close-button" @click="closeModal">×</button>
+      <!-- Reemplazamos el botón de cerrar anterior por el nuevo con icono Font Awesome -->
+      <button type="button" class="close-btn" @click="closeModal" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
       
       <div class="card premium-card shadow border-0">
         <div class="row g-0">
@@ -414,20 +417,29 @@ const premiumFeatures = [
   margin: 0 auto;
 }
 
-.close-button {
+/* Nuevo estilo para el botón de cerrar, igual al de ContactDropdown */
+.close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #fff;
+  top: 20px;
+  right: 20px;
+  background: none;
   border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  line-height: 20px;
   cursor: pointer;
+  color: #777;
+  font-size: 1.1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
   z-index: 10;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn:hover {
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 /* Premium card */
@@ -540,7 +552,7 @@ const premiumFeatures = [
 }
 
 .status-cell.premium i.fa-check {
-  color: #feb602;
+  color: #198754;
 }
 
 /* Button */

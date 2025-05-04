@@ -67,11 +67,7 @@
     </div>
     
     <div class="sidebar-footer" v-if="isExpanded">
-      <div class="user-container">
-        <div class="user-info">
-          <span class="material-icons user-icon">account_circle</span>
-          <div class="user-name">HrnyGranny</div>
-        </div>
+      <div class="last-login-container">
         <div class="last-login">02/05 20:15</div>
       </div>
     </div>
@@ -351,26 +347,9 @@ export default {
   border-bottom-right-radius: 8px;
 }
 
-.user-container {
+.last-login-container {
   display: flex;
-  flex-direction: column;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-}
-
-.user-icon {
-  font-size: 22px;
-  color: #98fe98;
-  margin-right: 10px;
-}
-
-.user-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #344767;
+  justify-content: center;
 }
 
 .last-login {
@@ -381,8 +360,6 @@ export default {
   padding: 2px 6px;
   border-radius: 4px;
   white-space: nowrap;
-  margin-top: 8px;
-  align-self: flex-start;
 }
 
 /* Botón de cierre para móvil */

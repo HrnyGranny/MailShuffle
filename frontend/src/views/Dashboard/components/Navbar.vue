@@ -60,12 +60,14 @@
           </ul>
         </div>
         
-        <!-- Settings icon with dropdown -->
+        <!-- User icon with dropdown (replaced settings) -->
         <div class="dropdown">
-          <div class="settings-icon-container" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="material-icons settings-icon">settings</span>
+          <div class="user-avatar-container" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="user-avatar">H</div>
           </div>
-          <ul class="dropdown-menu dropdown-menu-end">
+          <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+            <li class="dropdown-header user-header">HrnyGranny</li>
+            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">
               <span class="material-icons align-middle me-2 text-muted" style="font-size: 18px;">person</span>
               Profile
@@ -200,8 +202,8 @@ export default {
   justify-content: center;
 }
 
-/* Settings icon styles */
-.settings-icon-container {
+/* User avatar styles (new) */
+.user-avatar-container {
   width: 40px;
   height: 40px;
   display: flex;
@@ -212,19 +214,35 @@ export default {
   transition: background-color 0.2s;
 }
 
-.settings-icon-container:hover {
+.user-avatar-container:hover {
   background-color: rgba(152, 254, 152, 0.15);
 }
 
-.settings-icon {
-  font-size: 24px;
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #98fe98;
   color: #344767;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-/* Notification dropdown styles */
-.notification-dropdown {
-  width: 320px;
+/* User dropdown styles (modified) */
+.user-dropdown {
+  width: 220px;
   padding: 0;
+}
+
+.user-header {
+  font-weight: 600;
+  color: #344767;
+  padding: 12px 16px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .dropdown-header {
@@ -232,6 +250,12 @@ export default {
   color: #344767;
   padding: 12px 16px;
   font-size: 14px;
+}
+
+/* Notification dropdown styles */
+.notification-dropdown {
+  width: 320px;
+  padding: 0;
 }
 
 .notification-item {

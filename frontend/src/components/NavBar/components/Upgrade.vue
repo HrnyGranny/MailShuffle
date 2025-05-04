@@ -3,6 +3,7 @@ import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import { ref, reactive } from "vue";
 import Swal from "sweetalert2";
+import { registerUser } from "@/api/userService"; 
 
 // Props to control modal visibility
 const props = defineProps({
@@ -108,8 +109,12 @@ const handleSubmit = async (event) => {
     // Here you would implement your actual form submission and payment logic
     // For example: await fetch('/api/register-premium', { method: 'POST', body: JSON.stringify(formData) })
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await registerUser({
+      fullName: formData.fullName,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    });
 
     // Success message
     Swal.fire({

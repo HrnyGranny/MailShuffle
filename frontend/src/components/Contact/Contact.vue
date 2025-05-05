@@ -1,11 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import ContactDropdown from "./components/ContactModal.vue";
-import iconImage from "@/assets/img/iconos/ContactIco.png";
-import activeIconImage from "@/assets/img/iconos/x.png";
 
-const iconPath = iconImage;
-const activeIconPath = activeIconImage;
 const isDropdownActive = ref(false);
 const contactButtonRef = ref(null);
 const dropdownRef = ref(null);
@@ -42,15 +38,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- Botón exactamente como estaba en el original -->
+  <!-- Botón de contacto estilo MongoDB Atlas -->
   <a
     ref="contactButtonRef"
     href="#"
-    class="position-fixed rounded-circle d-flex align-items-center justify-content-center shadow contact-btn"
-    aria-label="Ayuda"
+    class="position-fixed rounded-pill d-flex align-items-center justify-content-center shadow contact-btn"
+    aria-label="Contacto"
     @click.prevent="toggleDropdown"
   >
-    <img :src="isDropdownActive ? activeIconPath : iconPath" alt="Ícono" class="contact-icon" />
+    <span class="contact-text">¿Need help?</span>
+    <span class="material-icons-round contact-icon">chat</span>
   </a>
     
   <!-- El bocadillo que aparece cuando se hace clic -->
@@ -66,31 +63,39 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* CSS exactamente como estaba en el original para el botón */
+/* Estilo del botón inspirado en MongoDB Atlas */
 .contact-btn {
-  bottom: 90px;
-  right: 90px;
+  bottom: 25px;
+  right: 48px;
   background-color: #98fe98;
-  width: 60px;
-  height: 60px;
-  transition: transform 0.2s ease;
+  padding: 10px 16px;
+  color: #1c2434;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
   z-index: 9999;
+  text-decoration: none;
+  border: none;
 }
 
 .contact-btn:hover {
-  transform: scale(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.contact-text {
+  margin-right: 8px;
 }
 
 .contact-icon {
-  width: 30px;
-  height: 30px;
+  font-size: 20px;
 }
 
 /* Estilo para el dropdown/bocadillo */
 .contact-dropdown {
   position: fixed;
-  bottom: 160px;
-  right: 90px;
+  bottom: 85px;
+  right: 25px;
   width: 350px;
   background-color: white;
   border-radius: 12px;
@@ -125,43 +130,38 @@ onUnmounted(() => {
   transform: translateY(20px);
 }
 
-/* Media queries - manteniendo las originales para el botón */
+/* Media queries */
 @media (max-width: 992px) {
   .contact-btn {
-    bottom: 50px;
-    right: 50px;
-    width: 55px;
-    height: 55px;
+    padding: 8px 14px;
+    font-size: 13px;
   }
   
   .contact-icon {
-    width: 27px;
-    height: 27px;
+    font-size: 18px;
   }
   
   .contact-dropdown {
-    bottom: 110px;
-    right: 50px;
+    bottom: 80px;
     width: 320px;
   }
 }
 
 @media (max-width: 576px) {
   .contact-btn {
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
+    padding: 6px 12px;
+    font-size: 12px;
+    bottom: 15px;
+    right: 15px;
   }
   
   .contact-icon {
-    width: 22px;
-    height: 22px;
+    font-size: 16px;
   }
   
   .contact-dropdown {
-    bottom: 70px;
-    right: 20px;
+    bottom: 65px;
+    right: 15px;
     width: 280px;
   }
   
@@ -172,6 +172,15 @@ onUnmounted(() => {
 }
 
 @media (max-width: 359px) {
+  .contact-text {
+    display: none;
+  }
+  
+  .contact-btn {
+    padding: 8px;
+    border-radius: 50%;
+  }
+  
   .contact-dropdown {
     width: 250px;
   }

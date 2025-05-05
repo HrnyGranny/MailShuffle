@@ -147,10 +147,14 @@ const updateField = (field) => {
 
 <template>
   <div class="dropdown-content">
+    <!-- Header con nuevo diseño -->
     <div class="dropdown-header">
-      <h5 class="fw-bold text-dark m-0">Contact us</h5>
+      <div class="header-content">
+        <h5 class="header-title">Get in touch</h5>
+        <p class="header-subtitle">We'll get back to you as soon as possible</p>
+      </div>
       <button type="button" class="close-btn" @click="$emit('close')" aria-label="Close">
-        <i class="fas fa-times"></i>
+        <span class="material-icons-round">close</span>
       </button>
     </div>
     
@@ -161,7 +165,8 @@ const updateField = (field) => {
         method="post"
         autocomplete="off"
       >
-        <div class="row g-2">
+        <div class="row g-3">
+          <!-- Full Name Field -->
           <div class="col-md-6">
             <div class="position-relative">
               <MaterialInput
@@ -178,6 +183,8 @@ const updateField = (field) => {
               </div>
             </div>
           </div>
+          
+          <!-- Email Field -->
           <div class="col-md-6">
             <div class="position-relative">
               <MaterialInput
@@ -193,7 +200,9 @@ const updateField = (field) => {
               </div>
             </div>
           </div>
-          <div class="col-12 mt-2">
+          
+          <!-- Message Field -->
+          <div class="col-12">
             <div class="position-relative">
               <MaterialTextArea
                 id="message"
@@ -211,30 +220,31 @@ const updateField = (field) => {
           </div>
         </div>
         
-        <div class="text-center mt-3">
+        <!-- Send Button -->
+        <div class="text-end mt-3">
           <MaterialButton
             variant="gradient"
-            class="send-btn px-3 py-1"
+            class="send-btn"
             type="submit"
             :disabled="isSubmitting"
-            :style="{
-              backgroundColor: '#98FE98',
-              borderColor: '#98FE98',
-              color: '#344767',
-              'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.2)',
-              fontWeight: '500',
-              fontSize: '0.85rem'
-            }"
           >
-            <i class="fas fa-paper-plane me-1"></i>
-            {{ isSubmitting ? "Sending..." : "Send Message" }}
+            <span class="btn-content">
+              <span class="material-icons-round btn-icon">send</span>
+              <span>{{ isSubmitting ? "Sending..." : "Send Message" }}</span>
+            </span>
           </MaterialButton>
         </div>
       </form>
-        <!-- Correo con icono centrado -->
-        <div class="email-container text-center mb-3">
-        <i class="fas fa-envelope me-2"></i>
-        <strong>mailshuffle@mailshuffle.xyz</strong>
+      
+      <!-- Contact Details Section -->
+      <div class="contact-details">
+        <div class="divider">
+          <span>or contact us directly</span>
+        </div>
+        <div class="contact-method">
+          <span class="material-icons-round contact-icon">email</span>
+          <a href="mailto:mailshuffle@mailshuffle.xyz" class="contact-link">mailshuffle@mailshuffle.xyz</a>
+        </div>
       </div>
     </div>
   </div>
@@ -245,48 +255,170 @@ const updateField = (field) => {
   background-color: white;
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* Header styling */
 .dropdown-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 15px 15px 5px 15px; /* Reducido padding bottom */
-  /* Se eliminó el border-bottom */
+  align-items: flex-start;
+  padding: 20px 20px 0 20px;
+  position: relative;
 }
 
-.dropdown-body {
-  padding: 10px 15px 15px 15px;
+.header-content {
+  flex: 1;
 }
 
-/* Estilo para el correo con icono */
-.email-container {
+.header-title {
+  margin: 0;
+  font-weight: 600;
+  color: #344767;
+  font-size: 1.25rem;
+}
+
+.header-subtitle {
+  margin: 4px 0 0;
   color: #8392AB;
-  font-size: 0.75rem;
-  padding: 4px 0;
+  font-size: 0.85rem;
+  font-weight: 400;
 }
 
+/* Body styling */
+.dropdown-body {
+  padding: 15px 20px 20px;
+}
+
+/* Close button */
 .close-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: #777;
-  font-size: 1.1rem;
-  width: 28px;
-  height: 28px;
+  color: #8392AB;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   transition: all 0.2s;
+  padding: 4px;
+  margin-top: -5px;
 }
 
 .close-btn:hover {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: #f8f9fa;
+  color: #344767;
 }
 
-/* Compactamos los inputs para el bocadillo */
+.close-btn .material-icons-round {
+  font-size: 20px;
+}
+
+/* Form styling */
+#contact-form {
+  margin-top: 5px;
+}
+
+.row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.col-md-6, .col-12 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Custom submit button */
+.send-btn {
+  background-color: #98FE98 !important;
+  color: #344767 !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  box-shadow: 0 4px 10px rgba(152, 254, 152, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.send-btn:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 15px rgba(152, 254, 152, 0.5) !important;
+}
+
+.send-btn:disabled {
+  background-color: #cceedd !important;
+  color: #6c757d !important;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon {
+  font-size: 16px;
+  margin-right: 6px;
+}
+
+/* Contact details section */
+.contact-details {
+  margin-top: 20px;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 25px 0 15px;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e9ecef;
+  z-index: 1;
+}
+
+.divider span {
+  position: relative;
+  z-index: 2;
+  background-color: white;
+  padding: 0 10px;
+  font-size: 0.75rem;
+  color: #8392AB;
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.contact-icon {
+  font-size: 18px;
+  color: #8392AB;
+  margin-right: 8px;
+}
+
+.contact-link {
+  color: #344767;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.contact-link:hover {
+  color: #98FE98;
+}
+
+/* Input styling */
 :deep(.input-sm .form-control) {
   padding-top: 0.5rem !important;
   padding-bottom: 0.5rem !important;
@@ -304,25 +436,16 @@ const updateField = (field) => {
   font-size: 0.8rem !important;
 }
 
-/* Send button */
-.send-btn {
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.send-btn:hover:not(:disabled) {
-  transform: scale(1.1);
-}
-
 /* Validation bubbles */
 .validation-bubble {
   position: absolute;
-  background-color: #fff8e1;
-  color: #e65100;
+  background-color: #feefef;
+  color: #d32f2f;
   font-size: 0.65rem;
-  padding: 3px 6px;
+  padding: 3px 8px;
   border-radius: 4px;
-  border: 1px solid #ffcc80;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ffcdd2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 100;
   width: max-content;
   margin-top: -8px;
@@ -338,9 +461,9 @@ const updateField = (field) => {
   left: 8px;
   width: 6px;
   height: 6px;
-  background-color: #fff8e1;
-  border-top: 1px solid #ffcc80;
-  border-left: 1px solid #ffcc80;
+  background-color: #feefef;
+  border-top: 1px solid #ffcdd2;
+  border-left: 1px solid #ffcdd2;
   transform: rotate(45deg);
 }
 
@@ -358,11 +481,38 @@ const updateField = (field) => {
 /* Responsive adjustments */
 @media (max-width: 767.98px) {
   .dropdown-header {
-    padding: 12px 12px 5px 12px;
+    padding: 15px 15px 0 15px;
   }
   
   .dropdown-body {
-    padding: 5px 12px 12px 12px;
+    padding: 10px 15px 15px 15px;
+  }
+  
+  .header-title {
+    font-size: 1.15rem;
+  }
+  
+  .header-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .dropdown-header {
+    padding: 12px 12px 0 12px;
+  }
+  
+  .dropdown-body {
+    padding: 8px 12px 12px 12px;
+  }
+  
+  .send-btn {
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .text-end {
+    text-align: center !important;
   }
 }
 </style>

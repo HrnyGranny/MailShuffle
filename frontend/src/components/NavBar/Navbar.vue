@@ -22,6 +22,14 @@ const closeUpgradeModal = () => {
   showUpgradeModal.value = false;
 };
 
+// Function to scroll to top
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
 onMounted(() => {
   setMaterialInput();
 });
@@ -127,7 +135,7 @@ watch(
       <!--Logo navbar expanded-->
       <RouterLink
         class="navbar-brand d-none d-md-block"
-        :class="[
+        :class="[ 
           (props.transparent && textDark.value) || !props.transparent
             ? 'text-dark font-weight-bolder ms-sm-3'
             : 'text-white font-weight-bolder ms-sm-3'
@@ -136,6 +144,7 @@ watch(
         rel="tooltip"
         title="Designed and Coded by HornyGranny"
         data-placement="bottom"
+        @click.prevent="scrollToTop"
       >
         <img 
           src="@/assets/img/logos/MailShuffleIcoAlone.png" 
@@ -157,6 +166,7 @@ watch(
         rel="tooltip"
         title="Designed and Coded by HornyGranny"
         data-placement="bottom"
+        @click.prevent="scrollToTop"
       >
         <img 
           src="@/assets/img/logos/MailShuffleIcoAlone.png" 

@@ -69,7 +69,7 @@ onUnmounted(() => {
   right: 48px;
   background-color: #98fe98;
   padding: 10px 16px;
-  color: #1c2434;
+  color: #344767;
   font-weight: 500;
   font-size: 14px;
   transition: all 0.2s ease;

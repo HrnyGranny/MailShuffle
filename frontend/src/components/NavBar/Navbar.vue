@@ -181,17 +181,18 @@ watch(
         <!-- Login dropdown - mobile version -->
         <LoginDropdown v-if="props.showLogin" :textColor="getTextColor()" :isMobile="true" />
         
-        <!-- Premium button -->
+        <!-- Premium button with shimmer effect -->
         <a
           href="#"
-          class="btn btn-sm mb-0"
-          style="background-color: #feb602; border: none; color: black;"
+          class="btn btn-sm mb-0 premium-btn-container"
+          style="background-color: #feb602; border: none; color: black; position: relative;"
           @click="openUpgradeModal"
         >
           <img
             src="@/assets/img/iconos/crown.png"
             alt="Crown Icon"
-            style="width: 20px; height: 20px; transform: translateY(-2px);"
+            class="crown-icon"
+            style="width: 20px; height: 20px; transform: translateY(-2px); position: relative; z-index: 1;"
           />
         </a>
       </div>
@@ -245,18 +246,20 @@ watch(
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
+            <!-- Premium button with shimmer effect - desktop version -->
             <a
               href="#"
-              class="btn btn-sm d-flex align-items-center justify-content-center mb-0"
-              style="background-color: #feb602; border: none; color: black;"
+              class="btn btn-sm d-flex align-items-center justify-content-center mb-0 premium-btn-container"
+              style="background-color: #feb602; border: none; color: black; position: relative;"
               @click="openUpgradeModal"
             >
               <img
                 src="@/assets/img/iconos/crown.png"
                 alt="Crown Icon"
-                style="width: 20px; height: 20px; margin-right: 8px; transform: translateY(-1px);"
+                class="crown-icon"
+                style="width: 20px; height: 20px; margin-right: 8px; transform: translateY(-1px); position: relative; z-index: 1;"
               />
-              <span style="font-weight: bold; line-height: 1.5; padding-top: 2px;">{{ action.label }}</span>
+              <span class="premium-text" style="font-weight: bold; line-height: 1.5; padding-top: 2px; position: relative; z-index: 1;">{{ action.label }}</span>
             </a>
           </li>
         </ul>
@@ -294,5 +297,107 @@ watch(
 .navbar-toggler-icon.is-active .bar3 {
   transform: translateY(-7px) rotate(-48deg);
   background-color: #000;
+}
+
+/* Golden shimmer effect */
+.premium-btn-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-btn-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(137,60,21,0.3) 0%, 
+    rgba(255,222,68,0.5) 17%, 
+    rgba(177,116,30,0.3) 24%, 
+    rgba(255,231,82,0.5) 40%, 
+    rgba(224,147,38,0.3) 50%, 
+    rgba(228,150,42,0.3) 59%, 
+    rgba(176,120,27,0.3) 70%, 
+    rgba(239,179,51,0.5) 85%, 
+    rgba(135,58,26,0.3) 100%);
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.premium-btn-container:hover::before {
+  opacity: 1;
+  animation: golden-shimmer 5s infinite alternate ease-in-out;
+}
+
+.premium-btn-container:active::before {
+  animation: golden-shimmer 1s infinite alternate ease-in-out;
+}
+
+/* Text shimmer effect */
+.premium-text {
+  position: relative;
+  z-index: 1;
+}
+
+.premium-btn-container:hover .premium-text {
+  animation: text-shimmer 5s infinite alternate ease-in-out;
+}
+
+.premium-btn-container:active .premium-text {
+  animation: text-shimmer 1s infinite alternate ease-in-out;
+}
+
+/* Crown shimmer */
+.premium-btn-container:hover .crown-icon {
+  animation: crown-shimmer 5s infinite alternate ease-in-out;
+  filter: drop-shadow(0 0 2px rgba(255, 222, 68, 0.7));
+}
+
+.premium-btn-container:active .crown-icon {
+  animation: crown-shimmer 1s infinite alternate ease-in-out;
+}
+
+@keyframes golden-shimmer {
+  0% {
+    background-size: 100%;
+    background-position: 50%;
+  }
+  50% {
+    background-size: 500%;
+    background-position: 0%;
+  }
+  100% {
+    background-size: 200%;
+    background-position: 100%;
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    text-shadow: 0 0 2px rgba(255, 222, 68, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(255, 222, 68, 0.7);
+  }
+  100% {
+    text-shadow: 0 0 4px rgba(255, 222, 68, 0.4);
+  }
+}
+
+@keyframes crown-shimmer {
+  0% {
+    filter: drop-shadow(0 0 1px rgba(255, 222, 68, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(255, 222, 68, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 2px rgba(255, 222, 68, 0.5));
+  }
 }
 </style>

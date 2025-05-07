@@ -186,17 +186,24 @@ const updateField = (field) => {
 
 // Premium features list
 const premiumFeatures = [
-  "Unlimited temporary email addresses",
-  "Premium domains access", 
-  "Extended email storage (90 days)",
-  "Priority customer support",
-  "No ads experience",
-  "Custom domains integration",
-  "Advanced filtering options",
-  "Bulk operations for emails",
-  "API access for developers",
-  "Enhanced security features"
+  "Generate unlimited email addresses", // Both have this
+  "Full privacy protection", // Both have this
+  "No 7-day expiration on received emails", 
+  "Unlimited concurrent email addresses",
+  "Custom email names & domains",
+  "Ability to send emails (not just receive)",
+  "Ad-free experience",
+  "Smart email filtering",
+  "Custom folder and labeling system",
+  "Priority customer support"
 ];
+
+// Determine which features are available in free plan
+const isFeatureInFreePlan = (index) => {
+  // Only first two features are available in free plan
+  return index < 2;
+};
+
 </script>
 
 <template>
@@ -224,7 +231,7 @@ const premiumFeatures = [
               
               <div class="mb-3 position-relative">
                 <div class="price-tag">
-                  <span class="price">$9.99</span>
+                  <span class="price">$8.99</span>
                   <span class="period">/month</span>
                 </div>
               </div>
@@ -239,7 +246,9 @@ const premiumFeatures = [
                   
                   <div class="table-row" v-for="(feature, index) in premiumFeatures" :key="index">
                     <div class="feature-cell">{{ feature }}</div>
-                    <div class="status-cell"><i class="fas fa-times"></i></div>
+                    <div class="status-cell">
+                      <i :class="isFeatureInFreePlan(index) ? 'fas fa-check text-success' : 'fas fa-times'"></i>
+                    </div>
                     <div class="status-cell premium"><i class="fas fa-check"></i></div>
                   </div>
                 </div>

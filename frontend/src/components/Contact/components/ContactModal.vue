@@ -221,7 +221,7 @@ const updateField = (field) => {
         </div>
         
         <!-- Send Button -->
-        <div class="text-end mt-3">
+        <div class="text-center mt-3">
           <MaterialButton
             variant="gradient"
             class="send-btn"
@@ -334,11 +334,14 @@ const updateField = (field) => {
   background-color: #98FE98 !important;
   color: #344767 !important;
   border: none !important;
-  padding: 8px 16px !important;
+  padding: 6px 12px !important; /* Reduced padding */
   font-weight: 500 !important;
-  font-size: 0.875rem !important;
+  font-size: 0.8rem !important; /* Smaller font size */
   box-shadow: 0 4px 10px rgba(152, 254, 152, 0.4) !important;
   transition: all 0.2s ease !important;
+  width: auto !important; /* Smaller width */
+  min-width: 120px !important; /* Set minimum width */
+  margin: 0 auto !important; /* Center horizontally with auto margins */
 }
 
 .send-btn:hover:not(:disabled) {
@@ -414,10 +417,6 @@ const updateField = (field) => {
   transition: color 0.2s;
 }
 
-.contact-link:hover {
-  color: #98FE98;
-}
-
 /* Input styling */
 :deep(.input-sm .form-control) {
   padding-top: 0.5rem !important;
@@ -439,17 +438,17 @@ const updateField = (field) => {
 /* Validation bubbles */
 .validation-bubble {
   position: absolute;
-  background-color: #feefef;
-  color: #d32f2f;
+  background-color: #fff8e1;
+  color: #e65100;
   font-size: 0.65rem;
-  padding: 3px 8px;
-  border-radius: 4px;
-  border: 1px solid #ffcdd2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #ffcc80;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   z-index: 100;
   width: max-content;
-  margin-top: -8px;
-  left: 12px;
+  margin-top: -15px;
+  left: 20px;
   animation: bubble-in 0.3s ease-out;
   max-width: 90%;
 }
@@ -457,13 +456,13 @@ const updateField = (field) => {
 .validation-bubble::before {
   content: "";
   position: absolute;
-  top: -4px;
-  left: 8px;
-  width: 6px;
-  height: 6px;
-  background-color: #feefef;
-  border-top: 1px solid #ffcdd2;
-  border-left: 1px solid #ffcdd2;
+  top: -5px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  background-color: #fff8e1;
+  border-top: 1px solid #ffcc80;
+  border-left: 1px solid #ffcc80;
   transform: rotate(45deg);
 }
 
@@ -507,12 +506,8 @@ const updateField = (field) => {
   }
   
   .send-btn {
-    width: 100%;
-    margin-top: 5px;
-  }
-  
-  .text-end {
-    text-align: center !important;
+    width: auto !important;
+    min-width: 100px !important;
   }
 }
 </style>

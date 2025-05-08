@@ -577,7 +577,7 @@ const isFeatureInFreePlan = (index) => {
 
 .premium-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Validation bubble */

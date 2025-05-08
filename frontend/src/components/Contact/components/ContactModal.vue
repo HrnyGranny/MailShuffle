@@ -345,8 +345,8 @@ const updateField = (field) => {
 }
 
 .send-btn:hover:not(:disabled) {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 15px rgba(152, 254, 152, 0.5) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .send-btn:disabled {

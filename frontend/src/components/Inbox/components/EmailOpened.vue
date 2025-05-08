@@ -531,7 +531,8 @@ const avatarColor = computed(() => {
 }
 
 .btn-action:hover {
-  transform: scale(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .nav-tabs .nav-link.active {

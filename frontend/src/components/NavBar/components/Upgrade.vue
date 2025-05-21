@@ -356,13 +356,14 @@ const isFeatureInFreePlan = (index) => {
                     <div class="text-center">
                       <MaterialButton
                         variant="gradient"
+                        disabled=true
                         :style="{
                           backgroundColor: '#feb602',
                           borderColor: '#feb602',
                           color: '#344767',
                           'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
                           fontSize: '0.95rem',
-                          padding: '8px 25px'
+                          padding: '8px 25px'  
                         }"
                         class="premium-btn"
                         type="submit"

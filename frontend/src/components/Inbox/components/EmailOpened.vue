@@ -551,6 +551,7 @@ const avatarColor = computed(() => {
 .nav-tabs .nav-link:hover:not(.active) {
   background-color: rgba(0,0,0,0.02);
   border-color: transparent;
+  color: #344737;
 }
 
 .card {

@@ -2,7 +2,6 @@
 import { RouterLink } from "vue-router";
 import { ref, watch, onMounted } from "vue";
 import { useWindowsWidth } from "@/assets/js/useWindowsWidth";
-import MaterialButton from "@/material_components/MaterialButton.vue";
 import setMaterialInput from "@/assets/js/material-input";
 import LoginDropdown from "../NavBar/components/Login.vue";
 import UpgradeModal from "../NavBar/components/Upgrade.vue";

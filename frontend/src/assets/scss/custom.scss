@@ -1,0 +1,41 @@
+.btn-mailshuffle {
+  --btn-bg: #98fe98;
+  --btn-border: #98fe98;
+  --btn-text: #344767;
+  --btn-shadow: rgba(0, 0, 0, 0.2);
+  background-color: var(--btn-bg);
+  border-color: var(--btn-border);
+  color: var(--btn-text);
+  box-shadow: 0 2px 6px var(--btn-shadow);
+  font-weight: 600;
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-mailshuffle:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.btn-mailshuffle:focus-visible {
+  outline: 2px solid rgba(152, 254, 152, 0.65);
+  outline-offset: 2px;
+}
+
+.btn-mailshuffle:disabled {
+  box-shadow: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-mailshuffle--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem;
+  border-radius: 0.75rem;
+}
+
+.btn-mailshuffle--block {
+  width: 100%;
+}

@@ -2,7 +2,6 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { deleteEmailById } from "@/api/emailService"; // API
 import DOMPurify from "dompurify"
-import MaterialButton from "@/material_components/MaterialButton.vue";
 import Swal from "sweetalert2";
 
 
@@ -377,71 +376,61 @@ const avatarColor = computed(() => {
 </script>
 
 <template>
-  <div class="container-fluid p-0 position-relative min-vh-50 d-flex flex-column">
+  <div class="container-fluid p-0 position-relative min-vh-50 d-flex flex-column email-opened">
     <!-- Contenedor principal con efecto de elevación -->
     <div class="card border-0 shadow-lg rounded-4 bg-white flex-grow-1 overflow-hidden animate__animated animate__fadeIn">
       <!-- Cabecera con información del remitente -->
       <div class="card-header bg-white py-4 px-4 border-0 border-bottom border-light">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-start align-items-md-center">
           <!-- Sección izquierda: Avatar e información del asunto (reemplazando al remitente) -->
-          <div class="d-flex">
-            <div class="avatar-circle flex-shrink-0 me-3" 
-                :style="{backgroundColor: avatarColor.bg, color: avatarColor.text}">
+          <div class="d-flex align-items-start w-100">
+            <div
+              class="avatar-circle flex-shrink-0 me-3"
+              :style="{ backgroundColor: avatarColor.bg, color: avatarColor.text }"
+            >
               {{ senderInitials }}
             </div>
-            <div class="overflow-hidden">
+            <div class="overflow-hidden flex-grow-1">
               <!-- Asunto reemplaza completamente al remitente -->
-              <h5 class="mb-1 fw-semibold text-truncate" style="max-width: 280px;">
+              <h5 class="mb-1 fw-semibold text-truncate email-subject">
                 {{ email.subject || "(No subject)" }}
               </h5>
-              
-              <div class="d-flex align-items-center gap-2">
-                <p v-if="senderEmail" class="text-muted small mb-0 text-truncate" style="max-width: 220px;">
+
+              <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+                <p
+                  v-if="senderEmail"
+                  class="text-muted small mb-0 text-truncate email-sender"
+                >
                   <i class="bi bi-envelope-fill me-1 small"></i>{{ senderEmail }}
                 </p>
-                <span v-if="senderEmail" class="text-muted mx-1">•</span>
+                <span v-if="senderEmail" class="text-muted d-none d-sm-inline">•</span>
                 <p class="text-muted small mb-0">
                   <i class="bi bi-clock me-1 small"></i>{{ formattedDate }}
                 </p>
               </div>
             </div>
           </div>
-          
+
           <!-- Sección derecha: Botones de acción -->
-          <div class="d-flex gap-2">
-            <!-- Botón de volver -->
-            <MaterialButton
-              variant="gradient"
-              size="sm"
-              :style="{
-                backgroundColor: '#98FE98',
-                borderColor: '#98FE98',
-                color: '#344767',
-                boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.2)',
-              }"
-              class="btn-action btn-back d-flex align-items-center justify-content-center"
+          <div class="d-flex gap-2 flex-shrink-0">
+            <button
+              type="button"
+              class="btn btn-mailshuffle btn-mailshuffle--icon btn-action btn-back"
               @click="$emit('back')"
               aria-label="Back"
             >
               <span class="material-icons">arrow_back</span>
-            </MaterialButton>
-            
-            <!-- Botón de eliminar -->
-            <MaterialButton
-              variant="gradient"
-              size="lg"
-              :style="{
-                backgroundColor: '#F28B82',
-                borderColor: '#F28B82',
-                color: '#344767',
-                boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.2)',
-              }"
-              class="btn-action btn-delete d-flex align-items-center justify-content-center"
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-mailshuffle btn-mailshuffle--icon btn-action btn-delete"
+              style="--btn-bg: #f28b82; --btn-border: #f28b82;"
               @click="deleteEmail"
               aria-label="Delete email"
             >
               <span class="material-icons">delete</span>
-            </MaterialButton>
+            </button>
           </div>
         </div>
       </div>
@@ -520,19 +509,26 @@ const avatarColor = computed(() => {
   transform: scale(1.05);
 }
 
-.btn-action {
+.email-opened .btn-action {
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  padding: 0.35rem;
 }
 
-.btn-action:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+.email-opened .btn-action .material-icons {
+  font-size: 1.1rem;
+}
+
+.email-opened .email-subject {
+  max-width: 100%;
+}
+
+.email-opened .email-sender {
+  max-width: 320px;
 }
 
 .nav-tabs .nav-link.active {
@@ -591,15 +587,41 @@ const avatarColor = computed(() => {
 }
 
 @media (max-width: 768px) {
-  .avatar-circle {
+  .email-opened .avatar-circle {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1rem;
   }
   
-  .btn-action {
-    width: 36px;
-    height: 36px;
+  .email-opened .btn-action {
+    width: 38px;
+    height: 38px;
+  }
+
+  .email-opened .card-header .d-flex.flex-column {
+    align-items: stretch !important;
+  }
+
+  .email-opened .email-sender {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .email-opened .card-header .d-flex.align-items-start {
+    flex-wrap: wrap;
+  }
+
+  .email-opened .card-header .d-flex.align-items-start > .avatar-circle {
+    margin-bottom: 0.5rem;
+  }
+
+  .email-opened .card-header .d-flex.flex-column.flex-sm-row {
+    align-items: flex-start !important;
+  }
+
+  .email-opened .card-header .d-flex.gap-2 {
+    align-self: flex-end;
   }
 }
 </style>

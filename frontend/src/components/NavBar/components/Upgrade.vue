@@ -1,6 +1,5 @@
 <script setup>
 import MaterialInput from "@/material_components/MaterialInput.vue";
-import MaterialButton from "@/material_components/MaterialButton.vue";
 import { ref, reactive } from "vue";
 import Swal from "sweetalert2";
 import { registerUser } from "@/api/userService"; 
@@ -354,23 +353,14 @@ const isFeatureInFreePlan = (index) => {
                 
                   <div class="mt-4">
                     <div class="text-center">
-                      <MaterialButton
-                        variant="gradient"
-                        disabled=true
-                        :style="{
-                          backgroundColor: '#feb602',
-                          borderColor: '#feb602',
-                          color: '#344767',
-                          'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
-                          fontSize: '0.95rem',
-                          padding: '8px 25px'  
-                        }"
-                        class="premium-btn"
+                      <button
                         type="submit"
+                        class="btn btn-mailshuffle premium-btn"
                         :disabled="isSubmitting"
+                        style="--btn-bg: #feb602; --btn-border: #feb602; --btn-shadow: rgba(0, 0, 0, 0.3);"
                       >
                         {{ isSubmitting ? "Processing..." : "Subscribe Now" }}
-                      </MaterialButton>
+                      </button>
                       
                       <div class="d-flex justify-content-center flex-wrap mt-2">
                         <span class="indicator-item">
@@ -572,7 +562,9 @@ const isFeatureInFreePlan = (index) => {
 
 /* Button */
 .premium-btn {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 1.6rem;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 

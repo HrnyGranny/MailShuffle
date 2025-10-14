@@ -1,7 +1,6 @@
 <script setup>
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialTextArea from "@/material_components/MaterialTextArea.vue";
-import MaterialButton from "@/material_components/MaterialButton.vue";
 import { ref, reactive, defineEmits } from "vue";
 import Swal from "sweetalert2";
 
@@ -222,17 +221,16 @@ const updateField = (field) => {
         
         <!-- Send Button -->
         <div class="text-center mt-3">
-          <MaterialButton
-            variant="gradient"
-            class="send-btn"
+          <button
             type="submit"
+            class="btn btn-mailshuffle send-btn"
             :disabled="isSubmitting"
           >
             <span class="btn-content">
               <span class="material-icons-round btn-icon">send</span>
               <span>{{ isSubmitting ? "Sending..." : "Send Message" }}</span>
             </span>
-          </MaterialButton>
+          </button>
         </div>
       </form>
       
@@ -331,27 +329,15 @@ const updateField = (field) => {
 
 /* Custom submit button */
 .send-btn {
-  background-color: #98FE98 !important;
-  color: #344767 !important;
-  border: none !important;
-  padding: 6px 12px !important; /* Reduced padding */
-  font-weight: 500 !important;
-  font-size: 0.8rem !important; /* Smaller font size */
-  box-shadow: 0 4px 10px rgba(152, 254, 152, 0.4) !important;
-  transition: all 0.2s ease !important;
-  width: auto !important; /* Smaller width */
-  min-width: 120px !important; /* Set minimum width */
-  margin: 0 auto !important; /* Center horizontally with auto margins */
-}
-
-.send-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.send-btn:disabled {
-  background-color: #cceedd !important;
-  color: #6c757d !important;
+  min-width: 120px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.85rem;
+  margin: 0 auto;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: none;
 }
 
 .btn-content {
@@ -506,8 +492,8 @@ const updateField = (field) => {
   }
   
   .send-btn {
-    width: auto !important;
-    min-width: 100px !important;
+    width: auto;
+    min-width: 100px;
   }
 }
 </style>

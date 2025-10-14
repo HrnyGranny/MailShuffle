@@ -2,7 +2,6 @@
 import { ref, onMounted } from "vue";
 import { generateTemporalEmail, deleteEmailAddress } from "@/api/emailService";
 import MaterialInput from "@/material_components/MaterialInput.vue";
-import MaterialButton from "@/material_components/MaterialButton.vue";
 import Swal from "sweetalert2";
 
 // Importar iconos desde assets
@@ -203,10 +202,10 @@ onMounted(async () => {
 <template>
   <section class="my-0 pt-0">
     <div class="container">
-      <div class="row">
-        <div class="col-md-6 offset-md-0 ms-lg-n4 ms-md-n3">
-          <div class="row">
-            <div class="col-9">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <div class="row g-2 align-items-stretch">
+            <div class="col-12 col-md-9">
               <MaterialInput
                 class="input-group-outline border-danger"
                 id="email"
@@ -216,38 +215,24 @@ onMounted(async () => {
                 readonly
               />
             </div>
-            <div class="col-3 ps-0">
-              <div class="row g-2">
-                <div class="col-6">
-                  <MaterialButton
-                    variant="gradient"
-                    :style="{
-                      backgroundColor: '#98FE98',
-                      borderColor: '#98FE98',
-                      color: '#344767',
-                      'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
-                    }"
-                    class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2 floating-button"
-                    @click="copyToClipboard"
-                  >
-                    <img :src="CopyIcon" alt="Copy" class="icon-button" />
-                  </MaterialButton>
-                </div>
-                <div class="col-6">
-                  <MaterialButton
-                    variant="gradient"
-                    :style="{
-                      backgroundColor: '#98FE98',
-                      borderColor: '#98FE98',
-                      color: '#344767',
-                      'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
-                    }"
-                    class="mb-0 h-100 w-100 d-flex align-items-center justify-content-center p-2 floating-button"
-                    @click="generateEmail"
-                  >
-                    <img :src="ReloadIcon" alt="Reload" class="icon-button" />
-                  </MaterialButton>
-                </div>
+            <div class="col-12 col-md-3">
+              <div class="d-flex gap-2 h-100">
+                <button
+                  type="button"
+                  class="btn btn-mailshuffle btn-mailshuffle--icon flex-fill icon-button"
+                  @click="copyToClipboard"
+                  aria-label="Copy generated email"
+                >
+                  <img :src="CopyIcon" alt="Copy" class="action-icon" />
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-mailshuffle btn-mailshuffle--icon flex-fill icon-button"
+                  @click="generateEmail"
+                  aria-label="Generate a new email"
+                >
+                  <img :src="ReloadIcon" alt="Reload" class="action-icon" />
+                </button>
               </div>
             </div>
           </div>
@@ -258,13 +243,24 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
 .icon-button {
+  transition: transform 0.2s ease;
+}
+
+.icon-button:hover {
+  transform: translateY(-2px);
+}
+
+.action-icon {
   width: 22px;
   height: 22px;
 }
-.floating-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+@media (max-width: 767px) {
+  .icon-button {
+    flex: 1 1 0;
+  }
 }
 
 /* Estilo para mantener el campo enfocado */

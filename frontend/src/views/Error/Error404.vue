@@ -15,20 +15,13 @@
             The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
           </p>
           <router-link class="mt-4 d-block" to="/">
-            <MaterialButton
-              variant="gradient"
-              size="md"
-              :style="{
-                backgroundColor: '#98FE98',
-                borderColor: '#98FE98',
-                color: '#344767',
-                'box-shadow': '0px 2px 6px rgba(0, 0, 0, 0.3)',
-              }"
-              class="btn btn-primary errorBtn"
+            <button
+              type="button"
+              class="btn btn-mailshuffle errorBtn"
             >
               <i class="fas fa-home me-2"></i>
               <span>Home</span>
-            </MaterialButton>
+            </button>
           </router-link>
         </div>
       </div>

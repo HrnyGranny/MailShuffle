@@ -10,7 +10,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 // Material Kit
 import "./assets/js/material-input.js";
 import "./assets/scss/material-kit.scss";
-import "./assets/scss/custom.scss";
 
 const app = createApp(App);
 

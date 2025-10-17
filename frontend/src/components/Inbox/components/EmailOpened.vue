@@ -1,8 +1,13 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { deleteEmailById } from "@/api/emailService"; // API
+import MaterialButton from "@/material_components/MaterialButton.vue";
 import DOMPurify from "dompurify"
 import Swal from "sweetalert2";
+
+// icon
+import GoBack from "../../../assets/img/iconos/goback.png";
+import Delete from "../../../assets/img/iconos/delete.png";
 
 
 const props = defineProps({
@@ -413,24 +418,22 @@ const avatarColor = computed(() => {
 
           <!-- Sección derecha: Botones de acción -->
           <div class="d-flex gap-2 flex-shrink-0">
-            <button
-              type="button"
-              class="btn btn-mailshuffle btn-mailshuffle--icon btn-action btn-back"
+            <MaterialButton
+              size="large"
+              :icon="GoBack"
+              alt="Back"
+              aria-label="Go back to inbox"
               @click="$emit('back')"
-              aria-label="Back"
-            >
-              <span class="material-icons">arrow_back</span>
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-mailshuffle btn-mailshuffle--icon btn-action btn-delete"
-              style="--btn-bg: #f28b82; --btn-border: #f28b82;"
-              @click="deleteEmail"
+            />
+            <MaterialButton
+              :icon="Delete"
+              backgroundColor="#f28b82"
+              borderColor="#f28b82"
+              textColor="#ffffff"
+              alt="Delete"
               aria-label="Delete email"
-            >
-              <span class="material-icons">delete</span>
-            </button>
+              @click="deleteEmail"
+            />
           </div>
         </div>
       </div>
@@ -487,8 +490,6 @@ const avatarColor = computed(() => {
 </template>
 
 <style>
-/* Importar Bootstrap Icons si no está incluido globalmente */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
 
 /* Estilos para el header y otros elementos */
 .avatar-circle {
@@ -587,6 +588,7 @@ const avatarColor = computed(() => {
 }
 
 @media (max-width: 768px) {
+  
   .email-opened .avatar-circle {
     width: 2.5rem;
     height: 2.5rem;
@@ -604,6 +606,10 @@ const avatarColor = computed(() => {
 
   .email-opened .email-sender {
     max-width: 100%;
+  }
+
+  .email-opened .card-header .d-flex.gap-2 {
+    align-self: flex-end;
   }
 }
 

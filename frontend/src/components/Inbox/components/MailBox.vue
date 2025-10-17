@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { generateTemporalEmail, deleteEmailAddress } from "@/api/emailService";
 import MaterialInput from "@/material_components/MaterialInput.vue";
+import MaterialButton from "@/material_components/MaterialButton.vue";
 import Swal from "sweetalert2";
 
 // Importar iconos desde assets
@@ -202,8 +203,9 @@ onMounted(async () => {
 <template>
   <section class="my-0 pt-0">
     <div class="container">
-      <div class="row justify-content-center">
+      <div class="row justify-content-start">
         <div class="col-12 col-lg-8">
+          <!-- Mantener la estructura original con los col-md -->
           <div class="row g-2 align-items-stretch">
             <div class="col-12 col-md-9">
               <MaterialInput
@@ -216,23 +218,20 @@ onMounted(async () => {
               />
             </div>
             <div class="col-12 col-md-3">
-              <div class="d-flex gap-2 h-100">
-                <button
-                  type="button"
-                  class="btn btn-mailshuffle btn-mailshuffle--icon flex-fill icon-button"
-                  @click="copyToClipboard"
+              <!-- Solo modificar esta parte para los botones -->
+              <div class="button-container">
+                <MaterialButton
+                  :icon="CopyIcon"
+                  alt="Copy"
                   aria-label="Copy generated email"
-                >
-                  <img :src="CopyIcon" alt="Copy" class="action-icon" />
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-mailshuffle btn-mailshuffle--icon flex-fill icon-button"
-                  @click="generateEmail"
+                  @click="copyToClipboard"
+                />
+                <MaterialButton
+                  :icon="ReloadIcon"
+                  alt="Reload"
                   aria-label="Generate a new email"
-                >
-                  <img :src="ReloadIcon" alt="Reload" class="action-icon" />
-                </button>
+                  @click="generateEmail"
+                />
               </div>
             </div>
           </div>
@@ -257,9 +256,32 @@ onMounted(async () => {
   height: 22px;
 }
 
+.button-container {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: flex-start;
+}
+
 @media (max-width: 767px) {
   .icon-button {
     flex: 1 1 0;
+  }
+
+  .button-container {
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  
+  .button-container .custom-button {
+    flex: 1;
+    max-width: 45%; 
+  }
+}
+
+@media (max-width: 480px) {
+  .button-container .custom-button {
+    max-width: 48%; 
   }
 }
 

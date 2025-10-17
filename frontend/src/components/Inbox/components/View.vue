@@ -143,7 +143,7 @@ onUnmounted(() => {
         </div>
         <div class="col-12 col-lg-3 mt-3 mt-lg-0">
           <div class="nav-wrapper position-relative end-0">
-            <ul class="nav nav-pills nav-fill flex-column flex-sm-row p-1" role="tablist">
+            <ul class="nav nav-pills nav-fill flex-row p-1" role="tablist">
               <li class="nav-item">
                 <a
                   class="nav-link mb-0 px-0 py-1 active"
@@ -258,4 +258,5 @@ onUnmounted(() => {
 .status-danger .countdown-display {
   color: #C62828;
 }
+
 </style>

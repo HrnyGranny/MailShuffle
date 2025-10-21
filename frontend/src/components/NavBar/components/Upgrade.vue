@@ -1,7 +1,7 @@
 <script setup>
 import MaterialInput from "@/material_components/MaterialInput.vue";
+import MaterialToast from "@/material_components/MaterialToast.vue";
 import { ref, reactive } from "vue";
-import Swal from "sweetalert2";
 import { registerUser } from "@/api/userService"; 
 
 // Props to control modal visibility
@@ -33,6 +33,7 @@ const formSubmitted = ref(false);
 
 // Form submission state
 const isSubmitting = ref(false);
+const toastRef = ref(null);
 
 // Simple validation functions
 const isValidFullName = () => !!formData.fullName.trim();
@@ -116,19 +117,12 @@ const handleSubmit = async (event) => {
     });
 
     // Success message
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Registration successful! Redirecting to payment...",
-      color: "#3a526a",
-      background: "#feb60257",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "350px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px";
+      type: "success",
+      overrides: {
+        width: "350px",
+        background: "#feb60257",
       },
     });
 
@@ -149,19 +143,11 @@ const handleSubmit = async (event) => {
     // window.location.href = '/payment';
   } catch (error) {
     // Error message
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Error during registration!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "250px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px";
+      type: "error",
+      overrides: {
+        width: "250px",
       },
     });
     console.error("Error during registration:", error);
@@ -209,6 +195,7 @@ const isFeatureInFreePlan = (index) => {
   <div v-if="props.show" class="modal-backdrop" @click="closeModal"></div>
   <div v-if="props.show" class="modal-container" @click.stop>
     <div class="modal-content">
+      <MaterialToast ref="toastRef" />
       <!-- Reemplazamos el botón de cerrar anterior por el nuevo con icono Font Awesome -->
       <button type="button" class="close-btn" @click="closeModal" aria-label="Close">
         <i class="fas fa-times"></i>

@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { generateTemporalEmail, deleteEmailAddress } from "@/api/emailService";
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
-import Swal from "sweetalert2";
+import MaterialToast from "@/material_components/MaterialToast.vue";
 
 // Importar iconos desde assets
 import CopyIcon from "../../../assets/img/iconos/copiar.png";
@@ -30,6 +30,7 @@ const getCookie = (name) => {
 const email = ref(""); // Variable para almacenar el correo generado
 const apiKey = ref(""); // Variable para almacenar la API Key
 const emailId = ref(""); // Variable para almacenar el ID del correo
+const toastRef = ref(null);
 
 // Función para generar un correo temporal
 const generateEmail = async () => {
@@ -37,20 +38,16 @@ const generateEmail = async () => {
     // Verificar si existe un correo actual (ya sea cargado desde cookies o generado previamente)
     if (email.value && emailId.value && apiKey.value) {
       // Mostrar alerta de confirmación antes de eliminar la dirección de correo
-      const result = await Swal.fire({
-        title: '<span style="color:#344767;">Are you sure?</span>',
+      const result = await toastRef.value?.showConfirm({
+        title: "Are you sure?",
         text: "This will delete the current email address and all associated emails!",
         icon: "warning",
-        showCancelButton: true,
+        confirmText: "Yes, delete it!",
         confirmButtonColor: "#4e64ee",
         cancelButtonColor: "#d33",
-        color: "#7b809a",
-        background: "#fff",
-        confirmButtonText: "Yes, delete it!",
-        position: "center",
       });
 
-      if (result.isConfirmed) {
+      if (result?.isConfirmed) {
         console.log("emailId before delete:", emailId.value);
         console.log("apiKey before delete:", apiKey.value);
 
@@ -69,14 +66,12 @@ const generateEmail = async () => {
           console.log("Correo eliminado correctamente.");
         } catch (deleteError) {
           console.error("Error deleting email address:", deleteError);
-          Swal.fire({
-            toast: true,
-            position: "bottom-start",
-            icon: "error",
+          toastRef.value?.showToast({
             title: "Error deleting email address!",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
+            type: "error",
+            overrides: {
+              width: "260px",
+            },
           });
           return; // Detener el flujo si ocurre un error al eliminar
         }
@@ -100,38 +95,22 @@ const generateEmail = async () => {
     emit("emailGenerated", { email: email.value, apiKey: apiKey.value });
 
     // Mostrar alerta de éxito
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Email generated successfully!",
-      color: "#3a526a",
-      background: "#98fe9857",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "250px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "success",
+      overrides: {
+        width: "250px",
       },
     });
   } catch (error) {
     console.error("Error generating email:", error);
 
     // Mostrar alerta de error
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Error generating email!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "205px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "error",
+      overrides: {
+        width: "240px",
       },
     });
   }
@@ -143,38 +122,22 @@ const copyToClipboard = async (event) => {
     await navigator.clipboard.writeText(email.value); // Copiar el contenido al portapapeles
 
     // Mostrar alerta de éxito
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Email copied successfully!",
-      color: "#3a526a",
-      background: "#98fe9857",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "225px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "success",
+      overrides: {
+        width: "230px",
       },
     });
   } catch (error) {
     console.error("Error copying to clipboard:", error);
 
     // Mostrar alerta de error
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "An error occurred!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "200px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "error",
+      overrides: {
+        width: "220px",
       },
     });
   }
@@ -202,6 +165,7 @@ onMounted(async () => {
 
 <template>
   <section class="my-0 pt-0">
+    <MaterialToast ref="toastRef" />
     <div class="container">
       <div class="row justify-content-start">
         <div class="col-12 col-lg-8">

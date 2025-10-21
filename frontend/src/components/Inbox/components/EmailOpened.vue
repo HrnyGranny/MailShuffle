@@ -2,8 +2,8 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { deleteEmailById } from "@/api/emailService"; // API
 import MaterialButton from "@/material_components/MaterialButton.vue";
+import MaterialToast from "@/material_components/MaterialToast.vue";
 import { useSanitizedBody, usePlainTextBody, renderEmailToShadow } from "@/assets/js/emailParser";
-import Swal from "sweetalert2";
 
 // icon
 import GoBack from "../../../assets/img/iconos/goback.png";
@@ -27,6 +27,7 @@ const props = defineProps({
 const emit = defineEmits(["back", "delete"]);
 
 const shadowContainer = ref(null);
+const toastRef = ref(null);
 const activeTab = ref('html'); // Por defecto la pestaña HTML está activa
 
 // Convert props.email to a ref so we can use it with our composables
@@ -85,19 +86,11 @@ const deleteEmail = async () => {
     await deleteEmailById(props.address, props.apiKey, props.email._id);
 
     // Mostrar alerta de éxito al eliminar
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Email deleted successfully!",
-      color: "#3a526a",
-      background: "#98fe9857",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "250px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "success",
+      overrides: {
+        width: "250px",
       },
     });
 
@@ -109,19 +102,11 @@ const deleteEmail = async () => {
     console.error("Error deleting email:", error);
 
     // Mostrar alerta de error
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Error deleting email!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "205px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "error",
+      overrides: {
+        width: "205px",
       },
     });
   }
@@ -199,6 +184,7 @@ const avatarColor = computed(() => {
 
 <template>
   <div class="container-fluid p-0 position-relative min-vh-50 d-flex flex-column email-opened">
+    <MaterialToast ref="toastRef" />
     <!-- Contenedor principal con efecto de elevación -->
     <div class="card border-0 shadow-lg rounded-4 bg-white flex-grow-1 overflow-hidden animate__animated animate__fadeIn">
       <!-- Cabecera con información del remitente -->

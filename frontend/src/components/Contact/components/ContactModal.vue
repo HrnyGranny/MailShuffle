@@ -1,8 +1,8 @@
 <script setup>
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialTextArea from "@/material_components/MaterialTextArea.vue";
+import MaterialToast from "@/material_components/MaterialToast.vue";
 import { ref, reactive, defineEmits } from "vue";
-import Swal from "sweetalert2";
 
 const emit = defineEmits(['close']);
 
@@ -15,6 +15,7 @@ const formData = reactive({
 
 // Track if form has been submitted
 const formSubmitted = ref(false);
+const toastRef = ref(null);
 
 // Form submission state
 const isSubmitting = ref(false);
@@ -81,19 +82,11 @@ const handleSubmit = async (event) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Success message
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Message sent successfully!",
-      color: "#3a526a",
-      background: "#98fe9857",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "230px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px";
+      type: "success",
+      overrides: {
+        width: "230px",
       },
     });
 
@@ -109,19 +102,11 @@ const handleSubmit = async (event) => {
     emit('close');
   } catch (error) {
     // Error message
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Error sending message!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "225px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px";
+      type: "error",
+      overrides: {
+        width: "225px",
       },
     });
     console.error("Error sending message:", error);
@@ -146,6 +131,7 @@ const updateField = (field) => {
 
 <template>
   <div class="dropdown-content">
+    <MaterialToast ref="toastRef" />
     <!-- Header con nuevo diseño -->
     <div class="dropdown-header">
       <div class="header-content">

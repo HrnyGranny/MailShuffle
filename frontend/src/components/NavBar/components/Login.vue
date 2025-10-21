@@ -2,7 +2,7 @@
 import { ref, reactive, onMounted, onUnmounted } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import MaterialInput from "@/material_components/MaterialInput.vue";
-import { loginUser } from "@/api/userService"; // Importa tu servicio
+import { loginUser } from "@/api/userService"; 
 
 const router = useRouter();
 const loginDropdownOpen = ref(false);

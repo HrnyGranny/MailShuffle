@@ -210,6 +210,7 @@ watch(
       </button>
       <div :class="['navbar-collapse', 'w-100', 'pt-3', 'pb-2', 'py-lg-0', { collapse: !menuOpen }]" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
+          
           <!-- GITHUB -->
           <li v-if="props.showGitHub" class="nav-item dropdown dropdown-hover mx-2">
             <a

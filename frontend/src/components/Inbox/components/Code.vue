@@ -1,7 +1,7 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { API_BASE_URL } from "@/api/emailService";
-import Swal from "sweetalert2";
+import MaterialToast from "@/material_components/MaterialToast.vue";
 
 // PrismJS
 import { PrismEditor } from "vue-prism-editor";
@@ -13,6 +13,7 @@ import "prismjs/components/prism-json";
 
 // Props
 const props = defineProps({ email: String, apiKey: String });
+const toastRef = ref(null);
 
 const apiUri = computed(
   () =>
@@ -70,35 +71,19 @@ const highlightJSON = (code) =>
 const copy = async (text) => {
   try {
     await navigator.clipboard.writeText(text);
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "Copied!",
-      color: "#3a526a",
-      background: "#98fe9857",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "95px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "success",
+      overrides: {
+        width: "95px",
       },
     });
   } catch {
-    Swal.fire({
-      toast: true,
-      position: "bottom-start",
+    toastRef.value?.showToast({
       title: "An error occurred!",
-      color: "#3a526a",
-      background: "#b9424261",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-      didOpen: (popup) => {
-        popup.style.width = "200px";
-        popup.style.padding = "5px";
-        popup.style.borderRadius = "10px"; // redondeo
+      type: "error",
+      overrides: {
+        width: "200px",
       },
     });
   }
@@ -107,6 +92,7 @@ const copy = async (text) => {
 
 <template>
   <div class="code-container mt-4 px-3">
+    <MaterialToast ref="toastRef" />
     <!-- API URI box -->
     <div class="bg-white rounded shadow-sm p-3 border position-relative mb-4">
       <small class="text-muted">API URI</small>

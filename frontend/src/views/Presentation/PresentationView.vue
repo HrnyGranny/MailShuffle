@@ -6,7 +6,7 @@ import NavbarDefault from "@/components/NavBar/Navbar.vue";
 import DefaultFooter from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 import Inbox from "@/components/Inbox/Inbox.vue";
-import AboutUs from "@/components/AboutUs/AboutUs.vue";
+import AboutUs from "@/components/AboutUs.vue";
 import Contact from "@/components/Contact/Contact.vue";
 
 //images

@@ -99,13 +99,13 @@ const handleClick = (event) => {
   color: var(--button-text);
   box-shadow: 0 2px 6px var(--button-shadow);
   border-radius: var(--button-radius);
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: transform var(--button-transition-duration) ease, 
               box-shadow var(--button-transition-duration) ease,
               background-color var(--button-transition-duration) ease;
   padding: 0.625rem 1.5rem;
-  font-size: 0.875rem;
+  font-size: 0.800rem;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   position: relative;

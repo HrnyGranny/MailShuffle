@@ -38,11 +38,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- Botón de contacto estilo MongoDB Atlas -->
+  <!-- Botón de contacto con bordes redondeados moderados -->
   <a
     ref="contactButtonRef"
     href="#"
-    class="position-fixed rounded-pill d-flex align-items-center justify-content-center shadow contact-btn"
+    class="position-fixed d-flex align-items-center justify-content-center contact-btn"
     aria-label="Contacto"
     @click.prevent="toggleDropdown"
   >
@@ -63,24 +63,50 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Estilo del botón inspirado en MongoDB Atlas */
+/* Estilo del botón con bordes moderadamente redondeados */
 .contact-btn {
+  /* Posicionamiento */
   bottom: 25px;
   right: 48px;
-  background-color: #98fe98;
-  padding: 10px 16px;
-  color: #344767;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s ease;
   z-index: 9999;
+  
+  /* Apariencia visual */
+  background-color: #98fe98;
+  color: #344767;
+  border: 1px solid #98fe98;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  
+  /* Tipografía */
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  border: none;
+  
+  /* Espaciado */
+  padding: 10px 16px;
+  
+  /* Comportamiento */
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  
+  /* Transición suave */
+  transition: transform 0.2s ease-in-out, 
+              box-shadow 0.2s ease-in-out,
+              background-color 0.2s ease-in-out;
 }
 
+/* Estilo hover exactamente igual al custom-button */
 .contact-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo active/click */
+.contact-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .contact-text {
@@ -178,7 +204,7 @@ onUnmounted(() => {
   
   .contact-btn {
     padding: 8px;
-    border-radius: 50%;
+    border-radius: 0.75rem; /* Mantener consistencia */
   }
   
   .contact-dropdown {

@@ -2,6 +2,7 @@
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialTextArea from "@/material_components/MaterialTextArea.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
+import Button from "@/material_components/MaterialButton.vue"; 
 import { ref, reactive, defineEmits } from "vue";
 
 const emit = defineEmits(['close']);
@@ -205,18 +206,20 @@ const updateField = (field) => {
           </div>
         </div>
         
-        <!-- Send Button -->
-        <div class="text-center mt-3">
-          <button
+        <!-- Send Button  -->
+        <div class="text-center mt-4" style="padding-top: 6px;">
+          <Button 
             type="submit"
-            class="btn btn-mailshuffle send-btn"
+            backgroundColor="#98fe98"
+            textColor="#344767"
+            label="Send Message"
+            ariaLabel="Send message"
             :disabled="isSubmitting"
+            size="medium"
           >
-            <span class="btn-content">
-              <span class="material-icons-round btn-icon">send</span>
-              <span>{{ isSubmitting ? "Sending..." : "Send Message" }}</span>
-            </span>
-          </button>
+            <span class="material-icons-round" style="margin-right: 6px; font-size: 16px;">send</span>
+            {{ isSubmitting ? "Sending..." : "Send Message" }}
+          </Button>
         </div>
       </form>
       
@@ -311,30 +314,6 @@ const updateField = (field) => {
 .col-md-6, .col-12 {
   padding-left: 10px;
   padding-right: 10px;
-}
-
-/* Custom submit button */
-.send-btn {
-  min-width: 120px;
-  font-weight: 500;
-  font-size: 0.85rem;
-  padding: 0.45rem 0.85rem;
-  margin: 0 auto;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  text-transform: none;
-}
-
-.btn-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-icon {
-  font-size: 16px;
-  margin-right: 6px;
 }
 
 /* Contact details section */
@@ -475,11 +454,6 @@ const updateField = (field) => {
   
   .dropdown-body {
     padding: 8px 12px 12px 12px;
-  }
-  
-  .send-btn {
-    width: auto;
-    min-width: 100px;
   }
 }
 </style>

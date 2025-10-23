@@ -2,6 +2,7 @@
 import { ref, reactive, onMounted, onUnmounted } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import MaterialInput from "@/material_components/MaterialInput.vue";
+import Button from "@/material_components/MaterialButton.vue"; 
 import { loginUser } from "@/api/userService"; 
 
 const router = useRouter();
@@ -47,8 +48,8 @@ const handleLogin = async (e) => {
   formSubmitted.value = true;
   if (!isValidEmail() || !isValidPassword()) return;
 
-    // Mostrar en consola los datos enviados al backend
-    console.log("Datos enviados al backend para login:", {
+  // Mostrar en consola los datos enviados al backend
+  console.log("Datos enviados al backend para login:", {
     email: formData.email,
     password: formData.password,
   });
@@ -125,7 +126,7 @@ const toggleDropdown = (event) => {
     
     <div 
       class="dropdown-menu login-dropdown p-3"
-      :class="{ show: loginDropdownOpen }"
+      :class="{ 'show': loginDropdownOpen }"
       :style="props.isMobile 
         ? 'min-width: 280px; border-radius: 12px; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);' 
         : 'min-width: 280px; border-radius: 12px; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3); transform: translateX(-30%);'"
@@ -161,14 +162,18 @@ const toggleDropdown = (event) => {
           </div>
         </div>
         <div class="d-flex flex-column align-items-center mb-3">
-          <button 
-            type="submit" 
-            class="btn mb-2 login-btn"
-            style="background-color: #98FE98; border: none; color: #344767; padding: 8px 25px; border-radius: 8px; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3); font-weight: 500; margin-top: 8px"
-          >
-            Enter
-          </button>
-          <RouterLink to="/forgot-password" class="text-xs" style="color: #8392AB; font-size: 0.75rem;">
+          <!-- Botón con el componente personalizado -->
+          <div class="mt-2">
+            <Button 
+              type="submit"
+              backgroundColor="#98fe98"
+              textColor="#344767"
+              label="Enter"
+              ariaLabel="Login"
+              size="small"
+            />
+          </div>
+          <RouterLink to="/forgot-password" class="text-xs mt-2" style="color: #8392AB; font-size: 0.75rem;">
             Forgot your password?
           </RouterLink>
         </div>
@@ -179,16 +184,17 @@ const toggleDropdown = (event) => {
 
 <style scoped>
 /* Estilos para el dropdown de login */
-.dropdown-menu.show {
-  display: block;
-  animation: fadeIn 0.3s;
-  z-index: 1000;
-}
-
-.login-dropdown {
+.dropdown-menu {
+  display: none; /* Por defecto está oculto */
   position: absolute;
   z-index: 1000;
   background-color: #fff;
+}
+
+/* Cuando tiene la clase show, se muestra con animación */
+.dropdown-menu.show {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
 }
 
 .login-dropdown::before {
@@ -206,12 +212,8 @@ const toggleDropdown = (event) => {
   border-left: 1px solid rgba(0,0,0,0.1);
 }
 
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
 .text-xs {
+  padding-top: 10px;
   transition: color 0.3s ease;
 }
 
@@ -220,9 +222,16 @@ const toggleDropdown = (event) => {
   text-decoration: underline;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Animación que emula el comportamiento de fade-slide pero usando keyframes */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Estilos para validación y campos de formulario */
@@ -274,6 +283,68 @@ const toggleDropdown = (event) => {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Media queries para reducir tamaño en pantallas pequeñas */
+@media (max-width: 767.98px) {
+  .dropdown-menu.login-dropdown {
+    min-width: 240px !important;
+    padding: 0.75rem !important; /* p-2 en lugar de p-3 */
+    /* NO modificamos la posición del dropdown */
+  }
+  
+    /* Mover la flecha hacia la derecha */
+  .login-dropdown::before {
+    left: 85px; /* Movida a la derecha desde 45px */
+  }
+  
+  h6 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .mb-3 {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .my-3 {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .mt-2 {
+    margin-top: 0.375rem !important;
+  }
+  
+  .validation-bubble {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    margin-top: -12px;
+  }
+  
+  .text-xs {
+    padding-top: 5px;
+    font-size: 0.7rem !important;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 359.98px) {
+  .dropdown-menu.login-dropdown {
+    min-width: 220px !important;
+    padding: 0.5rem !important; /* p-1 en lugar de p-3 */
+    /* NO modificamos la posición del dropdown */
+  }
+  
+  .validation-bubble {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+    max-width: 95%;
+  }
+  
+  h6 {
+    font-size: 0.9rem;
   }
 }
 </style>

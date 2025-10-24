@@ -7,8 +7,8 @@ const props = defineProps({
     default: null
   },
   backgroundColor: {
-  type: String,
-  default: null
+    type: String,
+    default: null
   },
   borderColor: {
     type: String,
@@ -41,7 +41,7 @@ const props = defineProps({
   size: {
     type: String,
     default: 'medium', // small, medium, large
-    validator: (value) => ['small', 'medium', 'large'].includes(value)
+    validator: (value) => ['tiny', 'small', 'medium', 'large'].includes(value)
   }
 });
 
@@ -118,7 +118,7 @@ const handleClick = (event) => {
 
 /* Estilos para hover */
 .custom-button:hover:not(.custom-button--disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: 0 6px 14px var(--button-shadow-hover);
   background-color: var(--button-bg);
   color: var(--button-text);
@@ -143,9 +143,9 @@ const handleClick = (event) => {
 
 /* Variante: solo icono */
 .custom-button--icon-only {
-    padding: 0.4rem 0.55rem;
-  min-width: 40px;
-  min-height: 38px;
+  padding: 0.4rem 0.55rem;
+  min-width: var(--button-icon-min, 40px);
+  min-height: var(--button-icon-min-height, 38px);
 }
 
 /* Variante: ancho completo */
@@ -162,10 +162,33 @@ const handleClick = (event) => {
 }
 
 /* Tamaños */
+.custom-button--tiny {
+  padding: 0.1rem;
+  font-size: 0.7rem;
+  min-height: 30px;
+  min-width: 30px;
+  width: 32px;
+  height: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button--tiny.custom-button--icon-only {
+  padding: 2px;
+  min-width: 30px;
+  min-height: 30px;
+  width: 32px;
+  height: 30px;
+}
+
+.custom-button--tiny .custom-button__icon {
+  width: 16px;
+  height: 16px;
+}
+
 .custom-button--small {
   padding: 0.375rem 1rem;
   font-size: 0.75rem;
-  min-height: 32px;
+  min-height: var(--button-small-min-height, 32px);
 }
 
 .custom-button--large {

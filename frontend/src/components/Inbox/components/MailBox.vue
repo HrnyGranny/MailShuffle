@@ -6,8 +6,8 @@ import MaterialButton from "@/material_components/MaterialButton.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
 
 // Importar iconos desde assets
-import CopyIcon from "../../../assets/img/iconos/copiar.png";
-import ReloadIcon from "../../../assets/img/iconos/recargar.png";
+import CopyIcon from "@/assets/img/iconos/copiar.png";
+import ReloadIcon from "@/assets/img/iconos/recargar.png";
 
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
@@ -110,7 +110,7 @@ const generateEmail = async () => {
       title: "Error generating email!",
       type: "error",
       overrides: {
-        width: "240px",
+        width: "210px",
       },
     });
   }
@@ -137,7 +137,7 @@ const copyToClipboard = async (event) => {
       title: "An error occurred!",
       type: "error",
       overrides: {
-        width: "220px",
+        width: "175px",
       },
     });
   }

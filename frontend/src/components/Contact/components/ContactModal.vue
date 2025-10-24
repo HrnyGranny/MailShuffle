@@ -207,7 +207,7 @@ const updateField = (field) => {
         </div>
         
         <!-- Send Button  -->
-        <div class="text-center mt-4" style="padding-top: 6px;">
+        <div class="text-center mt-4 button-offset" style="padding-top: 6px;">
           <Button 
             type="submit"
             backgroundColor="#98fe98"
@@ -415,6 +415,10 @@ const updateField = (field) => {
   border-top: 1px solid #ffcc80;
   border-left: 1px solid #ffcc80;
   transform: rotate(45deg);
+}
+
+.button-offset :deep(button span) {
+  transform: translateY(2px);
 }
 
 @keyframes bubble-in {

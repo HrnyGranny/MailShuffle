@@ -1,7 +1,9 @@
 <script setup>
 import { computed, ref } from "vue";
-import { API_BASE_URL } from "@/api/emailService";
 import MaterialToast from "@/material_components/MaterialToast.vue";
+import MaterialButton from "@/material_components/MaterialButton.vue";
+import { buildApiUri, buildCodeSnippet, getSampleOutput } from "@/assets/js/code";
+import CopyIcon from "@/assets/img/iconos/copiar.png";
 
 // PrismJS
 import { PrismEditor } from "vue-prism-editor";
@@ -15,52 +17,11 @@ import "prismjs/components/prism-json";
 const props = defineProps({ email: String, apiKey: String });
 const toastRef = ref(null);
 
-const apiUri = computed(
-  () =>
-    `${API_BASE_URL}/inbox?email=${props.email}&apiKey=${props.apiKey}`
-);
+const apiUri = computed(() => buildApiUri(props.email, props.apiKey));
 
-const codeJS = computed(() =>
-  `
-fetch('${apiUri.value}', {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-.then(res => {
-  if (!res.ok) throw new Error('Error in server response');
-  return res.json();
-})
-.then(data => {
-  console.log('✅ Server response:', data);
-})
-.catch(err => {
-  console.error('❌ Error:', err.message);
-});
-`.trim()
-);
+const codeJS = computed(() => buildCodeSnippet(apiUri.value));
 
-const outputJSON = computed(() =>
-  `
-[
-  {
-    "sender": "example1@mail.com",
-    "subject": "Welcome to Our Service!",
-    "body": "Thank you for signing up for our service. We are excited to have you on board!",
-    "receivedAt": "2025-04-12T08:00:00.000Z",
-    "_id": "email1"
-  },
-  {
-    "sender": "newsletter@company.com",
-    "subject": "Your Weekly Newsletter",
-    "body": "Here is your weekly newsletter with the latest updates and news.",
-    "receivedAt": "2025-04-12T09:00:00.000Z",
-    "_id": "email2"
-  }
-]
-`.trim()
-);
+const outputJSON = computed(() => getSampleOutput());
 
 const highlightJS = (code) =>
   prism.highlight(code, prism.languages.javascript, "javascript");
@@ -97,7 +58,14 @@ const copy = async (text) => {
     <div class="bg-white rounded shadow-sm p-3 border position-relative mb-4">
       <small class="text-muted">API URI</small>
       <div class="text-break text-dark">{{ apiUri }}</div>
-      <button class="copy-btn" @click="copy(apiUri)">Copy</button>
+      <MaterialButton
+        class="copy-btn"
+        size="tiny"
+        :icon="CopyIcon"
+        icon-alt="Copy"
+        aria-label="Copy API URI"
+        @click="copy(apiUri)"
+      />
     </div>
 
     <!-- 2 columns: code + output -->
@@ -108,7 +76,14 @@ const copy = async (text) => {
           class="bg-white rounded shadow-sm p-3 border position-relative h-100"
         >
           <small class="text-muted">API Call (JavaScript)</small>
-          <button class="copy-btn" @click="copy(codeJS)">Copy</button>
+          <MaterialButton
+            class="copy-btn"
+            size="tiny"
+            :icon="CopyIcon"
+            icon-alt="Copy"
+            aria-label="Copy JavaScript snippet"
+            @click="copy(codeJS)"
+          />
           <PrismEditor
             :modelValue="codeJS"
             :highlight="highlightJS"
@@ -125,7 +100,14 @@ const copy = async (text) => {
           class="bg-white rounded shadow-sm p-3 border position-relative h-100"
         >
           <small class="text-muted">Expected Output (JSON)</small>
-          <button class="copy-btn" @click="copy(outputJSON)">Copy</button>
+          <MaterialButton
+            class="copy-btn"
+            size="tiny"
+            :icon="CopyIcon"
+            icon-alt="Copy"
+            aria-label="Copy JSON output"
+            @click="copy(outputJSON)"
+          />
           <PrismEditor
             :modelValue="outputJSON"
             :highlight="highlightJSON"
@@ -156,20 +138,14 @@ const copy = async (text) => {
 
 .copy-btn {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: transparent;
-  border: none;
-  font-size: 0.875rem;
-  padding: 0.25rem 0.5rem;
-  color: #5e72e4;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 0.375rem;
+  top: 0.55rem;
+  right: 0.55rem;
+  --button-bg: rgba(94, 114, 228, 0.08);
 }
 
-.copy-btn:hover {
-  background-color: #f0f0f0;
+.copy-btn :deep(.custom-button__icon) {
+  width: 18px;
+  height: 18px;
 }
 
 /* Asegurar que ambas cajas tengan la misma altura */

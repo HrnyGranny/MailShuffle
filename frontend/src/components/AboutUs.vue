@@ -122,7 +122,7 @@ $background: #ffffff;
 
 // Estilos de sección
 .why-section {
-  padding: 2.8rem 0;
+  padding: 1.8rem 0;
   background-color: $background;
   position: relative;
   overflow: hidden;
@@ -258,7 +258,7 @@ $background: #ffffff;
     font-size: 2rem;
     
     &::after {
-      width: 75px; /* Ajuste responsivo para la línea */
+      width: 75px; 
     }
   }
   

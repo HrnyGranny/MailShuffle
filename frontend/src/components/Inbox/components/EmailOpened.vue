@@ -3,7 +3,12 @@ import { computed, onMounted, ref, watch } from "vue";
 import { deleteEmailById } from "@/api/emailService"; // API
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
-import { useSanitizedBody, usePlainTextBody, renderEmailToShadow } from "@/assets/js/emailParser";
+import { PrismEditor } from "vue-prism-editor";
+import "prismjs/themes/prism.css";
+import "vue-prism-editor/dist/prismeditor.min.css";
+import prism from "prismjs";
+import "prismjs/components/prism-markup";
+import { useSanitizedBody, renderEmailToShadow } from "@/assets/js/emailParser";
 
 // icon
 import GoBack from "../../../assets/img/iconos/goback.png";
@@ -35,7 +40,9 @@ const emailRef = computed(() => props.email);
 
 // Use the composables from our utility file
 const sanitizedBody = useSanitizedBody(emailRef);
-const plainTextBody = usePlainTextBody(emailRef);
+const htmlSourceBody = computed(() => props.email?.body ?? "");
+const highlightPlainText = (code) =>
+  prism.highlight(code, prism.languages.html || prism.languages.markup, "html");
 
 const renderToShadow = () => {
   renderEmailToShadow(shadowContainer.value, sanitizedBody.value);
@@ -275,7 +282,13 @@ const avatarColor = computed(() => {
           
           <!-- Contenido del email en texto plano -->
           <div v-else-if="activeTab === 'plain'" class="w-100 plain-text-content">
-            <pre class="text-content">{{ plainTextBody }}</pre>
+            <PrismEditor
+              :modelValue="htmlSourceBody || ''"
+              :highlight="highlightPlainText"
+              line-numbers
+              readonly
+              class="code-block"
+            />
           </div>
         </div>
         
@@ -310,20 +323,6 @@ const avatarColor = computed(() => {
 
 .avatar-circle:hover {
   transform: scale(1.05);
-}
-
-.email-opened .btn-action {
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.35rem;
-}
-
-.email-opened .btn-action .material-icons {
-  font-size: 1.1rem;
 }
 
 .email-opened .email-subject {
@@ -365,22 +364,87 @@ const avatarColor = computed(() => {
 
 /* Estilos para texto plano */
 .plain-text-content {
-  padding: 1rem;
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  background-color: #f8f9fa;
-  border-radius: 0.25rem;
+  padding: 0;
 }
 
-.text-content {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-size: 0.9rem;
-  color: #212529;
-  margin: 0;
+.code-block {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  font-family: Consolas, "Fira Mono", Menlo, Courier, monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
   padding: 1rem;
-  background: transparent;
-  border: none;
-  font-family: inherit;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  overflow-y: visible;
+  white-space: pre;
+}
+
+.code-block :deep(.prism-editor-wrapper) {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  align-items: stretch;
+}
+
+.code-block :deep(.prism-editor__container) {
+  min-height: 100%;
+}
+
+.code-block :deep(.prism-editor__line-numbers) {
+  height: auto;
+}
+
+.code-block .token.comment,
+.code-block .token.prolog,
+.code-block .token.doctype,
+.code-block .token.cdata {
+  color: #94a3b8;
+}
+
+.code-block .token.punctuation {
+  color: #64748b;
+}
+
+.code-block .token.tag,
+.code-block .token.constant,
+.code-block .token.symbol,
+.code-block .token.deleted {
+  color: #5e72e4;
+}
+
+.code-block .token.attr-name,
+.code-block .token.namespace {
+  color: #fb6340;
+}
+
+.code-block .token.attr-value,
+.code-block .token.string,
+.code-block .token.char,
+.code-block .token.builtin,
+.code-block .token.inserted {
+  color: #2dce89;
+}
+
+.code-block .token.operator,
+.code-block .token.entity,
+.code-block .token.url,
+.code-block .token.variable {
+  color: #11cdef;
+}
+
+.code-block .token.important,
+.code-block .token.keyword,
+.code-block .token.selector {
+  color: #f5365c;
+}
+
+.code-block .token.bold {
+  font-weight: 600;
+}
+
+.code-block .token.italic {
+  font-style: italic;
 }
 
 /* Mejora de la experiencia de usuario */

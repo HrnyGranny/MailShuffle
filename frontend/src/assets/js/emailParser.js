@@ -132,42 +132,6 @@ const useSanitizedBody = (email) => {
 };
 
 /**
- * Convert HTML email body to plain text
- * @param {Object} email - The email object containing the body
- * @returns {Function} - Computed property that returns plain text
- */
-const usePlainTextBody = (email) => {
-  return computed(() => {
-    if (!email.value?.body) return "";
-
-    // Create a temporary element to extract the text
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = email.value.body;
-
-    // Replace HTML elements with appropriate line breaks
-    const html = tempDiv.innerHTML;
-    const text = html
-      .replace(/<br\s*\/?>/gi, "\n")
-      .replace(/<\/p>/gi, "\n")
-      .replace(/<\/div>/gi, "\n")
-      .replace(/<\/h[1-6]>/gi, "\n")
-      .replace(/<li>/gi, "• ");
-
-    // Remove all remaining HTML tags but keep their content
-    tempDiv.innerHTML = text;
-    let plainText = tempDiv.textContent || tempDiv.innerText || "";
-
-    // Add line numbers and remove excessive spaces
-    const lines = plainText
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0); // Remove empty lines
-
-    return lines.map((line, index) => `${index + 1}. ${line}`).join("\n");
-  });
-};
-
-/**
  * Get email CSS styles for shadow DOM
  * @returns {string} - CSS styles for the email content
  */
@@ -302,4 +266,4 @@ const renderEmailToShadow = (shadowContainer, htmlContent) => {
 // Initialize DOMPurify configuration
 configureDOMPurify();
 
-export { useSanitizedBody, usePlainTextBody, renderEmailToShadow };
+export { useSanitizedBody, renderEmailToShadow };

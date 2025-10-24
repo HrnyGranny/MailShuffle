@@ -15,13 +15,17 @@
             The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
           </p>
           <router-link class="mt-4 d-block" to="/">
-            <button
-              type="button"
-              class="btn btn-mailshuffle errorBtn"
+            <MaterialButton
+              class="errorBtn"
+              background-color="#98fe98"
+              border-color="#98fe98"
+              text-color="#344767"
+              aria-label="Go to home"
+              size="small"
             >
               <i class="fas fa-home me-2"></i>
               <span>Home</span>
-            </button>
+            </MaterialButton>
           </router-link>
         </div>
       </div>
@@ -58,15 +62,19 @@
 </template>
 
 <script>
+import MaterialButton from "@/material_components/MaterialButton.vue";
+
 export default {
-  name: "ErrorPage"
+  name: "ErrorPage",
+  components: {
+    MaterialButton,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .error-page {
   min-height: 100vh;
-  font-family: "Helvetica Neue", Arial, sans-serif;
   position: relative;
   overflow: hidden; /* Prevent GIF from causing scrollbars */
   
@@ -186,27 +194,27 @@ export default {
   }
 
   .errorBtn {
-    background-color: #98fe98;
-    border-color: #98fe98;
-    color: #344767;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    width: auto;
     display: inline-block;
 
-    @media (max-width: 576px) {
-      padding: 8px 16px;
-      font-size: 14px;
+    :deep(.custom-button) {
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
 
-    &:hover {
+    :deep(.custom-button:hover) {
       transform: scale(1.1);
     }
 
-    i {
+    :deep(i) {
       vertical-align: middle;
+    }
+
+    @media (max-width: 576px) {
+      :deep(.custom-button) {
+        padding: 8px 16px;
+        font-size: 18px;
+      }
     }
   }
 

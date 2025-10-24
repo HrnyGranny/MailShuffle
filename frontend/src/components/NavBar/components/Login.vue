@@ -163,7 +163,7 @@ const toggleDropdown = (event) => {
         </div>
         <div class="d-flex flex-column align-items-center mb-3">
           <!-- Botón con el componente personalizado -->
-          <div class="mt-2">
+          <div class="mt-2 button-offset">
             <Button 
               type="submit"
               backgroundColor="#98fe98"
@@ -273,6 +273,10 @@ const toggleDropdown = (event) => {
   border-top: 1px solid #ffcc80;
   border-left: 1px solid #ffcc80;
   transform: rotate(45deg);
+}
+
+.button-offset :deep(button span) {
+  transform: translateY(2px);
 }
 
 @keyframes bubble-in {

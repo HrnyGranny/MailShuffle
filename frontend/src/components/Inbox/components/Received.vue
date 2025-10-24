@@ -192,6 +192,10 @@ watch(
   overflow: hidden;
   cursor: pointer;
   min-height: 50px; /* Reducido para tarjetas más compactas */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(52, 71, 103, 0.15); 
+  background: #f1f1f2;
+
 }
 
 .email-box:hover {
@@ -216,5 +220,7 @@ watch(
 /* Contenido con margen para el punto */
 .email-unread .card-body {
   padding-left: 1.5rem;
+  background: #ffffff;
+
 }
 </style>

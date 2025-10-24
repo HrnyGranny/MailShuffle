@@ -166,7 +166,7 @@ $background: #ffffff;
     position: absolute;
     bottom: -10px;
     left: 0;
-    width: 90px; 
+    width: 83px; 
     height: 4px;
     background-color: $accent-color;
     border-radius: 2px;

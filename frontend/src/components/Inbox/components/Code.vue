@@ -140,7 +140,6 @@ const copy = async (text) => {
   position: absolute;
   top: 0.55rem;
   right: 0.55rem;
-  --button-bg: rgba(94, 114, 228, 0.08);
 }
 
 .copy-btn :deep(.custom-button__icon) {

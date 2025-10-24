@@ -97,7 +97,7 @@ const deleteEmail = async () => {
       title: "Email deleted successfully!",
       type: "success",
       overrides: {
-        width: "250px",
+        width: "235px",
       },
     });
 
@@ -233,15 +233,22 @@ const avatarColor = computed(() => {
               :icon="GoBack"
               alt="Back"
               aria-label="Go back to inbox"
+              :style="{
+                '--button-large-icon-width': '75px',
+              }"
               @click="$emit('back')"
             />
             <MaterialButton
+              size="large"
               :icon="Delete"
               backgroundColor="#f28b82"
               borderColor="#f28b82"
               textColor="#ffffff"
               alt="Delete"
               aria-label="Delete email"
+              :style="{
+                '--button-large-icon-width': '50px',
+              }"
               @click="deleteEmail"
             />
           </div>
@@ -338,7 +345,6 @@ const avatarColor = computed(() => {
   color: #344767;
   border-color: #dee2e6 #dee2e6 #fff;
 }
-
 .nav-tabs .nav-link {
   color: #6c757d;
   border-top-left-radius: 0.5rem;

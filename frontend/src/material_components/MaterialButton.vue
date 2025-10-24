@@ -146,6 +146,8 @@ const handleClick = (event) => {
   padding: 0.4rem 0.55rem;
   min-width: var(--button-icon-min, 40px);
   min-height: var(--button-icon-min-height, 38px);
+  width: var(--button-icon-width, var(--button-icon-min, 40px));
+  height: var(--button-icon-height, var(--button-icon-min-height, 38px));
 }
 
 /* Variante: ancho completo */
@@ -174,10 +176,10 @@ const handleClick = (event) => {
 
 .custom-button--tiny.custom-button--icon-only {
   padding: 2px;
-  min-width: 30px;
-  min-height: 30px;
-  width: 32px;
-  height: 30px;
+  min-width: var(--button-icon-min, 30px);
+  min-height: var(--button-icon-min-height, 30px);
+  width: var(--button-icon-width, 32px);
+  height: var(--button-icon-height, 30px);
 }
 
 .custom-button--tiny .custom-button__icon {
@@ -195,6 +197,14 @@ const handleClick = (event) => {
   padding: 0.75rem 2rem;
   font-size: 1rem;
   min-height: 48px;
+}
+
+.custom-button--large.custom-button--icon-only {
+  padding: 0.55rem;
+  min-width: var(--button-large-icon-min, 40px);
+  min-height: var(--button-large-icon-min-height, 48px);
+  width: var(--button-large-icon-width, 60px);
+  height: var(--button-large-icon-height, 48px);
 }
 
 /* Estilo del icono */

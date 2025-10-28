@@ -1733,7 +1733,6 @@ $tilt-transform-up-transition: all 0.5s !default;
 // Variables for Core
 
 @import "variables/animations";
-@import "variables/avatars";
 @import "variables/cards";
 @import "variables/dropdowns";
 @import "variables/header";
@@ -1748,7 +1747,6 @@ $tilt-transform-up-transition: all 0.5s !default;
 @import "variables/fixed-plugin";
 @import "variables/pagination";
 @import "variables/badge";
-@import "variables/rtl";
 @import "variables/cards-extend";
 
 @import "variables/timeline";

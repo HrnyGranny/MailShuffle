@@ -278,8 +278,8 @@ watch(
   display: block;
   position: relative;
   width: 22px;
-  height: 2px;
-  border-radius: 1px;
+  height: 1.5px !important;
+  border-radius: 5px !important;
   transition: transform 0.3s ease, opacity 0.3s ease;
   margin: 5px 0;
 }
@@ -287,7 +287,6 @@ watch(
 /* Down arrow animation when menu is open */
 .navbar-toggler-icon.is-active .bar1 {
   transform: translateY(9px) rotate(45deg);
-  background-color: #000;
 }
 
 .navbar-toggler-icon.is-active .bar2 {
@@ -295,8 +294,7 @@ watch(
 }
 
 .navbar-toggler-icon.is-active .bar3 {
-  transform: translateY(-7px) rotate(-48deg);
-  background-color: #000;
+  transform: translateY(-7.5px) rotate(-45deg);
 }
 
 /* Golden shimmer effect */

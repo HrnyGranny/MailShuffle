@@ -1,6 +1,7 @@
 <script setup>
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
+import MaterialButton from "@/material_components/MaterialButton.vue";
 import { ref, reactive } from "vue";
 import { registerUser } from "@/api/userService"; 
 
@@ -340,14 +341,18 @@ const isFeatureInFreePlan = (index) => {
                 
                   <div class="mt-4">
                     <div class="text-center">
-                      <button
-                        type="submit"
-                        class="btn btn-mailshuffle premium-btn"
+                      <!-- Botón MaterialButton en amarillo premium -->
+                      <MaterialButton
+                        aria-label="Subscribe Now"
                         :disabled="isSubmitting"
-                        style="--btn-bg: #feb602; --btn-border: #feb602; --btn-shadow: rgba(0, 0, 0, 0.3);"
-                      >
-                        {{ isSubmitting ? "Processing..." : "Subscribe Now" }}
-                      </button>
+                        :label="isSubmitting ? 'Processing...' : 'Subscribe Now'"
+                        size="large"
+                        backgroundColor="#feb602"
+                        borderColor="#feb602"
+                        textColor="#344767"
+                        class="premium-btn"
+                        @click="handleSubmit"
+                      />
                       
                       <div class="d-flex justify-content-center flex-wrap mt-2">
                         <span class="indicator-item">
@@ -465,7 +470,7 @@ const isFeatureInFreePlan = (index) => {
   right: -50px;
   width: 200px;
   background: #feb602;
-  color: white;
+  color: rgb(0, 0, 0);
   text-align: center;
   line-height: 35px;
   letter-spacing: 1px;
@@ -549,15 +554,8 @@ const isFeatureInFreePlan = (index) => {
 
 /* Button */
 .premium-btn {
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.5rem 1.6rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.premium-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  background: #feb602 !important;
+  border-color: #feb602 !important;
 }
 
 /* Validation bubble */

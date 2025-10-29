@@ -1,6 +1,5 @@
 <template>
   <div :class="['preloader', { 'preloader-hidden': !loading }]">
-    <!-- Clouds background -->
     <div class="clouds">
       <div class="cloud cloud1"></div>
       <div class="cloud cloud2"></div>
@@ -26,6 +25,7 @@ defineProps({
 .preloader {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
+  /* Fondo original restaurado */
   background-color: #98FE98;
   z-index: 99999;
   height: 100%;
@@ -56,7 +56,9 @@ defineProps({
   position: absolute;
   background: #fff;
   border-radius: 50%;
-  opacity: 0.25;
+  /* Mantenemos el blur y la opacidad para mejor estética */
+  opacity: 0.6;
+  filter: blur(4px); 
   animation: moveClouds linear infinite;
 }
 
@@ -81,48 +83,59 @@ defineProps({
   left: 50%;
 }
 
+/* --- NUBES GRANDES PERO RÁPIDAS --- */
+
 .cloud1 {
-  width: 130px;
-  height: 80px;
+  /* Mantenemos tamaños grandes */
+  width: 260px;
+  height: 160px;
   top: 15%;
-  left: 1400px;
-  animation-duration: 2s;
+  left: 100%; 
+  /* Duraciones cortas para alta velocidad */
+  animation-duration: 4s;
+  animation-delay: -5s;
 }
 .cloud2 {
-  width: 195px;
-  height: 104px;
+  width: 390px;
+  height: 208px;
   top: 35%;
-  left: 1600px;
-  animation-duration: 3s;
+  left: 100%;
+  animation-duration: 5s;
+  animation-delay: -10s;
 }
 .cloud3 {
-  width: 104px;
-  height: 65px;
-  top: 20%;
-  left: 2000px;
-  animation-duration: 4s;
+  width: 208px;
+  height: 130px;
+  top: 25%;
+  left: 100%;
+  animation-duration: 6s;
+  animation-delay: -2s;
 }
 .cloud4 {
-  width: 130px;
-  height: 104px;
+  width: 260px;
+  height: 208px;
   top: 70%;
-  left: 1100px;
-  animation-duration: 3s;
+  left: 100%;
+  animation-duration: 4.5s;
+  animation-delay: -15s;
 }
 .cloud5 {
-  width: 221px;
-  height: 65px;
+  width: 442px;
+  height: 130px;
   top: 80%;
-  left: 1500px;
-  animation-duration: 2s;
+  left: 100%;
+  animation-duration: 3.5s;
+  animation-delay: -8s;
 }
 
+/* Animación mejorada para cruzar toda la pantalla */
 @keyframes moveClouds {
   0% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-2000px);
+    /* Mueve la nube todo el ancho de la pantalla + 500px (para asegurar que desaparece) */
+    transform: translateX(calc(-100vw - 500px));
   }
 }
 
@@ -144,8 +157,8 @@ defineProps({
   object-fit: contain;
   z-index: 2;
   position: relative;
-  /* Puedes agregar un poco de sombra si quieres */
-  /* filter: drop-shadow(0px 4px 8px #aaa); */
+  /* Mantenemos la sombra sutil para el avión */
+  filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.2));
 }
 
 .loader-lines {
@@ -156,9 +169,9 @@ defineProps({
   width: 170px;
   pointer-events: none;
   background-image:
-    linear-gradient(#c9c7c7 45px, transparent 0),
-    linear-gradient(#c9c7c7 45px, transparent 0),
-    linear-gradient(#c9c7c7 45px, transparent 0);
+    linear-gradient(#4e64ee 45px, transparent 0),
+    linear-gradient(#4e64ee 45px, transparent 0),
+    linear-gradient(#4e64ee 45px, transparent 0);
   background-repeat: no-repeat;
   background-size: 40px 4px;
   background-position: 0px 11px , 8px 35px, 0px 60px;

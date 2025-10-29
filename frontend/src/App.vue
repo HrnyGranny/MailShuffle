@@ -7,7 +7,7 @@ const loading = ref(true);
 onMounted(() => {
   setTimeout(() => {
     loading.value = false;
-  }, 1500); // Simula la carga de la app
+  }, 150000); // Simula la carga de la app
 });
 </script>
 

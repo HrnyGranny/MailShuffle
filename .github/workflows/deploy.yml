@@ -1,0 +1,51 @@
+name: Deploy HrnyGranny App to Pages
+
+# Se activa solo con un push a la rama 'main'
+on:
+  push:
+    branches:
+      - main
+
+# Permisos para que la acción pueda escribir en la rama 'deploy'
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 🛎️
+        # 1. Descarga el código de 'main'
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ⚙️
+        # 2. Configura el entorno de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          # Optimiza el cache para la subcarpeta
+          cache-dependency-path: "MailShuffle/frontend/package.json"
+
+      - name: Install and Build 🛠️
+        # 3. Entra en la carpeta, instala y construye
+        working-directory: ./MailShuffle/frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to deploy branch 🚀
+        # 4. Usa la acción de deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+          # La rama donde se subirá el build
+          publish_branch: deploy
+
+          # La carpeta EXACTA que quieres desplegar
+          publish_dir: ./MailShuffle/frontend/dist
+
+          # Esto crea el CNAME en la raíz de la rama 'deploy' CADA VEZ.
+          # Reemplaza esto con tu dominio real.
+          # cname:

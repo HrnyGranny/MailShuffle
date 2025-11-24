@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
-  base: '/MailShuffle/',
+  base: './',  
   plugins: [vue()],
   resolve: {
     alias: {
@@ -11,6 +11,6 @@ export default defineConfig({
     },
   },
   server: {
-    port: 8081, // Port
+    port: 8081, 
   },
 });

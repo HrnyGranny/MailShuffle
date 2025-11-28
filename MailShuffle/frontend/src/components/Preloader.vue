@@ -1,5 +1,6 @@
 <template>
   <div :class="['preloader', { 'preloader-hidden': !loading }]">
+    <!-- Fondo de nubes -->
     <div class="clouds">
       <div class="cloud cloud1"></div>
       <div class="cloud cloud2"></div>
@@ -7,15 +8,24 @@
       <div class="cloud cloud4"></div>
       <div class="cloud cloud5"></div>
     </div>
-    <div class="loader">
-      <div class="loader-lines"></div>
-      <img src="@/assets/img/PlaneAlone.png" alt="preloader" class="loader-img" />
+
+    <!-- Contenedor central (Solo avión y sombra) -->
+    <div class="loader-wrapper">
+      <div class="loader">
+        <!-- Líneas de velocidad -->
+        <div class="loader-lines"></div>
+        <!-- Avión -->
+        <img src="@/assets/img/PlaneAlone.png" alt="preloader" class="loader-img" />
+      </div>
+      <!-- Sombra debajo del avión -->
+      <div class="plane-shadow"></div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { defineProps } from "vue";
+
 defineProps({
   loading: Boolean
 });
@@ -25,179 +35,141 @@ defineProps({
 .preloader {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  /* Fondo original restaurado */
-  background-color: #98FE98;
+  background: linear-gradient(to bottom, #84fab0 0%, #98FE98 100%);
   z-index: 99999;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   overflow: hidden !important;
+  /* Centrado perfecto */
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.5s ease-in-out;
 }
+
+/* ESTADO OCULTO */
 .preloader-hidden {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s;
 }
 
-/* Clouds moving right to left */
+/* Animación de salida del avión */
+.preloader-hidden .loader-img {
+  transform: translateX(150vw) scale(1.2) rotate(-10deg) !important;
+  transition: transform 1s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+.loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* CLOUDS */
 .clouds {
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 0; /* Behind loader */
+  z-index: 0;
   overflow: hidden;
-  left: 0;
-  top: 0;
 }
 
 .cloud {
   position: absolute;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
-  /* Mantenemos el blur y la opacidad para mejor estética */
-  opacity: 0.6;
-  filter: blur(4px); 
+  box-shadow: 0 8px 5px rgba(0,0,0,0.1);
   animation: moveClouds linear infinite;
 }
 
-.cloud::before,
-.cloud::after {
+.cloud::before, .cloud::after {
   content: "";
   position: absolute;
-  background: #fff;
+  background: inherit;
   border-radius: 50%;
 }
 
-.cloud::before {
-  width: 78%;
-  height: 78%;
-  top: -30%;
-  left: 10%;
-}
-.cloud::after {
-  width: 52%;
-  height: 52%;
-  top: -20%;
-  left: 50%;
-}
+.cloud::before { width: 78%; height: 78%; top: -30%; left: 10%; }
+.cloud::after { width: 52%; height: 52%; top: -20%; left: 50%; }
 
-/* --- NUBES GRANDES PERO RÁPIDAS --- */
+.cloud1 { width: 260px; height: 160px; top: 10%; left: 100%; opacity: 0.7; filter: blur(2px); animation-duration: 7s; }
+.cloud2 { width: 390px; height: 208px; top: 30%; left: 100%; opacity: 0.5; filter: blur(4px); animation-duration: 12s; animation-delay: -5s; }
+.cloud3 { width: 208px; height: 130px; top: 20%; left: 100%; opacity: 0.8; filter: blur(1px); animation-duration: 5s; animation-delay: -2s; }
+.cloud4 { width: 260px; height: 208px; top: 60%; left: 100%; opacity: 0.6; filter: blur(3px); animation-duration: 9s; animation-delay: -4s; }
+.cloud5 { width: 442px; height: 130px; top: 75%; left: 100%; opacity: 0.4; filter: blur(5px); animation-duration: 15s; animation-delay: -1s; }
 
-.cloud1 {
-  /* Mantenemos tamaños grandes */
-  width: 260px;
-  height: 160px;
-  top: 15%;
-  left: 100%; 
-  /* Duraciones cortas para alta velocidad */
-  animation-duration: 4s;
-  animation-delay: -5s;
-}
-.cloud2 {
-  width: 390px;
-  height: 208px;
-  top: 35%;
-  left: 100%;
-  animation-duration: 5s;
-  animation-delay: -10s;
-}
-.cloud3 {
-  width: 208px;
-  height: 130px;
-  top: 25%;
-  left: 100%;
-  animation-duration: 6s;
-  animation-delay: -2s;
-}
-.cloud4 {
-  width: 260px;
-  height: 208px;
-  top: 70%;
-  left: 100%;
-  animation-duration: 4.5s;
-  animation-delay: -15s;
-}
-.cloud5 {
-  width: 442px;
-  height: 130px;
-  top: 80%;
-  left: 100%;
-  animation-duration: 3.5s;
-  animation-delay: -8s;
-}
-
-/* Animación mejorada para cruzar toda la pantalla */
 @keyframes moveClouds {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    /* Mueve la nube todo el ancho de la pantalla + 500px (para asegurar que desaparece) */
-    transform: translateX(calc(-100vw - 500px));
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100vw - 500px)); }
 }
 
-/* Loader styles */
+/* LOADER */
 .loader {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: envFloating 1s ease-in infinite alternate;
-  z-index: 1;
+  animation: envFloating 2.5s ease-in-out infinite;
 }
 
 .loader-img {
-  width: 190px;
-  height: 190px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   z-index: 2;
-  position: relative;
-  /* Mantenemos la sombra sutil para el avión */
-  filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(5px 10px 15px rgba(0, 0, 0, 0.15));
+  will-change: transform;
 }
 
+.plane-shadow {
+  width: 60px;
+  height: 15px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  margin-top: -20px;
+  filter: blur(4px);
+  animation: shadowPulse 2.5s ease-in-out infinite;
+}
+
+/* LÍNEAS DE VELOCIDAD */
 .loader-lines {
   position: absolute;
-  right: 120px;
-  top: 28px;
-  height: 200px;
-  width: 170px;
+  right: 185px; 
+  top: 50px;
+  height: 100px;
+  width: 200px;
   pointer-events: none;
-  background-image:
-    linear-gradient(#4e64ee 45px, transparent 0),
-    linear-gradient(#4e64ee 45px, transparent 0),
-    linear-gradient(#4e64ee 45px, transparent 0);
-  background-repeat: no-repeat;
-  background-size: 40px 4px;
-  background-position: 0px 11px , 8px 35px, 0px 60px;
-  animation: envDropping 0.75s linear infinite;
   z-index: 1;
+  opacity: 0.6;
+  background-image: 
+    linear-gradient(to left, rgba(255,255,255,0) 0%, #4e64ee 50%, rgba(255,255,255,0) 100%),
+    linear-gradient(to left, rgba(255,255,255,0) 0%, #4e64ee 50%, rgba(255,255,255,0) 100%),
+    linear-gradient(to left, rgba(255,255,255,0) 0%, #4e64ee 50%, rgba(255,255,255,0) 100%);
+  background-repeat: no-repeat;
+  background-size: 80px 3px;
+  background-position: 0px 20px, 30px 50px, 10px 80px;
+  animation: speedLines 0.8s linear infinite;
 }
 
+/* ANIMACIONES GENERALES */
 @keyframes envFloating {
-  0% { transform: translate(-2px, -5px);}
-  100% { transform: translate(0, 5px);}
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
 }
 
-@keyframes envDropping {
-  0% {
-    background-position: 100px 11px , 115px 35px, 105px 60px;
-    opacity: 1;
-  }
-  50% {
-    background-position: 0px 11px , 20px 35px, 5px 60px;
-  }
-  60% {
-    background-position: -30px 11px , 0px 35px, -10px 60px;
-  }
-  75%, 100% {
-    background-position: -30px 11px , -30px 35px, -30px 60px;
-    opacity: 0;
-  }
+@keyframes shadowPulse {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(0.7); opacity: 0.1; }
+}
+
+@keyframes speedLines {
+  0% { background-position: 150px 20px, 180px 50px, 160px 80px; opacity: 0; }
+  20% { opacity: 1; }
+  100% { background-position: -50px 20px, -20px 50px, -40px 80px; opacity: 0; }
 }
 </style>

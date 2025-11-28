@@ -47,5 +47,4 @@ jobs:
           publish_dir: ./MailShuffle/frontend/dist
 
           # Esto crea el CNAME en la raíz de la rama 'deploy' CADA VEZ.
-          # Reemplaza esto con tu dominio real.
-          # cname:
+          cname: mailshuffle.xyz

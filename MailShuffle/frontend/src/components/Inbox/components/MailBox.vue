@@ -31,13 +31,12 @@ const email = ref(""); // Variable para almacenar el correo generado
 const apiKey = ref(""); // Variable para almacenar la API Key
 const emailId = ref(""); // Variable para almacenar el ID del correo
 const toastRef = ref(null);
+// Eliminado isCopying para quitar la animación
 
 // Función para generar un correo temporal
 const generateEmail = async () => {
   try {
-    // Verificar si existe un correo actual (ya sea cargado desde cookies o generado previamente)
     if (email.value && emailId.value && apiKey.value) {
-      // Mostrar alerta de confirmación antes de eliminar la dirección de correo
       const result = await toastRef.value?.showConfirm({
         title: "Are you sure?",
         text: "This will delete the current email address and all associated emails!",
@@ -48,105 +47,85 @@ const generateEmail = async () => {
       });
 
       if (result?.isConfirmed) {
-        console.log("emailId before delete:", emailId.value);
-        console.log("apiKey before delete:", apiKey.value);
-
         try {
-          // Llamar a la API para eliminar la dirección de correo
           await deleteEmailAddress(emailId.value, apiKey.value);
-
-          // Limpiar las cookies y las variables reactivas
-          setCookie("mailshuffle_email", "", -1); // Eliminar cookie
-          setCookie("mailshuffle_apiKey", "", -1); // Eliminar cookie
-          setCookie("mailshuffle_emailId", "", -1); // Eliminar cookie
+          setCookie("mailshuffle_email", "", -1);
+          setCookie("mailshuffle_apiKey", "", -1);
+          setCookie("mailshuffle_emailId", "", -1);
           email.value = "";
           apiKey.value = "";
           emailId.value = "";
-
-          console.log("Correo eliminado correctamente.");
         } catch (deleteError) {
           console.error("Error deleting email address:", deleteError);
           toastRef.value?.showToast({
             title: "Error deleting email address!",
             type: "error",
-            overrides: {
-              width: "245px",
-            },
+            overrides: { width: "245px" },
           });
-          return; // Detener el flujo si ocurre un error al eliminar
+          return;
         }
       } else {
-        return; // Si el usuario cancela, detener el flujo
+        return;
       }
     }
 
-    // Generar un nuevo correo temporal
     const response = await generateTemporalEmail();
-    console.log("Response from generateTemporalEmail:", response);
     email.value = response.email;
     apiKey.value = response.apiKey;
-    emailId.value = response._id; // Almacenar el ID del correo
+    emailId.value = response._id;
 
-    // Guardar el correo, la API Key y el ID en cookies
     setCookie("mailshuffle_email", email.value, 7);
     setCookie("mailshuffle_apiKey", apiKey.value, 7);
     setCookie("mailshuffle_emailId", emailId.value, 7);
 
     emit("emailGenerated", { email: email.value, apiKey: apiKey.value });
 
-    // Mostrar alerta de éxito
     toastRef.value?.showToast({
       title: "Email generated successfully!",
       type: "success",
-      overrides: {
-        width: "250px",
-      },
+      overrides: { width: "250px" },
     });
   } catch (error) {
     console.error("Error generating email:", error);
-
-    // Mostrar alerta de error
     toastRef.value?.showToast({
       title: "Error generating email!",
       type: "error",
-      overrides: {
-        width: "210px",
-      },
+      overrides: { width: "210px" },
     });
   }
 };
 
 // Función para copiar el contenido del input al portapapeles
-const copyToClipboard = async (event) => {
+const copyToClipboard = async () => {
+  if (!email.value) return;
+  
   try {
-    await navigator.clipboard.writeText(email.value); // Copiar el contenido al portapapeles
+    // Eliminada la lógica de animación isCopying
+    await navigator.clipboard.writeText(email.value);
 
-    // Mostrar alerta de éxito
     toastRef.value?.showToast({
       title: "Email copied successfully!",
       type: "success",
-      overrides: {
-        width: "230px",
-      },
+      overrides: { width: "230px" },
     });
   } catch (error) {
     console.error("Error copying to clipboard:", error);
-
-    // Mostrar alerta de error
     toastRef.value?.showToast({
       title: "An error occurred!",
       type: "error",
-      overrides: {
-        width: "175px",
-      },
+      overrides: { width: "175px" },
     });
   }
 };
 
-// Emitir eventos al componente padre
+// Placeholder para la futura funcionalidad del QR
+const openQrModal = () => {
+  console.log("Abrir modal QR (Pendiente de implementación)");
+  copyToClipboard(); 
+};
+
 const emit = defineEmits(["emailGenerated"]);
 
-// Al montar el componente, verificar si ya existe un correo en las cookies
 onMounted(async () => {
   setMaterialInput();
   const savedEmail = getCookie("mailshuffle_email");
@@ -156,9 +135,9 @@ onMounted(async () => {
     email.value = savedEmail;
     apiKey.value = savedApiKey;
     emailId.value = savedEmailId;
-    emit("emailGenerated", { email: email.value, apiKey: apiKey.value }); // Emitir el correo al componente padre
+    emit("emailGenerated", { email: email.value, apiKey: apiKey.value });
   } else {
-    await generateEmail(); // Generar un nuevo correo si no hay cookie
+    await generateEmail();
   }
 });
 </script>
@@ -169,8 +148,10 @@ onMounted(async () => {
     <div class="container">
       <div class="row justify-content-start">
         <div class="col-12 col-lg-8">
-          <!-- Mantener la estructura original con los col-md -->
-          <div class="row g-2 align-items-stretch">
+          <!-- Aumentado g-2 a g-3 para más separación entre columnas -->
+          <div class="row g-3 align-items-stretch">
+            
+            <!-- Columna del Input + Botón interno de copiar -->
             <div class="col-12 col-md-9">
               <MaterialInput
                 class="input-group-outline border-danger"
@@ -179,25 +160,50 @@ onMounted(async () => {
                 v-model="email"
                 :error="true"
                 readonly
-              />
+              >
+                <!-- Botón integrado de copiar (dentro del input) -->
+                <template #append>
+                  <button 
+                    class="btn btn-clipboard mb-0" 
+                    type="button" 
+                    @click="copyToClipboard"
+                    title="Copy to clipboard"
+                    :disabled="!email"
+                  >
+                    <!-- Eliminada clase dinámica de animación -->
+                    <img 
+                        :src="CopyIcon" 
+                        alt="Copy" 
+                        class="action-icon-input" 
+                    />
+                  </button>
+                </template>
+              </MaterialInput>
             </div>
+            
+            <!-- Columna de botones externos (QR + Reload) -->
             <div class="col-12 col-md-3">
-              <!-- Solo modificar esta parte para los botones -->
               <div class="button-container">
+                <!-- Botón futuro QR -->
                 <MaterialButton
                   :icon="CopyIcon"
-                  alt="Copy"
-                  aria-label="Copy generated email"
-                  @click="copyToClipboard"
+                  alt="QR Code"
+                  aria-label="Show QR Code"
+                  @click="openQrModal"
+                  class="custom-button"
                 />
+                
+                <!-- Botón Reload -->
                 <MaterialButton
                   :icon="ReloadIcon"
                   alt="Reload"
                   aria-label="Generate a new email"
                   @click="generateEmail"
+                  class="custom-button"
                 />
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -206,6 +212,47 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+/* --- Estilos nuevos para el botón integrado --- */
+.btn-clipboard {
+  z-index: 4;
+  border: 1px solid #d2d6da;
+  border-left: none;
+  background-color: transparent;
+  padding: 0 12px;
+  border-top-right-radius: 0.375rem !important;
+  border-bottom-right-radius: 0.375rem !important;
+  /* Eliminada transición de fondo para respuesta instantánea */
+}
+
+/* Forzamos que el borde y el fondo se mantengan al hacer click/foco */
+.btn-clipboard:focus,
+.btn-clipboard:active,
+.btn-clipboard:active:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #d2d6da !important; /* Mismo color que el input */
+  background-color: transparent !important; /* Evita que se ponga gris oscuro */
+}
+
+@media (hover: hover) {
+  .btn-clipboard:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.action-icon-input {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-clipboard:hover .action-icon-input {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* --- Estilos originales restaurados para la responsividad --- */
 
 .icon-button {
   transition: transform 0.2s ease;
@@ -253,9 +300,11 @@ onMounted(async () => {
 input:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  z-index: 3;
 }
 
 input[readonly] {
   cursor: default;
+  background-color: #fff !important;
 }
 </style>

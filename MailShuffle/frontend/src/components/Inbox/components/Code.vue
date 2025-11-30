@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
-import MaterialButton from "@/material_components/MaterialButton.vue";
+// Eliminamos MaterialButton ya que usaremos botones nativos para el estilo "icon-only"
 import { buildApiUri, buildCodeSnippet, getSampleOutput } from "@/assets/js/code";
 import CopyIcon from "@/assets/img/iconos/copiar.png";
 
@@ -54,18 +54,21 @@ const copy = async (text) => {
 <template>
   <div class="code-container mt-4 px-3">
     <MaterialToast ref="toastRef" />
+    
     <!-- API URI box -->
     <div class="bg-white rounded shadow-sm p-3 border position-relative mb-4">
       <small class="text-muted">API URI</small>
-      <div class="text-break text-dark">{{ apiUri }}</div>
-      <MaterialButton
-        class="copy-btn"
-        size="tiny"
-        :icon="CopyIcon"
-        icon-alt="Copy"
-        aria-label="Copy API URI"
+      <div class="text-break text-dark pe-5">{{ apiUri }}</div>
+      
+      <!-- Botón estilo integrado -->
+      <button 
+        class="btn btn-clipboard" 
+        type="button" 
         @click="copy(apiUri)"
-      />
+        title="Copy API URI"
+      >
+        <img :src="CopyIcon" alt="Copy" class="action-icon" />
+      </button>
     </div>
 
     <!-- 2 columns: code + output -->
@@ -76,14 +79,17 @@ const copy = async (text) => {
           class="bg-white rounded shadow-sm p-3 border position-relative h-100"
         >
           <small class="text-muted">API Call (JavaScript)</small>
-          <MaterialButton
-            class="copy-btn"
-            size="tiny"
-            :icon="CopyIcon"
-            icon-alt="Copy"
-            aria-label="Copy JavaScript snippet"
+          
+          <!-- Botón estilo integrado -->
+          <button 
+            class="btn btn-clipboard" 
+            type="button" 
             @click="copy(codeJS)"
-          />
+            title="Copy JavaScript snippet"
+          >
+            <img :src="CopyIcon" alt="Copy" class="action-icon" />
+          </button>
+
           <PrismEditor
             :modelValue="codeJS"
             :highlight="highlightJS"
@@ -100,14 +106,17 @@ const copy = async (text) => {
           class="bg-white rounded shadow-sm p-3 border position-relative h-100"
         >
           <small class="text-muted">Expected Output (JSON)</small>
-          <MaterialButton
-            class="copy-btn"
-            size="tiny"
-            :icon="CopyIcon"
-            icon-alt="Copy"
-            aria-label="Copy JSON output"
+          
+          <!-- Botón estilo integrado -->
+          <button 
+            class="btn btn-clipboard" 
+            type="button" 
             @click="copy(outputJSON)"
-          />
+            title="Copy JSON output"
+          >
+            <img :src="CopyIcon" alt="Copy" class="action-icon" />
+          </button>
+
           <PrismEditor
             :modelValue="outputJSON"
             :highlight="highlightJSON"
@@ -123,7 +132,7 @@ const copy = async (text) => {
 
 <style scoped>
 .code-block {
-  background-color: #f8f9fa; /* Fondo gris claro para resaltar el código */
+  background-color: #f8f9fa;
   color: #2c3e50;
   font-family: Consolas, Fira Mono, Menlo, Courier, monospace;
   font-size: 0.875rem;
@@ -132,19 +141,47 @@ const copy = async (text) => {
   border-radius: 0.5rem;
   overflow-x: auto;
   white-space: pre;
-  height: 100%; /* Asegura que ocupe toda la altura disponible dentro del contenedor */
-  overflow-y: auto; /* Si el contenido es más grande que el contenedor, se habilita el scroll */
+  height: 100%;
+  overflow-y: auto;
 }
 
-.copy-btn {
+/* --- Estilos unificados para el botón de copiar (igual que en EmailGenerator) --- */
+.btn-clipboard {
   position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  
+  border: none; /* Sin borde en las cards queda más limpio, o puedes poner 1px solid transparent */
+  background-color: transparent;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s ease;
 }
 
-.copy-btn :deep(.custom-button__icon) {
-  width: 18px;
-  height: 18px;
+.btn-clipboard:focus,
+.btn-clipboard:active {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: rgba(0, 0, 0, 0.05) !important; /* Feedback visual sutil al clickar */
+}
+
+@media (hover: hover) {
+  .btn-clipboard:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.action-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-clipboard:hover .action-icon {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 /* Asegurar que ambas cajas tengan la misma altura */
@@ -157,5 +194,10 @@ const copy = async (text) => {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+/* Ajuste para que el texto no se monte sobre el botón en la caja de URI */
+.pe-5 {
+  padding-right: 3rem !important;
 }
 </style>

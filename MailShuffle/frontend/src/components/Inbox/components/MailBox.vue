@@ -70,7 +70,7 @@ const generateEmail = async () => {
             title: "Error deleting email address!",
             type: "error",
             overrides: {
-              width: "260px",
+              width: "245px",
             },
           });
           return; // Detener el flujo si ocurre un error al eliminar

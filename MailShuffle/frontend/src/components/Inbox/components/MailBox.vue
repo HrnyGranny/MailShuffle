@@ -5,18 +5,15 @@ import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
 
-// QR
-import QrModal from "@/components/Inbox/components/Qr.vue"; 
+// Modales
+import QrModal from "@/components/Inbox/components/QRModal.vue"; 
+import DeleteModal from "@/components/Inbox/components/ReloadModal.vue";
 
-// (Eliminado el import de CopyIcon PNG porque usamos Material Icons)
-
+// Script
 import setMaterialInput from "@/assets/js/material-input";
 
-// Función para manejar cookies
 const setCookie = (name, value, days) => {
-  const expires = new Date(
-    Date.now() + days * 24 * 60 * 60 * 1000
-  ).toUTCString();
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
   document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 };
 
@@ -32,43 +29,51 @@ const apiKey = ref("");
 const emailId = ref(""); 
 const toastRef = ref(null);
 const showQr = ref(false);
+const showDeleteModal = ref(false); // <-- Controla la visibilidad del modal de borrado
 
-// Función para generar un correo temporal
-const generateEmail = async () => {
+// 1. Acción del botón "Reload": Decide si mostrar modal o generar directo
+const handleGenerateClick = async () => {
+  if (email.value && emailId.value && apiKey.value) {
+    // Si ya hay email, pedimos confirmación con el modal
+    showDeleteModal.value = true;
+  } else {
+    // Si no hay email, generamos directamente
+    await performGeneration();
+  }
+};
+
+// 2. Acción de Confirmar en el Modal
+const confirmDelete = async () => {
+  showDeleteModal.value = false; // Cerramos modal
+  
   try {
-    if (email.value && emailId.value && apiKey.value) {
-      const result = await toastRef.value?.showConfirm({
-        title: "Are you sure?",
-        text: "This will delete the current email address and all associated emails!",
-        icon: "warning",
-        confirmText: "Yes, delete it!",
-        confirmButtonColor: "#4e64ee",
-        cancelButtonColor: "#d33",
-      });
+    // Borramos el email actual
+    await deleteEmailAddress(emailId.value, apiKey.value);
+    
+    // Limpiamos estado
+    setCookie("mailshuffle_email", "", -1);
+    setCookie("mailshuffle_apiKey", "", -1);
+    setCookie("mailshuffle_emailId", "", -1);
+    email.value = "";
+    apiKey.value = "";
+    emailId.value = "";
+    
+    // Generamos uno nuevo
+    await performGeneration();
+    
+  } catch (deleteError) {
+    console.error("Error deleting email address:", deleteError);
+    toastRef.value?.showToast({
+      title: "Error deleting email address!",
+      type: "error",
+      overrides: { width: "245px" },
+    });
+  }
+};
 
-      if (result?.isConfirmed) {
-        try {
-          await deleteEmailAddress(emailId.value, apiKey.value);
-          setCookie("mailshuffle_email", "", -1);
-          setCookie("mailshuffle_apiKey", "", -1);
-          setCookie("mailshuffle_emailId", "", -1);
-          email.value = "";
-          apiKey.value = "";
-          emailId.value = "";
-        } catch (deleteError) {
-          console.error("Error deleting email address:", deleteError);
-          toastRef.value?.showToast({
-            title: "Error deleting email address!",
-            type: "error",
-            overrides: { width: "245px" },
-          });
-          return;
-        }
-      } else {
-        return;
-      }
-    }
-
+// 3. Lógica pura de generación (reutilizable)
+const performGeneration = async () => {
+  try {
     const response = await generateTemporalEmail();
     email.value = response.email;
     apiKey.value = response.apiKey;
@@ -97,10 +102,8 @@ const generateEmail = async () => {
 
 const copyToClipboard = async () => {
   if (!email.value) return;
-  
   try {
     await navigator.clipboard.writeText(email.value);
-
     toastRef.value?.showToast({
       title: "Email copied successfully!",
       type: "success",
@@ -133,7 +136,7 @@ onMounted(async () => {
     emailId.value = savedEmailId;
     emit("emailGenerated", { email: email.value, apiKey: apiKey.value });
   } else {
-    await generateEmail();
+    await performGeneration();
   }
 });
 </script>
@@ -141,10 +144,19 @@ onMounted(async () => {
 <template>
   <section class="my-0 pt-0">
     <MaterialToast ref="toastRef" />
+    
     <QrModal 
       :show="showQr" 
       @close="showQr = false" 
     />
+
+    <!-- MODAL DE CONFIRMACIÓN DE BORRADO -->
+    <DeleteModal 
+      :show="showDeleteModal"
+      @close="showDeleteModal = false"
+      @confirm="confirmDelete"
+    />
+
     <div class="container">
       <div class="row justify-content-start">
         <div class="col-12 col-lg-7">
@@ -168,7 +180,6 @@ onMounted(async () => {
                     title="Copy to clipboard"
                     :disabled="!email"
                   >
-                    <!-- Icono Material Copy -->
                     <i class="material-icons">content_copy</i>
                   </button>
                 </template>
@@ -190,7 +201,7 @@ onMounted(async () => {
                 <!-- Botón Reload -->
                 <MaterialButton
                   aria-label="Generate a new email"
-                  @click="generateEmail"
+                  @click="handleGenerateClick"
                   class="custom-button square-btn" 
                 >
                   <i class="material-icons">autorenew</i>
@@ -205,7 +216,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* --- AJUSTE DE TAMAÑO PARA BOTONES CON ICONOS MATERIAL --- */
 .square-btn {
   padding: 0 !important;
   width: 42px !important; 
@@ -221,7 +231,6 @@ onMounted(async () => {
   line-height: 1;
 }
 
-/* --- Estilos para el botón integrado (COPIA DEL ESTILO DE LA X DEL MODAL) --- */
 .btn-clipboard {
   z-index: 4;
   border: 1px solid #d2d6da;
@@ -230,9 +239,7 @@ onMounted(async () => {
   padding: 0 12px;
   border-top-right-radius: 0.375rem !important;
   border-bottom-right-radius: 0.375rem !important;
-  
-  /* Estilos copiados del modal close-btn */
-  color: #777;          /* Color base gris */
+  color: #777;
   transition: all 0.2s;
   cursor: pointer;
   display: flex;
@@ -240,14 +247,12 @@ onMounted(async () => {
   justify-content: center;
 }
 
-/* Estado Hover */
 .btn-clipboard:hover:not(:disabled) {
-  background-color: #f5f5f5; /* Fondo gris muy claro */
-  color: #333;               /* Icono se oscurece */
-  border-color: #d2d6da;     /* Mantenemos borde */
+  background-color: #f5f5f5;
+  color: #333;
+  border-color: #d2d6da;
 }
 
-/* Estado Focus/Active para accesibilidad */
 .btn-clipboard:focus,
 .btn-clipboard:active {
   box-shadow: none !important;
@@ -255,12 +260,10 @@ onMounted(async () => {
   border-color: #d2d6da !important;
 }
 
-/* Ajuste del tamaño del icono dentro del input */
 .btn-clipboard .material-icons {
   font-size: 20px; 
 }
 
-/* --- Estilos para botones externos --- */
 .icon-button {
   transition: transform 0.2s ease;
 }

@@ -1,6 +1,7 @@
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
-import MaterialButton from "@/material_components/MaterialButton.vue";
+import { defineProps, defineEmits, ref, computed } from "vue";
+import MaterialInput from "@/material_components/MaterialInput.vue";
+import MaterialToast from "@/material_components/MaterialToast.vue";
 
 defineProps({
   show: {
@@ -11,17 +12,37 @@ defineProps({
 
 const emit = defineEmits(["close"]);
 
-// Estado del toggle: false por defecto (Full Access)
+// Estado del toggle
 const isReadOnly = ref(false);
+const toastRef = ref(null); 
+
+// Computed para el link simulado
+const shareLink = computed(() => {
+  return `https://mailshuffle.com/share/xyz123${isReadOnly.value ? '?readonly=true' : ''}`;
+});
 
 const close = () => {
   emit("close");
 };
 
-const copyLink = () => {
-  // Lógica simulada de copiado
-  navigator.clipboard.writeText("https://mailshuffle.com/share/xyz123");
-  // Aquí podrías lanzar tu toast de éxito
+const copyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(shareLink.value);
+    
+    toastRef.value?.showToast({
+      title: "Share link copied!",
+      type: "success",
+      overrides: {
+        width: "200px",
+      },
+    });
+  } catch (err) {
+    console.error("Failed to copy: ", err);
+    toastRef.value?.showToast({
+      title: "Failed to copy link",
+      type: "error",
+    });
+  }
 };
 </script>
 
@@ -29,6 +50,8 @@ const copyLink = () => {
   <Teleport to="body">
     <div v-if="show" class="modal-wrapper">
       
+      <MaterialToast ref="toastRef" />
+
       <!-- Backdrop -->
       <div class="modal-backdrop" @click="close"></div>
 
@@ -46,7 +69,6 @@ const copyLink = () => {
 
             <!-- 1. QR Code -->
             <div class="qr-container">
-              <!-- La data cambia según el estado del toggle -->
               <img 
                 :src="`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ShareAccess:${isReadOnly ? 'ReadOnly' : 'Full'}`" 
                 alt="QR Code" 
@@ -60,44 +82,35 @@ const copyLink = () => {
                 <input type="checkbox" v-model="isReadOnly">
                 <span class="slider round"></span>
               </label>
-              <!-- Texto estático, siempre dice "Read Only" -->
               <span class="toggle-label">Read Only</span>
             </div>
             
-            <!-- Texto explicativo dinámico -->
             <p class="info-text">
               {{ isReadOnly 
                 ? 'User can only view emails.' 
                 : 'User can view, delete and generate new emails.' }}
             </p>
 
-            <!-- 3. Botones en Fila -->
-            <div class="buttons-row">
-              <!-- Botón Izquierda: Copiar Enlace -->
-              <MaterialButton
-                aria-label="Copy Link"
-                label="Copy Link"
-                size="medium"
-                backgroundColor="#f0f2f5"
-                borderColor="#d2d6da"
-                textColor="#344767"
-                class="flex-fill"
-                @click="copyLink"
+            <!-- 3. Input Box con botón Copy integrado -->
+            <div class="input-container mt-4">
+              <!-- Eliminado el div wrapper extra para que funcione el Flexbox nativo -->
+              <MaterialInput
+                class="input-group-outline"
+                type="text"
+                v-model="shareLink"
+                readonly
               >
-                <i class="fas fa-link me-2"></i> Copy Link
-              </MaterialButton>
-              
-              <!-- Botón Derecha: Done -->
-              <MaterialButton
-                aria-label="Done"
-                label="Done"
-                size="medium"
-                backgroundColor="#98fe98" 
-                borderColor="#98fe98"
-                textColor="#344767"
-                class="flex-fill"
-                @click="close"
-              />
+                <template #append>
+                  <button 
+                    class="btn btn-clipboard mb-0" 
+                    type="button" 
+                    @click="copyLink"
+                    title="Copy link"
+                  >
+                    <i class="material-icons">content_copy</i>
+                  </button>
+                </template>
+              </MaterialInput>
             </div>
 
           </div>
@@ -108,7 +121,6 @@ const copyLink = () => {
 </template>
 
 <style scoped>
-/* Centrado del modal usando Flexbox para evitar saltos */
 .modal-wrapper {
   position: fixed;
   top: 0;
@@ -201,7 +213,7 @@ const copyLink = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px; /* Un poco más de espacio entre switch y texto */
+  gap: 12px;
   margin-bottom: 0.5rem;
 }
 
@@ -272,20 +284,50 @@ input:checked + .slider:before {
   text-align: center;
   color: #7b809a;
   font-size: 0.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   min-height: 1.2em;
 }
 
-/* --- Botones en Fila --- */
-.buttons-row {
+/* --- CORRECCIÓN FINAL: Uso de Flexbox natural (igual que MailBox.vue) --- */
+.btn-clipboard {
+  z-index: 4;
+  border: 1px solid #d2d6da;
+  border-left: none;
+  background-color: transparent;
+  padding: 0 12px;
+  border-top-right-radius: 0.375rem !important;
+  border-bottom-right-radius: 0.375rem !important;
+  color: #777;
+  transition: all 0.2s;
+  cursor: pointer;
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  /* Eliminamos height: 100% y position: absolute para confiar en el flex del input-group */
 }
 
-.flex-fill {
-  flex: 1;
+.btn-clipboard:hover {
+  background-color: #f5f5f5;
+  color: #333;
+  border-color: #d2d6da;
+}
+
+.btn-clipboard:focus,
+.btn-clipboard:active {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #d2d6da !important;
+}
+
+.btn-clipboard .material-icons {
+  font-size: 20px; 
+}
+
+.input-container :deep(.input-group) {
+  margin-bottom: 0; 
+  /* Asegurar que flex funcione si el componente hijo lo usa */
+  display: flex; 
+  align-items: stretch;
 }
 
 @keyframes popIn {
@@ -296,12 +338,6 @@ input:checked + .slider:before {
   to { 
     opacity: 1; 
     transform: scale(1); 
-  }
-}
-
-@media (max-width: 400px) {
-  .buttons-row {
-    flex-direction: column;
   }
 }
 </style>

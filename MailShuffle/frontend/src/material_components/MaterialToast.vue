@@ -43,32 +43,8 @@ const showToast = ({ title, type = "success", overrides = {} }) => {
   });
 };
 
-const showConfirm = ({
-  title = "Are you sure?",
-  text = "",
-  icon = "question",
-  confirmText = "Yes",
-  cancelText = "Cancel",
-  confirmButtonColor = "#4e64ee",
-  cancelButtonColor = "#d33",
-  ...overrides
-}) => {
-  return Swal.fire({
-    title: `<span style="color:#344767;">${title}</span>`,
-    html: `<span style="color:#7b809a;">${text}</span>`,
-    icon,
-    background: "#fff",
-    showCancelButton: true,
-    confirmButtonText: confirmText,
-    cancelButtonText: cancelText,
-    confirmButtonColor,
-    cancelButtonColor,
-    focusCancel: true,
-    ...overrides,
-  });
-};
-
-defineExpose({ showToast, showConfirm });
+// Exponemos solo showToast
+defineExpose({ showToast });
 </script>
 
 <template>

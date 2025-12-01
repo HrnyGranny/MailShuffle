@@ -2,9 +2,6 @@
 import { computed, ref } from "vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
 import { buildApiUri, buildCodeSnippet, getSampleOutput } from "@/assets/js/code";
-// Eliminado el import de CopyIcon PNG
-
-// PrismJS
 import { PrismEditor } from "vue-prism-editor";
 import "prismjs/themes/prism.css";
 import "vue-prism-editor/dist/prismeditor.min.css";
@@ -12,7 +9,6 @@ import prism from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-json";
 
-// Props
 const props = defineProps({ email: String, apiKey: String });
 const toastRef = ref(null);
 
@@ -27,7 +23,6 @@ const highlightJS = (code) =>
 const highlightJSON = (code) =>
   prism.highlight(code, prism.languages.json, "json");
 
-// Función copiar
 const copy = async (text) => {
   try {
     await navigator.clipboard.writeText(text);
@@ -59,7 +54,7 @@ const copy = async (text) => {
       <small class="text-muted">API URI</small>
       <div class="text-break text-dark pe-5">{{ apiUri }}</div>
       
-      <!-- Botón estilo integrado -->
+      <!-- Integrated copy button -->
       <button 
         class="btn btn-clipboard" 
         type="button" 
@@ -70,7 +65,7 @@ const copy = async (text) => {
       </button>
     </div>
 
-    <!-- 2 columns: code + output -->
+    <!-- Two columns: code + output -->
     <div class="row g-4">
       <!-- Left: Code block -->
       <div class="col-md-6">
@@ -79,7 +74,7 @@ const copy = async (text) => {
         >
           <small class="text-muted">API Call (JavaScript)</small>
           
-          <!-- Botón estilo integrado -->
+          <!-- Integrated copy button -->
           <button 
             class="btn btn-clipboard" 
             type="button" 
@@ -106,7 +101,7 @@ const copy = async (text) => {
         >
           <small class="text-muted">Expected Output (JSON)</small>
           
-          <!-- Botón estilo integrado -->
+          <!-- Integrated copy button -->
           <button 
             class="btn btn-clipboard" 
             type="button" 
@@ -144,7 +139,7 @@ const copy = async (text) => {
   overflow-y: auto;
 }
 
-/* --- ESTILOS ACTUALIZADOS (IGUAL QUE LA X DEL MODAL) --- */
+/* --- Updated clipboard button styles --- */
 .btn-clipboard {
   position: absolute;
   top: 0.5rem;

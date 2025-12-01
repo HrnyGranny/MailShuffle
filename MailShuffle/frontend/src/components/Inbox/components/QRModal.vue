@@ -33,7 +33,7 @@ const copyLink = async () => {
       title: "Share link copied!",
       type: "success",
       overrides: {
-        width: "200px",
+        width: "170px",
       },
     });
   } catch (err) {
@@ -48,17 +48,17 @@ const copyLink = async () => {
 
 <template>
   <Teleport to="body">
-    <div v-if="show" class="modal-wrapper">
-      
-      <MaterialToast ref="toastRef" />
+    <MaterialToast ref="toastRef" class="toast-layer" />
+  </Teleport>
 
+  <Teleport to="body">
+    <div v-if="show" class="modal-wrapper">
       <!-- Backdrop -->
       <div class="modal-backdrop" @click="close"></div>
 
       <!-- Contenedor del Modal -->
       <div class="modal-container">
         <div class="modal-content">
-          
           <!-- Botón de cerrar -->
           <button type="button" class="close-btn" @click="close" aria-label="Close">
             <i class="fas fa-times"></i>
@@ -121,6 +121,19 @@ const copyLink = async () => {
 </template>
 
 <style scoped>
+.toast-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 11000;
+}
+
+.toast-layer :deep(.material-toast) {
+  z-index: 11001 !important;
+}
+
 .modal-wrapper {
   position: fixed;
   top: 0;
@@ -339,5 +352,9 @@ input:checked + .slider:before {
     opacity: 1; 
     transform: scale(1); 
   }
+}
+
+:global(.swal2-container) {
+  z-index: 12000 !important;
 }
 </style>

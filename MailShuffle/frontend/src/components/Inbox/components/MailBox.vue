@@ -4,12 +4,8 @@ import { generateTemporalEmail, deleteEmailAddress } from "@/api/emailService";
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
-
-// Modales
-import QrModal from "@/components/Inbox/components/QRModal.vue"; 
+import QrModal from "@/components/Inbox/components/QRModal.vue";
 import DeleteModal from "@/components/Inbox/components/ReloadModal.vue";
-
-// Script
 import setMaterialInput from "@/assets/js/material-input";
 
 const setCookie = (name, value, days) => {
@@ -23,34 +19,30 @@ const getCookie = (name) => {
   return cookie ? cookie.split("=")[1] : null;
 };
 
-// Variables reactivas
 const email = ref(""); 
 const apiKey = ref(""); 
 const emailId = ref(""); 
 const toastRef = ref(null);
 const showQr = ref(false);
-const showDeleteModal = ref(false); // <-- Controla la visibilidad del modal de borrado
+const showDeleteModal = ref(false);
+const emit = defineEmits(["emailGenerated"]);
 
-// 1. Acción del botón "Reload": Decide si mostrar modal o generar directo
+// 1. Reload button: decide whether to confirm deletion or generate immediately
 const handleGenerateClick = async () => {
   if (email.value && emailId.value && apiKey.value) {
-    // Si ya hay email, pedimos confirmación con el modal
     showDeleteModal.value = true;
   } else {
-    // Si no hay email, generamos directamente
     await performGeneration();
   }
 };
 
-// 2. Acción de Confirmar en el Modal
+// 2. Confirm deletion in modal
 const confirmDelete = async () => {
-  showDeleteModal.value = false; // Cerramos modal
+  showDeleteModal.value = false;
   
   try {
-    // Borramos el email actual
     await deleteEmailAddress(emailId.value, apiKey.value);
     
-    // Limpiamos estado
     setCookie("mailshuffle_email", "", -1);
     setCookie("mailshuffle_apiKey", "", -1);
     setCookie("mailshuffle_emailId", "", -1);
@@ -58,7 +50,6 @@ const confirmDelete = async () => {
     apiKey.value = "";
     emailId.value = "";
     
-    // Generamos uno nuevo
     await performGeneration();
     
   } catch (deleteError) {
@@ -71,7 +62,6 @@ const confirmDelete = async () => {
   }
 };
 
-// 3. Lógica pura de generación (reutilizable)
 const performGeneration = async () => {
   try {
     const response = await generateTemporalEmail();
@@ -123,8 +113,6 @@ const openQrModal = () => {
   showQr.value = true;
 };
 
-const emit = defineEmits(["emailGenerated"]);
-
 onMounted(async () => {
   setMaterialInput();
   const savedEmail = getCookie("mailshuffle_email");
@@ -150,7 +138,7 @@ onMounted(async () => {
       @close="showQr = false" 
     />
 
-    <!-- MODAL DE CONFIRMACIÓN DE BORRADO -->
+    <!-- Delete confirmation modal -->
     <DeleteModal 
       :show="showDeleteModal"
       @close="showDeleteModal = false"
@@ -186,10 +174,9 @@ onMounted(async () => {
               </MaterialInput>
             </div>
             
-            <!-- Columna de botones externos -->
+            <!-- External button column -->
             <div class="col-12 col-md-3">
               <div class="button-container">
-                <!-- Botón QR -->
                 <MaterialButton
                   aria-label="Show QR Code"
                   @click="openQrModal"
@@ -198,7 +185,6 @@ onMounted(async () => {
                   <i class="material-icons">qr_code_2</i>
                 </MaterialButton>
                 
-                <!-- Botón Reload -->
                 <MaterialButton
                   aria-label="Generate a new email"
                   @click="handleGenerateClick"

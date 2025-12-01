@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
-import { deleteEmailById } from "@/api/emailService"; // API
+import { deleteEmailById } from "@/api/emailService";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
 import { PrismEditor } from "vue-prism-editor";
@@ -10,59 +10,40 @@ import prism from "prismjs";
 import "prismjs/components/prism-markup";
 import { useSanitizedBody, renderEmailToShadow } from "@/assets/js/emailParser";
 
-// Eliminados los imports de GoBack y Delete (PNG)
-
 const props = defineProps({
-  email: {
-    type: Object,
-    required: true, // Objeto de correo que se esta manejando
-  },
-  address: {
-    type: String,
-    required: true, // Dirección de correo
-  },
-  apiKey: {
-    type: String,
-    required: true, // API key
-  },
+  email: { type: Object, required: true },
+  address: { type: String, required: true },
+  apiKey: { type: String, required: true },
 });
 
 const emit = defineEmits(["back", "delete"]);
 
 const shadowContainer = ref(null);
 const toastRef = ref(null);
-const activeTab = ref('html'); // Por defecto la pestaña HTML está activa
+const activeTab = ref("html");
 
-// Convert props.email to a ref so we can use it with our composables
 const emailRef = computed(() => props.email);
-
-// Use the composables from our utility file
 const sanitizedBody = useSanitizedBody(emailRef);
 const htmlSourceBody = computed(() => props.email?.body ?? "");
 const highlightPlainText = (code) =>
   prism.highlight(code, prism.languages.html || prism.languages.markup, "html");
 
 const renderToShadow = () => {
-  renderEmailToShadow(shadowContainer.value, sanitizedBody.value);
+  if (shadowContainer.value) {
+    renderEmailToShadow(shadowContainer.value, sanitizedBody.value);
+  }
 };
 
-onMounted(() => {
-  renderToShadow();
-});
+onMounted(renderToShadow);
 
-// Re-renderizar el shadow DOM cuando se cambia entre pestañas
-watch(() => activeTab.value, (newValue) => {
-  if (newValue === 'html') {
-    // Pequeño timeout para asegurar que el DOM está listo
-    setTimeout(() => {
-      renderToShadow();
-    }, 0);
+watch(activeTab, (tab) => {
+  if (tab === "html") {
+    setTimeout(renderToShadow, 0);
   }
 });
 
-// También re-renderizar cuando cambia el contenido
-watch(() => sanitizedBody.value, () => {
-  if (activeTab.value === 'html') {
+watch(sanitizedBody, () => {
+  if (activeTab.value === "html") {
     renderToShadow();
   }
 });
@@ -70,27 +51,24 @@ watch(() => sanitizedBody.value, () => {
 const formattedDate = computed(() => {
   if (!props.email?.receivedAt) return "Unknown date";
   const date = new Date(props.email.receivedAt);
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric', month: 'long', day: 'numeric',
-    hour: '2-digit', minute: '2-digit'
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   }).format(date);
 });
 
-// Eliminar un correo específico
 const deleteEmail = async () => {
   try {
-    // Validar que las props necesarias estén definidas
     if (!props.email?._id || !props.address || !props.apiKey) {
       console.error("Missing required data: email ID, address, or API key is undefined.");
       return;
     }
 
-    console.log("Deleting email with ID:", props.email._id, "Address:", props.address, "API Key:", props.apiKey);
-
-    // Llamar a la API para eliminar el correo
     await deleteEmailById(props.address, props.apiKey, props.email._id);
 
-    // Mostrar alerta de éxito al eliminar
     toastRef.value?.showToast({
       title: "Email deleted successfully!",
       type: "success",
@@ -99,14 +77,11 @@ const deleteEmail = async () => {
       },
     });
 
-    // Emitir evento de eliminación para notificar al componente padre
     emit("delete", props.email._id);
-    // Emitir evento de volver para cerrar la vista del correo
     emit("back");
   } catch (error) {
     console.error("Error deleting email:", error);
 
-    // Mostrar alerta de error
     toastRef.value?.showToast({
       title: "Error deleting email!",
       type: "error",
@@ -117,71 +92,61 @@ const deleteEmail = async () => {
   }
 };
 
-// Formatear el remitente del correo
 const formattedSender = computed(() => {
   if (!props.email?.sender) return "Unknown";
-  
-  // Intentar extraer el nombre si tiene formato "Nombre <correo@ejemplo.com>"
+
   const matches = props.email.sender.match(/(.*?)\s*<(.+?)>/);
   if (matches && matches[1]) {
     return matches[1].trim();
   }
-  
+
   return props.email.sender;
 });
 
-// Obtener el email del remitente
 const senderEmail = computed(() => {
   if (!props.email?.sender) return "";
-  
+
   const matches = props.email.sender.match(/<(.+?)>/);
   if (matches && matches[1]) {
     return matches[1];
   }
-  
-  // Si no hay formato <email>, devolver el sender completo si parece un email
-  if (props.email.sender.includes('@')) {
+
+  if (props.email.sender.includes("@")) {
     return props.email.sender;
   }
-  
+
   return "";
 });
 
-// Obtener iniciales para el avatar
 const senderInitials = computed(() => {
   const sender = formattedSender.value;
   if (!sender || sender === "Unknown") return "?";
-  
-  // Si hay espacios, tomar la primera letra de cada palabra (máximo 2)
-  const words = sender.split(' ');
+
+  const words = sender.split(" ");
   if (words.length > 1) {
     return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
   }
-  
-  // Si es una sola palabra, tomar la primera letra
+
   return sender.charAt(0).toUpperCase();
 });
 
-// Color aleatorio consistente basado en el email del remitente
 const avatarColor = computed(() => {
   const colors = [
-    { bg: '#BBDEFB', text: '#1565C0' }, // Blue
-    { bg: '#C8E6C9', text: '#2E7D32' }, // Green
-    { bg: '#FFECB3', text: '#FF8F00' }, // Yellow
-    { bg: '#F8BBD0', text: '#C2185B' }, // Pink
-    { bg: '#D1C4E9', text: '#4527A0' }, // Purple
-    { bg: '#B2EBF2', text: '#00838F' }, // Cyan
-    { bg: '#98FE98', text: '#344767' }, // Original Green
+    { bg: "#BBDEFB", text: "#1565C0" },
+    { bg: "#C8E6C9", text: "#2E7D32" },
+    { bg: "#FFECB3", text: "#FF8F00" },
+    { bg: "#F8BBD0", text: "#C2185B" },
+    { bg: "#D1C4E9", text: "#4527A0" },
+    { bg: "#B2EBF2", text: "#00838F" },
+    { bg: "#98FE98", text: "#344767" },
   ];
-  
-  // Si no hay email, usar el color original
+
   if (!senderEmail.value) return colors[6];
-  
-  // Generar índice basado en la dirección de correo
-  const hashCode = senderEmail.value.split('').reduce((acc, char) => {
+
+  const hashCode = senderEmail.value.split("").reduce((acc, char) => {
     return char.charCodeAt(0) + ((acc << 5) - acc);
   }, 0);
-  
+
   const index = Math.abs(hashCode) % colors.length;
   return colors[index];
 });

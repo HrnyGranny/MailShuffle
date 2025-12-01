@@ -1,9 +1,8 @@
 <script setup>
 import { computed, ref } from "vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
-// Eliminamos MaterialButton ya que usaremos botones nativos para el estilo "icon-only"
 import { buildApiUri, buildCodeSnippet, getSampleOutput } from "@/assets/js/code";
-import CopyIcon from "@/assets/img/iconos/copiar.png";
+// Eliminado el import de CopyIcon PNG
 
 // PrismJS
 import { PrismEditor } from "vue-prism-editor";
@@ -67,7 +66,7 @@ const copy = async (text) => {
         @click="copy(apiUri)"
         title="Copy API URI"
       >
-        <img :src="CopyIcon" alt="Copy" class="action-icon" />
+        <i class="material-icons">content_copy</i>
       </button>
     </div>
 
@@ -87,7 +86,7 @@ const copy = async (text) => {
             @click="copy(codeJS)"
             title="Copy JavaScript snippet"
           >
-            <img :src="CopyIcon" alt="Copy" class="action-icon" />
+            <i class="material-icons">content_copy</i>
           </button>
 
           <PrismEditor
@@ -114,7 +113,7 @@ const copy = async (text) => {
             @click="copy(outputJSON)"
             title="Copy JSON output"
           >
-            <img :src="CopyIcon" alt="Copy" class="action-icon" />
+            <i class="material-icons">content_copy</i>
           </button>
 
           <PrismEditor
@@ -145,43 +144,43 @@ const copy = async (text) => {
   overflow-y: auto;
 }
 
-/* --- Estilos unificados para el botón de copiar (igual que en EmailGenerator) --- */
+/* --- ESTILOS ACTUALIZADOS (IGUAL QUE LA X DEL MODAL) --- */
 .btn-clipboard {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
   z-index: 10;
   
-  border: none; /* Sin borde en las cards queda más limpio, o puedes poner 1px solid transparent */
+  border: none;
   background-color: transparent;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
+  padding: 0.4rem; /* Ajustado para ser cuadrado/redondo */
+  border-radius: 50%; /* Redondo como la X */
+  
+  /* Colores base (Gris suave) */
+  color: #777;
+  transition: all 0.2s ease;
+  
+  /* Flex para centrar el icono perfectamente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover Effect (Fondo gris claro + Icono oscuro) */
+.btn-clipboard:hover {
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 .btn-clipboard:focus,
 .btn-clipboard:active {
   box-shadow: none !important;
   outline: none !important;
-  background-color: rgba(0, 0, 0, 0.05) !important; /* Feedback visual sutil al clickar */
 }
 
-@media (hover: hover) {
-  .btn-clipboard:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-}
-
-.action-icon {
-  width: 20px;
-  height: 20px;
-  opacity: 0.6;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.btn-clipboard:hover .action-icon {
-  opacity: 1;
-  transform: scale(1.1);
+/* Ajuste del tamaño del icono Material */
+.btn-clipboard .material-icons {
+  font-size: 20px;
 }
 
 /* Asegurar que ambas cajas tengan la misma altura */

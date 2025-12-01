@@ -5,11 +5,11 @@ import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialButton from "@/material_components/MaterialButton.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
 
-// Importar iconos desde assets
-import CopyIcon from "@/assets/img/iconos/copiar.png";
-import ReloadIcon from "@/assets/img/iconos/recargar.png";
+// QR
+import QrModal from "@/components/Inbox/components/Qr.vue"; 
 
-// material-input
+// (Eliminado el import de CopyIcon PNG porque usamos Material Icons)
+
 import setMaterialInput from "@/assets/js/material-input";
 
 // Función para manejar cookies
@@ -27,11 +27,11 @@ const getCookie = (name) => {
 };
 
 // Variables reactivas
-const email = ref(""); // Variable para almacenar el correo generado
-const apiKey = ref(""); // Variable para almacenar la API Key
-const emailId = ref(""); // Variable para almacenar el ID del correo
+const email = ref(""); 
+const apiKey = ref(""); 
+const emailId = ref(""); 
 const toastRef = ref(null);
-// Eliminado isCopying para quitar la animación
+const showQr = ref(false);
 
 // Función para generar un correo temporal
 const generateEmail = async () => {
@@ -95,12 +95,10 @@ const generateEmail = async () => {
   }
 };
 
-// Función para copiar el contenido del input al portapapeles
 const copyToClipboard = async () => {
   if (!email.value) return;
   
   try {
-    // Eliminada la lógica de animación isCopying
     await navigator.clipboard.writeText(email.value);
 
     toastRef.value?.showToast({
@@ -118,10 +116,8 @@ const copyToClipboard = async () => {
   }
 };
 
-// Placeholder para la futura funcionalidad del QR
 const openQrModal = () => {
-  console.log("Abrir modal QR (Pendiente de implementación)");
-  copyToClipboard(); 
+  showQr.value = true;
 };
 
 const emit = defineEmits(["emailGenerated"]);
@@ -145,13 +141,16 @@ onMounted(async () => {
 <template>
   <section class="my-0 pt-0">
     <MaterialToast ref="toastRef" />
+    <QrModal 
+      :show="showQr" 
+      @close="showQr = false" 
+    />
     <div class="container">
       <div class="row justify-content-start">
-        <div class="col-12 col-lg-8">
-          <!-- Aumentado g-2 a g-3 para más separación entre columnas -->
+        <div class="col-12 col-lg-7">
           <div class="row g-3 align-items-stretch">
             
-            <!-- Columna del Input + Botón interno de copiar -->
+            <!-- Columna del Input -->
             <div class="col-12 col-md-9">
               <MaterialInput
                 class="input-group-outline border-danger"
@@ -161,7 +160,6 @@ onMounted(async () => {
                 :error="true"
                 readonly
               >
-                <!-- Botón integrado de copiar (dentro del input) -->
                 <template #append>
                   <button 
                     class="btn btn-clipboard mb-0" 
@@ -170,40 +168,35 @@ onMounted(async () => {
                     title="Copy to clipboard"
                     :disabled="!email"
                   >
-                    <!-- Eliminada clase dinámica de animación -->
-                    <img 
-                        :src="CopyIcon" 
-                        alt="Copy" 
-                        class="action-icon-input" 
-                    />
+                    <!-- Icono Material Copy -->
+                    <i class="material-icons">content_copy</i>
                   </button>
                 </template>
               </MaterialInput>
             </div>
             
-            <!-- Columna de botones externos (QR + Reload) -->
+            <!-- Columna de botones externos -->
             <div class="col-12 col-md-3">
               <div class="button-container">
-                <!-- Botón futuro QR -->
+                <!-- Botón QR -->
                 <MaterialButton
-                  :icon="CopyIcon"
-                  alt="QR Code"
                   aria-label="Show QR Code"
                   @click="openQrModal"
-                  class="custom-button"
-                />
+                  class="custom-button square-btn" 
+                >
+                  <i class="material-icons">qr_code_2</i>
+                </MaterialButton>
                 
                 <!-- Botón Reload -->
                 <MaterialButton
-                  :icon="ReloadIcon"
-                  alt="Reload"
                   aria-label="Generate a new email"
                   @click="generateEmail"
-                  class="custom-button"
-                />
+                  class="custom-button square-btn" 
+                >
+                  <i class="material-icons">autorenew</i>
+                </MaterialButton>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -212,7 +205,23 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* --- Estilos nuevos para el botón integrado --- */
+/* --- AJUSTE DE TAMAÑO PARA BOTONES CON ICONOS MATERIAL --- */
+.square-btn {
+  padding: 0 !important;
+  width: 42px !important; 
+  min-width: 42px !important;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.material-icons {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* --- Estilos para el botón integrado (COPIA DEL ESTILO DE LA X DEL MODAL) --- */
 .btn-clipboard {
   z-index: 4;
   border: 1px solid #d2d6da;
@@ -221,50 +230,43 @@ onMounted(async () => {
   padding: 0 12px;
   border-top-right-radius: 0.375rem !important;
   border-bottom-right-radius: 0.375rem !important;
-  /* Eliminada transición de fondo para respuesta instantánea */
+  
+  /* Estilos copiados del modal close-btn */
+  color: #777;          /* Color base gris */
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Forzamos que el borde y el fondo se mantengan al hacer click/foco */
+/* Estado Hover */
+.btn-clipboard:hover:not(:disabled) {
+  background-color: #f5f5f5; /* Fondo gris muy claro */
+  color: #333;               /* Icono se oscurece */
+  border-color: #d2d6da;     /* Mantenemos borde */
+}
+
+/* Estado Focus/Active para accesibilidad */
 .btn-clipboard:focus,
-.btn-clipboard:active,
-.btn-clipboard:active:focus {
+.btn-clipboard:active {
   box-shadow: none !important;
   outline: none !important;
-  border-color: #d2d6da !important; /* Mismo color que el input */
-  background-color: transparent !important; /* Evita que se ponga gris oscuro */
+  border-color: #d2d6da !important;
 }
 
-@media (hover: hover) {
-  .btn-clipboard:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
+/* Ajuste del tamaño del icono dentro del input */
+.btn-clipboard .material-icons {
+  font-size: 20px; 
 }
 
-.action-icon-input {
-  width: 20px;
-  height: 20px;
-  opacity: 0.6;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.btn-clipboard:hover .action-icon-input {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-/* --- Estilos originales restaurados para la responsividad --- */
-
+/* --- Estilos para botones externos --- */
 .icon-button {
   transition: transform 0.2s ease;
 }
 
 .icon-button:hover {
   transform: translateY(-2px);
-}
-
-.action-icon {
-  width: 22px;
-  height: 22px;
 }
 
 .button-container {
@@ -296,7 +298,6 @@ onMounted(async () => {
   }
 }
 
-/* Estilo para mantener el campo enfocado */
 input:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);

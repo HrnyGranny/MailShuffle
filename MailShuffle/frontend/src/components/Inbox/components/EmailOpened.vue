@@ -10,9 +10,7 @@ import prism from "prismjs";
 import "prismjs/components/prism-markup";
 import { useSanitizedBody, renderEmailToShadow } from "@/assets/js/emailParser";
 
-// icon
-import GoBack from "../../../assets/img/iconos/goback.png";
-import Delete from "../../../assets/img/iconos/delete.png";
+// Eliminados los imports de GoBack y Delete (PNG)
 
 const props = defineProps({
   email: {
@@ -228,29 +226,29 @@ const avatarColor = computed(() => {
 
           <!-- Sección derecha: Botones de acción -->
           <div class="d-flex gap-2 flex-shrink-0">
+            <!-- Botón Back con Material Icon -->
             <MaterialButton
               size="large"
-              :icon="GoBack"
               alt="Back"
               aria-label="Go back to inbox"
-              :style="{
-                '--button-large-icon-width': '75px',
-              }"
+              class="square-btn"
               @click="$emit('back')"
-            />
+            >
+              <i class="material-icons">arrow_back</i>
+            </MaterialButton>
+            
+            <!-- Botón Delete con Material Icon -->
             <MaterialButton
               size="large"
-              :icon="Delete"
               backgroundColor="#f28b82"
               borderColor="#f28b82"
-              textColor="#ffffff"
               alt="Delete"
               aria-label="Delete email"
-              :style="{
-                '--button-large-icon-width': '50px',
-              }"
+              class="square-btn"
               @click="deleteEmail"
-            />
+            >
+              <i class="material-icons">delete</i>
+            </MaterialButton>
           </div>
         </div>
       </div>
@@ -312,7 +310,7 @@ const avatarColor = computed(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 /* Estilos para el header y otros elementos */
 .avatar-circle {
   width: 3rem;
@@ -459,6 +457,21 @@ const avatarColor = computed(() => {
   color: #344767;
 }
 
+/* --- NUEVOS ESTILOS PARA BOTONES CUADRADOS CON MATERIAL ICONS --- */
+.square-btn {
+  padding: 0 !important;
+  width: 48px !important;  /* Ancho para botón "Large" */
+  height: 48px !important; /* Alto para botón "Large" */
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.material-icons {
+  font-size: 24px;
+  line-height: 1;
+}
+
 @media (max-width: 768px) {
   
   .email-opened .avatar-circle {
@@ -500,6 +513,16 @@ const avatarColor = computed(() => {
 
   .email-opened .card-header .d-flex.gap-2 {
     align-self: flex-end;
+    width: 100%;
+    margin-top: 1rem;
   }
+  
+  .square-btn {
+    width: auto !important;
+    flex: 1;
+    padding: 0 1rem !important;
+    border-radius: 0.75rem;
+  }
+  
 }
 </style>

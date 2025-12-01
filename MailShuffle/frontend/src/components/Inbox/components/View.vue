@@ -7,6 +7,8 @@ import "vue-prism-editor/dist/prismeditor.min.css";
 
 const props = defineProps({
   title: { type: String, required: true },
+  // Prop para controlar qué pestaña está activa visualmente
+  activeTab: { type: String, default: 'preview' }
 });
 
 const recipient = ref("");
@@ -146,7 +148,8 @@ onUnmounted(() => {
             <ul class="nav nav-pills nav-fill flex-row p-1" role="tablist">
               <li class="nav-item">
                 <a
-                  class="nav-link mb-0 px-0 py-1 active"
+                  class="nav-link mb-0 px-0 py-1"
+                  :class="{ active: activeTab === 'preview' }"
                   href="#"
                   role="tab"
                   aria-selected="true"
@@ -158,6 +161,7 @@ onUnmounted(() => {
               <li class="nav-item">
                 <a
                   class="nav-link mb-0 px-0 py-1"
+                  :class="{ active: activeTab === 'code' }"
                   href="#"
                   role="tab"
                   aria-selected="false"

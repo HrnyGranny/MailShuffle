@@ -6,9 +6,8 @@ import MaterialToast from "@/material_components/MaterialToast.vue";
 import { PrismEditor } from "vue-prism-editor";
 import "prismjs/themes/prism.css";
 import "vue-prism-editor/dist/prismeditor.min.css";
-import prism from "prismjs";
-import "prismjs/components/prism-markup";
 import { useSanitizedBody, renderEmailToShadow } from "@/assets/js/emailParser";
+import { formatHTML, highlightCode } from "@/assets/js/codeFormatter";
 
 const props = defineProps({
   email: { type: Object, required: true },
@@ -25,8 +24,7 @@ const activeTab = ref("html");
 const emailRef = computed(() => props.email);
 const sanitizedBody = useSanitizedBody(emailRef);
 const htmlSourceBody = computed(() => props.email?.body ?? "");
-const highlightPlainText = (code) =>
-  prism.highlight(code, prism.languages.html || prism.languages.markup, "html");
+const formattedHtmlSource = computed(() => formatHTML(htmlSourceBody.value));
 
 const renderToShadow = () => {
   if (shadowContainer.value) {
@@ -51,7 +49,7 @@ watch(sanitizedBody, () => {
 const formattedDate = computed(() => {
   if (!props.email?.receivedAt) return "Unknown date";
   const date = new Date(props.email.receivedAt);
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat("en-GB", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -253,8 +251,8 @@ const avatarColor = computed(() => {
           <!-- Contenido del email en texto plano -->
           <div v-else-if="activeTab === 'plain'" class="w-100 plain-text-content">
             <PrismEditor
-              :modelValue="htmlSourceBody || ''"
-              :highlight="highlightPlainText"
+              :modelValue="formattedHtmlSource"
+              :highlight="highlightCode"
               line-numbers
               readonly
               class="code-block"

@@ -91,7 +91,7 @@ const formatTime = (dateString) => {
   const now = new Date();
 
   if (date.toDateString() === now.toDateString()) {
-    return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    return date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
   }
 
   const yesterday = new Date();
@@ -101,10 +101,10 @@ const formatTime = (dateString) => {
   }
 
   if (date.getFullYear() === now.getFullYear()) {
-    return date.toLocaleDateString("en-US", { day: "numeric", month: "short" });
+    return date.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
   }
 
-  return date.toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "2-digit" });
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "2-digit" });
 };
 
 const backToList = () => {

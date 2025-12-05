@@ -8,25 +8,9 @@ const configureDOMPurify = () => {
   DOMPurify.addHook("afterSanitizeAttributes", function (node) {
     // Make links open in new tab with security attributes
     if (node.tagName === "A") {
-      if (node.hasAttribute("target")) {
-        node.setAttribute("rel", "noopener noreferrer");
-      } else {
-        node.setAttribute("target", "_blank");
-        node.setAttribute("rel", "noopener noreferrer");
-      }
-    }
-
-    // Add accessibility and styling to images
-    if (node.tagName === "IMG") {
-      if (!node.hasAttribute("alt")) {
-        node.setAttribute("alt", "Email image");
-      }
-      node.classList.add("img-fluid");
-    }
-
-    // Add Bootstrap styling to tables
-    if (node.tagName === "TABLE") {
-      node.classList.add("table");
+      // Force all links to open in new tab to prevent tabnabbing and app navigation hijacking
+      node.setAttribute("target", "_blank");
+      node.setAttribute("rel", "noopener noreferrer");
     }
   });
 };
@@ -44,82 +28,10 @@ const useSanitizedBody = (email) => {
 
     return DOMPurify.sanitize(wrappedBody, {
       ALLOWED_TAGS: [
-        "a",
-        "b",
-        "blockquote",
-        "br",
-        "caption",
-        "code",
-        "div",
-        "em",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "hr",
-        "i",
-        "img",
-        "li",
-        "nl",
-        "ol",
-        "p",
-        "pre",
-        "span",
-        "strike",
-        "strong",
-        "sub",
-        "sup",
-        "table",
-        "tbody",
-        "td",
-        "th",
-        "thead",
-        "tr",
-        "u",
-        "ul",
-        "font",
-        "center",
-        "style",
-        "section",
-        "article",
-        "header",
-        "footer",
+        "a", "abbr", "acronym", "address", "area", "article", "aside", "b", "bdi", "bdo", "big", "blockquote", "br", "button", "caption", "center", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "font", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hr", "i", "img", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "meter", "nav", "ol", "optgroup", "option", "output", "p", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "section", "select", "small", "span", "strike", "strong", "sub", "summary", "sup", "style", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "tt", "u", "ul", "var", "wbr"
       ],
       ALLOWED_ATTR: [
-        "align",
-        "alt",
-        "bgcolor",
-        "border",
-        "cellpadding",
-        "cellspacing",
-        "class",
-        "color",
-        "colspan",
-        "data-*",
-        "dir",
-        "height",
-        "href",
-        "id",
-        "lang",
-        "name",
-        "rowspan",
-        "scope",
-        "size",
-        "span",
-        "src",
-        "start",
-        "style",
-        "target",
-        "title",
-        "type",
-        "valign",
-        "width",
-        "rel",
-        "background",
-        "role",
-        "aria-*",
+        "accept", "action", "align", "alt", "autocomplete", "background", "bgcolor", "border", "cellpadding", "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "coords", "datetime", "default", "dir", "disabled", "download", "enctype", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "ismap", "label", "lang", "list", "loop", "low", "max", "maxlength", "media", "method", "min", "multiple", "name", "noshade", "novalidate", "nowrap", "open", "optimum", "pattern", "placeholder", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "rules", "scope", "selected", "shape", "size", "span", "spellcheck", "src", "srcset", "start", "step", "style", "summary", "tabindex", "target", "title", "type", "usemap", "valign", "value", "width", "wrap", "aria-*", "data-*"
       ],
       ADD_TAGS: ["style", "meta"],
       ADD_ATTR: ["target", "rel"],
@@ -139,106 +51,38 @@ const getEmailStyles = () => {
   return `
     :host {
       all: initial;
-      font-family: var(--bs-font-sans-serif);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: #212529;
       line-height: 1.5;
+      display: block;
+      background-color: #ffffff;
     }
 
-    a { 
-      color: #0d6efd; 
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    a:hover { 
-      text-decoration: underline;
-      color: #0a58ca;
-    }
-
+    /* Reset styles to allow email's own styles to work better */
+    a { color: #0d6efd; text-decoration: underline; }
+    
+    /* Ensure images don't overflow */
     img { 
       max-width: 100%; 
       height: auto; 
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      vertical-align: middle;
     }
 
+    /* Basic table reset */
     table {
-      width: 100%;
-      table-layout: auto;
       border-collapse: collapse;
-      margin-bottom: 1rem;
-      border-radius: 4px;
-      overflow: hidden;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
     }
 
-    th, td {
-      padding: 0.75rem;
-      vertical-align: top;
-      border-top: 1px solid #dee2e6;
+    /* Allow email content to define its own look mostly */
+    .email-content-wrapper {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
     }
-
-    thead th {
-      vertical-align: bottom;
-      border-bottom: 2px solid #dee2e6;
-      background-color: rgba(0,0,0,0.02);
-    }
-
-    blockquote {
-      border-left: 4px solid #98fe98;
-      margin-left: 0;
-      padding: 0.5rem 0 0.5rem 1rem;
-      color: #495057;
-      background-color: rgba(152, 254, 152, 0.05);
-      border-radius: 0 4px 4px 0;
-    }
-
-    code {
-      font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.875em;
-      color: #d63384;
-      padding: 0.2em 0.4em;
-      background-color: rgba(0,0,0,0.05);
-      border-radius: 3px;
-    }
-
-    pre {
-      font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      background-color: #f8f9fa;
-      border-radius: 4px;
-      overflow: auto;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      line-height: 1.2;
-      color: #212529;
-    }
-
-    p {
-      margin-top: 0;
-      margin-bottom: 1rem;
-    }
-
-    ul, ol {
-      padding-left: 2rem;
-      margin-top: 0;
-      margin-bottom: 1rem;
-    }
-
-    hr {
-      margin: 1.5rem 0;
-      color: #dee2e6;
-      opacity: 0.25;
-    }
-
-    .email-content-wrapper * {
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
+    
+    /* Fix for some email clients specific styles */
     [style*="background-image"] {
       background-size: cover !important;
       background-position: center !important;

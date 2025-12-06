@@ -113,7 +113,6 @@ onMounted(() => {
 // Variables de color
 $accent-color: #98FE98;
 $hover-color: darken(#98FE98, 5%);
-$background: #ffffff;
 
 // Mixins
 @mixin transition($property: all, $duration: 0.3s) {
@@ -123,7 +122,6 @@ $background: #ffffff;
 // Estilos de sección
 .why-section {
   padding: 1.8rem 0;
-  background-color: $background;
   position: relative;
   overflow: hidden;
 }

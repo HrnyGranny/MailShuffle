@@ -193,8 +193,11 @@ const isFeatureInFreePlan = (index) => {
 </script>
 
 <template>
-  <div v-if="props.show" class="modal-backdrop" @click="closeModal"></div>
-  <div v-if="props.show" class="modal-container" @click.stop>
+  <Transition name="backdrop">
+    <div v-if="props.show" class="modal-backdrop" @click="closeModal"></div>
+  </Transition>
+  <Transition name="modal">
+    <div v-if="props.show" class="modal-container" @click.stop>
     <div class="modal-content">
       <MaterialToast ref="toastRef" />
       <!-- Reemplazamos el botón de cerrar anterior por el nuevo con icono Font Awesome -->
@@ -381,8 +384,8 @@ const isFeatureInFreePlan = (index) => {
       </div>
     </div>
   </div>
+  </Transition>
 </template>
-
 <style scoped>
 /* Modal styles */
 .modal-backdrop {
@@ -442,6 +445,7 @@ const isFeatureInFreePlan = (index) => {
 
 /* Premium card */
 .premium-card {
+  position: relative;
   border-radius: 15px;
   overflow: hidden;
 }
@@ -614,6 +618,66 @@ const isFeatureInFreePlan = (index) => {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Premium Animation Transitions */
+.backdrop-enter-active,
+.backdrop-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.backdrop-enter-from,
+.backdrop-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active {
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal-leave-active {
+  transition: all 0.4s cubic-bezier(0.32, 0, 0.67, 0);
+}
+
+.modal-enter-from {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.modal-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.modal-enter-to,
+.modal-leave-from {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) perspective(1000px) rotateX(0);
+}
+
+/* Add a subtle shine effect on entrance */
+.premium-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: shine 1.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 20;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 
 /* Responsive adjustments */

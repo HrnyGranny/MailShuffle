@@ -159,14 +159,14 @@ const avatarColor = computed(() => {
       <div class="card-header bg-white py-4 px-4 border-0 border-bottom border-light">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-start align-items-md-center">
           <!-- Sección izquierda: Avatar e información del asunto (reemplazando al remitente) -->
-          <div class="d-flex align-items-start w-100">
+          <div class="d-flex align-items-start flex-grow-1 overflow-hidden">
             <div
               class="avatar-circle flex-shrink-0 me-3"
               :style="{ backgroundColor: avatarColor.bg, color: avatarColor.text }"
             >
               {{ senderInitials }}
             </div>
-            <div class="overflow-hidden flex-grow-1">
+            <div class="overflow-hidden flex-grow-1" style="min-width: 0;">
               <!-- Asunto reemplaza completamente al remitente -->
               <h5 class="mb-1 fw-semibold text-truncate email-subject">
                 {{ email.subject || "(No subject)" }}
@@ -180,7 +180,7 @@ const avatarColor = computed(() => {
                   <i class="bi bi-envelope-fill me-1 small"></i>{{ senderEmail }}
                 </p>
                 <span v-if="senderEmail" class="text-muted d-none d-sm-inline">•</span>
-                <p class="text-muted small mb-0">
+                <p class="text-muted small mb-0 flex-shrink-0">
                   <i class="bi bi-clock me-1 small"></i>{{ formattedDate }}
                 </p>
               </div>
@@ -188,7 +188,7 @@ const avatarColor = computed(() => {
           </div>
 
           <!-- Sección derecha: Botones de acción -->
-          <div class="d-flex gap-2 flex-shrink-0">
+          <div class="d-flex gap-2 flex-shrink-0 ms-md-3 align-self-start align-self-md-center">
             <!-- Botón Back con Material Icon -->
             <MaterialButton
               size="large"

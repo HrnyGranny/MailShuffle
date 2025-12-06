@@ -436,32 +436,6 @@ const avatarColor = computed(() => {
 }
 
 @media (max-width: 768px) {
-  
-  .email-opened .avatar-circle {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1rem;
-  }
-  
-  .email-opened .btn-action {
-    width: 38px;
-    height: 38px;
-  }
-
-  .email-opened .card-header .d-flex.flex-column {
-    align-items: stretch !important;
-  }
-
-  .email-opened .email-sender {
-    max-width: 100%;
-  }
-
-  .email-opened .card-header .d-flex.gap-2 {
-    align-self: flex-end;
-  }
-}
-
-@media (max-width: 576px) {
   .email-opened .card-header .d-flex.align-items-start {
     flex-wrap: wrap;
   }

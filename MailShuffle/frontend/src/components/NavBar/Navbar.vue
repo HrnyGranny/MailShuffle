@@ -141,7 +141,7 @@ watch(
         @click.prevent="scrollToTop"
       >
         <img 
-          src="@/assets/img/logos/MailShuffleIcoAlone.png" 
+          src="@/assets/img/logos/MailShuffleIcoAlone2.png" 
           alt="Logo" 
           class="me-2 logo-icon" 
           style="width: 22px; height: 22px; transform: translateY(-3px);" 
@@ -163,7 +163,7 @@ watch(
         @click.prevent="scrollToTop"
       >
         <img 
-          src="@/assets/img/logos/MailShuffleIcoAlone.png" 
+          src="@/assets/img/logos/MailShuffleIcoAlone2.png" 
           alt="Logo" 
           class="me-2 logo-icon" 
           style="width: 22px; height: 22px; transform: translateY(-3px);" 

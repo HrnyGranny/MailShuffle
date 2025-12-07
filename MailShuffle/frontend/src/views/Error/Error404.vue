@@ -25,7 +25,7 @@
 
       <!-- El Avión -->
       <div class="plane-wrapper">
-        <img src="@/assets/img/PlaneAlone.png" alt="Plane" class="kamikaze-plane" />
+        <img src="@/assets/img/PlaneAlone2.png" alt="Plane" class="kamikaze-plane" />
         <!-- Humo negro en la cola -->
         <div class="smoke-trail">
           <div class="smoke s1"></div>

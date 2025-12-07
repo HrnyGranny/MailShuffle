@@ -15,7 +15,7 @@
         <!-- Líneas de velocidad -->
         <div class="loader-lines"></div>
         <!-- Avión -->
-        <img src="@/assets/img/PlaneAlone.png" alt="preloader" class="loader-img" />
+        <img src="@/assets/img/PlaneAlone2.png" alt="preloader" class="loader-img" />
       </div>
       <!-- Sombra debajo del avión -->
       <div class="plane-shadow"></div>

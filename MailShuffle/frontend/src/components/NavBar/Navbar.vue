@@ -141,12 +141,12 @@ watch(
         @click.prevent="scrollToTop"
       >
         <img 
-          src="@/assets/img/logos/MailShuffleIcoAlone2.png" 
+          src="@/assets/img/logos/7dMailIcoAlone.png" 
           alt="Logo" 
           class="me-2 logo-icon" 
           style="width: 22px; height: 22px; transform: translateY(-3px);" 
         />        
-        MailShuffle
+        7dMail
       </RouterLink>
       <!--Logo navbar collapsed-->
       <RouterLink
@@ -163,7 +163,7 @@ watch(
         @click.prevent="scrollToTop"
       >
         <img 
-          src="@/assets/img/logos/MailShuffleIcoAlone2.png" 
+          src="@/assets/img/logos/7dMailIcoAlone.png" 
           alt="Logo" 
           class="me-2 logo-icon" 
           style="width: 22px; height: 22px; transform: translateY(-3px);" 

@@ -45,7 +45,7 @@ onUnmounted(() => {
         <div class="row">
           <div class="col-lg-7 text-center mx-auto position-relative">
             <h1 class="pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-              MailShuffle
+              7dMail
             </h1>
             <p class="lead px-5 mt-3" :style="{ fontWeight: '500' }">
               Protect your inbox. Generate random emails instantly for safe and

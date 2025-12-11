@@ -18,7 +18,7 @@ const toastRef = ref(null);
 
 // Computed para el link simulado
 const shareLink = computed(() => {
-  return `https://mailshuffle.com/share/xyz123${isReadOnly.value ? '?readonly=true' : ''}`;
+  return `https://7dMail.tech/share/xyz123${isReadOnly.value ? '?readonly=true' : ''}`;
 });
 
 const close = () => {
@@ -161,7 +161,7 @@ const copyLink = async () => {
   position: relative;
   z-index: 1001;
   width: 90%;
-  max-width: 380px;
+  max-width: 350px;
   margin: auto;
 }
 

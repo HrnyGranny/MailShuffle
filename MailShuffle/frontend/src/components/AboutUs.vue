@@ -7,8 +7,8 @@ import Button from "../assets/img/buttons/SupportMe.png";
 // Estado para animación de elementos
 const isVisible = ref(false);
 
-// Opciones de MailShuffle (datos)
-const mailShuffleOptions = [
+// Opciones de 7dMail (datos)
+const Options = [
   {
     icon: "schedule",
     backgroundColor: "#98FE98",
@@ -64,7 +64,7 @@ onMounted(() => {
       <div class="why-content">
         <!-- Columna izquierda con descripción y botón de soporte -->
         <div class="info-column" :class="{ 'animate-in': isVisible }">
-          <h3 class="section-title">Why MailShuffle?</h3>
+          <h3 class="section-title">Why 7dMail?</h3>
           <p class="section-description">
             We provide a simple and effective solution to avoid spam and protect your privacy. 
             With our random email generator, you can create temporary inboxes to receive emails 
@@ -79,7 +79,7 @@ onMounted(() => {
           <div class="options-list">
             <!-- Iteramos sobre las opciones directamente -->
             <div 
-              v-for="(option, index) in mailShuffleOptions" 
+              v-for="(option, index) in Options" 
               :key="index" 
               class="option-item"
               :class="{ 'animate-in': isVisible }"

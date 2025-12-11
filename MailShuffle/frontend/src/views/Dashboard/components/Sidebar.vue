@@ -4,11 +4,11 @@
     <div class="sidebar-header" @click="navigate('/')" role="button">
       <div class="logo-container">
         <div class="brand-container" v-if="isExpanded">
-          <img src="@/assets/img/logos/MailShuffleIcoAlone2.png" alt="MailShuffle Logo" class="logo-img" />
-          <span class="logo">MailShuffle</span>
+          <img src="@/assets/img/logos/7dMailIcoAlone.png" alt="7dMail Logo" class="logo-img" />
+          <span class="logo">7dMail</span>
         </div>
         <div class="brand-container-mini" v-else>
-          <img src="@/assets/img/logos/MailShuffleIcoAlone2.png" alt="MailShuffle Logo" class="logo-img-mini" />
+          <img src="@/assets/img/logos/7dMailIcoAlone.png" alt="7dMail Logo" class="logo-img-mini" />
         </div>
       </div>
     </div>

@@ -11,9 +11,9 @@ const router = createRouter({
       name: "presentation",
       component: PresentationView,
       meta: {
-        title: "Home | MailShuffle",
+        title: "Home | 7dMail",
         metaDescription:
-          "Welcome to MailShuffle, generate temporary emails and protect your privacy.",
+          "Welcome to 7dMail, generate temporary emails and protect your privacy.",
       },
     },
     {
@@ -21,9 +21,9 @@ const router = createRouter({
       name: "Dashboard",
       component: DashboardView,
       meta: {
-        title: "Dashboard | MailShuffle",
+        title: "Dashboard | 7dMail",
         metaDescription:
-          "Manage your temporary emails from the MailShuffle dashboard.",
+          "Manage your temporary emails from the 7dMail dashboard.",
       },
     },
     {
@@ -31,7 +31,7 @@ const router = createRouter({
       name: "Error404",
       component: Error404,
       meta: {
-        title: "Page Not Found | MailShuffle",
+        title: "Page Not Found | 7dMail",
         metaDescription: "Sorry, the page you are looking for does not exist.",
       },
     },

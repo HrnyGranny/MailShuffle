@@ -157,7 +157,6 @@ onMounted(async () => {
                 id="email"
                 type="email"
                 v-model="email"
-                :error="true"
                 readonly
               >
                 <template #append>

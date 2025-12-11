@@ -2,6 +2,7 @@
   import { defineProps, defineEmits, ref, watch } from "vue";
   import MaterialInput from "@/material_components/MaterialInput.vue";
   import MaterialButton from "@/material_components/MaterialButton.vue";
+  import { faker } from '@faker-js/faker';
   
   const props = defineProps({
     show: {
@@ -17,24 +18,29 @@
   
   // Función para generar nombre aleatorio
   const generateRandomName = (event) => {
-    if (event && event.currentTarget) {
-      event.currentTarget.blur();
-    }
-    
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    for (let i = 0; i < 8; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    customName.value = result;
-  };
-  
+  if (event && event.currentTarget) {
+    event.currentTarget.blur();
+  }
+  customName.value = faker.internet.username().toLowerCase();
+};
+
   // Generar uno nuevo automáticamente al abrir
-  watch(
+
+  const getCookie = (name) => {
+  const cookies = document.cookie.split("; ");
+  const cookie = cookies.find((row) => row.startsWith(`${name}=`));
+  return cookie ? cookie.split("=")[1] : null;
+};
+
+watch(
     () => props.show,
     (newVal) => {
       if (newVal) {
-        generateRandomName();
+        const fullEmail = getCookie("mailshuffle_email");
+        if (fullEmail) {
+          // Divide el email por la '@' y toma la primera parte (índice 0)
+          customName.value = fullEmail.split('@')[0];
+        }
       }
     }
   );
@@ -61,7 +67,7 @@
             </button>
   
             <div class="modal-body">
-              <h5 class="modal-title">Reset Email Address</h5>
+              <h5 class="modal-title">Edit Email Address</h5>
               
               <p class="info-text">
                 Configure your new address. This action will permanently delete your current inbox.
@@ -70,41 +76,47 @@
               <!-- Formulario -->
               <div class="form-content mt-4">
                 
-                <!-- 1. Input Name (Con resplandor verde SOLO en el input) -->
-                <div class="input-group-container mb-3 input-custom-glow">
-                  <MaterialInput
-                    class="input-group-outline"
-                    type="text"
-                    label=""
-                    placeholder="Email Name"
-                    v-model="customName"
-                  >
-                    <template #append>
-                      <button 
-                        class="btn btn-clipboard mb-0" 
-                        type="button" 
-                        @click="generateRandomName"
-                        title="Generate random name"
-                      >
-                        <i class="material-icons">shuffle</i>
-                      </button>
-                    </template>
-                  </MaterialInput>
+                <!-- 1. Label y Input Name -->
+                <div class="mb-3">
+                  <label class="box-label">Name</label> <!-- Título añadido -->
+                  <div class="input-group-container input-custom-glow">
+                    <MaterialInput
+                      class="input-group-outline"
+                      type="text"
+                      label=""
+                      placeholder="Email Name"
+                      v-model="customName"
+                    >
+                      <template #append>
+                        <button 
+                          class="btn btn-clipboard mb-0" 
+                          type="button" 
+                          @click="generateRandomName"
+                          title="Generate random name"
+                        >
+                          <i class="material-icons">shuffle</i>
+                        </button>
+                      </template>
+                    </MaterialInput>
+                  </div>
                 </div>
   
-                <!-- 2. Select Domain (Estilo estándar, sin glow extra) -->
-                <div class="domain-select-wrapper mb-4">
-                  <select v-model="selectedDomain" class="domain-select">
-                    <option value="@mailshuffle.xyz">@mailshuffle.xyz</option>
-                  </select>
-                  <i class="material-icons select-arrow">expand_more</i>
+                <!-- 2. Label y Select Domain -->
+                <div class="mb-4">
+                  <label class="box-label">Domain</label> <!-- Título añadido -->
+                  <div class="domain-select-wrapper">
+                    <select v-model="selectedDomain" class="domain-select">
+                      <option value="@mailshuffle.xyz">@mailshuffle.xyz</option>
+                    </select>
+                    <i class="material-icons select-arrow">expand_more</i>
+                  </div>
                 </div>
   
                 <!-- 3. Action Button -->
                 <div class="action-row text-center">
                   <MaterialButton
                     fullWidth="true"
-                    label="Switch"
+                    label="Generate!"
                     size="large"
                     backgroundColor="#98fe98"
                     textColor="#344767"
@@ -144,9 +156,9 @@
     position: relative;
     z-index: 1001;
     width: 90%;
-    max-width: 350px; 
+    max-width: 325px; 
     margin: auto;
-    font-family: 'Roboto', sans-serif; /* Asegurando fuente si es necesaria */
+    font-family: 'Roboto', sans-serif;
   }
   
   .modal-content {
@@ -188,12 +200,22 @@
     margin-bottom: 0;
   }
   
+  /* --- Nuevos Títulos (Labels) --- */
+  .box-label {
+    display: block; 
+    text-align: left; 
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    margin-left: 2px; /* Un pequeño margen para alinear visualmente */
+  }
+  
   .input-custom-glow :deep(input):focus {
-    border: 1px solid #98fe98 !important; /* Borde verde */
+    border: 1px solid #98fe98 !important;
     box-shadow: 0 0 8px rgba(152, 254, 152, 0.8) !important;
   }
   
-  /* --- Botón del formulario (Sin glow verde) --- */
+  /* --- Botón del formulario --- */
   .btn-clipboard {
     z-index: 4;
     border: 1px solid #d2d6da;
@@ -209,7 +231,6 @@
     align-items: center; justify-content: center;
   }
   
-  /* Comportamiento NO sticky */
   .btn-clipboard:focus, .btn-clipboard:active {
     box-shadow: none !important;
     outline: none !important;
@@ -224,7 +245,7 @@
     border-color: #d2d6da;
   }
   
-  /* --- Dropdown Manual (Estilo estándar) --- */
+  /* --- Dropdown Manual --- */
   .domain-select-wrapper {
     position: relative;
     background: #fff;
@@ -234,10 +255,6 @@
     height: 44px;
     transition: all 0.2s ease;
   }
-  .domain-select-wrapper:focus-within {
-    border: 1px solid #98fe98 !important; /* Borde verde */
-    box-shadow: 0 0 8px rgba(152, 254, 152, 0.8) !important;
-  }
   
   .domain-select {
     appearance: none; background: transparent; border: none;
@@ -246,6 +263,12 @@
     font-size: 0.875rem; color: #495057;
     cursor: pointer; outline: none; z-index: 2;
     border-radius: 0.375rem;
+  }
+  
+  /* SOLUCIÓN AL FONDO NEGRO: Forzar estilo en las opciones */
+  .domain-select option {
+    background-color: #ffffff !important;
+    color: #344767;
   }
   
   .select-arrow {

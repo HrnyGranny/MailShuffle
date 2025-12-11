@@ -2,7 +2,7 @@
 import MaterialInput from "@/material_components/MaterialInput.vue";
 import MaterialTextArea from "@/material_components/MaterialTextArea.vue";
 import MaterialToast from "@/material_components/MaterialToast.vue";
-import Button from "@/material_components/MaterialButton.vue"; 
+import MaterialButton  from "@/material_components/MaterialButton.vue"; 
 import { ref, reactive, defineEmits } from "vue";
 
 const emit = defineEmits(['close']);
@@ -139,9 +139,9 @@ const updateField = (field) => {
         <h5 class="header-title">Get in touch</h5>
         <p class="header-subtitle">We'll get back to you as soon as possible</p>
       </div>
-      <button type="button" class="close-btn" @click="$emit('close')" aria-label="Close">
-        <span class="material-icons-round">close</span>
-      </button>
+        <button type="button" class="close-btn" @click="close" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
     </div>
     
     <div class="dropdown-body">    
@@ -158,7 +158,6 @@ const updateField = (field) => {
               <MaterialInput
                 class="input-group-static input-sm"
                 type="text"
-                label="Full Name"
                 placeholder="Full Name"
                 v-model="formData.fullName"
                 @input="updateField('fullName')"
@@ -175,7 +174,6 @@ const updateField = (field) => {
             <div class="position-relative">
               <MaterialInput
                 class="input-group-static input-sm"
-                label="Email"
                 placeholder="hello@email.com"
                 v-model="formData.email"
                 @input="updateField('email')"
@@ -207,19 +205,17 @@ const updateField = (field) => {
         </div>
         
         <!-- Send Button  -->
-        <div class="text-center mt-4 button-offset" style="padding-top: 6px;">
-          <Button 
+        <div class="text-center mt-4 button-offset" style="padding-top: 10px;">
+          <MaterialButton 
             type="submit"
-            backgroundColor="#98fe98"
-            textColor="#344767"
             label="Send Message"
-            ariaLabel="Send message"
             :disabled="isSubmitting"
+            fullWidth="true"
             size="medium"
           >
             <span class="material-icons-round" style="margin-right: 6px; font-size: 16px;">send</span>
             {{ isSubmitting ? "Sending..." : "Send Message" }}
-          </Button>
+          </MaterialButton >
         </div>
       </form>
       
@@ -230,7 +226,7 @@ const updateField = (field) => {
         </div>
         <div class="contact-method">
           <span class="material-icons-round contact-icon">email</span>
-          <a href="mailto:mailshuffle@mailshuffle.xyz" class="contact-link">mailshuffle@mailshuffle.xyz</a>
+          <a href="mailto:mailshuffle@mailshuffle.xyz" class="contact-link">7dMail@mailshuffle.xyz</a>
         </div>
       </div>
     </div>
@@ -279,26 +275,28 @@ const updateField = (field) => {
 
 /* Close button */
 .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #8392AB;
+  color: #777;
+  font-size: 1.1rem;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   transition: all 0.2s;
-  padding: 4px;
-  margin-top: -5px;
+  z-index: 10;
+  padding: 0;
 }
 
 .close-btn:hover {
-  background-color: #f8f9fa;
-  color: #344767;
-}
-
-.close-btn .material-icons-round {
-  font-size: 20px;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 /* Form styling */

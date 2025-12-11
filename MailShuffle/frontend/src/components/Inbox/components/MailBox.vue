@@ -189,7 +189,7 @@ onMounted(async () => {
                   @click="handleGenerateClick"
                   class="custom-button square-btn" 
                 >
-                  <i class="material-icons">autorenew</i>
+                  <i class="material-icons">edit</i>
                 </MaterialButton>
               </div>
             </div>

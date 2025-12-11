@@ -46,7 +46,7 @@
       @click="toggleDropdown"
     >
       <!-- Usamos el slot para mantener el orden Texto - Icono -->
-      <span class="contact-text">¿Need help?</span>
+      <span class="contact-text">Need help?</span>
       <span class="material-icons-round contact-icon">chat</span>
     </MaterialButton>
       
@@ -84,7 +84,7 @@
     position: fixed;
     bottom: 85px;
     right: 25px;
-    width: 350px;
+    width: 325px;
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -162,7 +162,7 @@
     }
     
     .contact-btn-fixed {
-      padding: 8px; /* Forzamos padding cuadrado en móvil pequeño */
+      padding: 10px; 
     }
     
     .contact-dropdown {

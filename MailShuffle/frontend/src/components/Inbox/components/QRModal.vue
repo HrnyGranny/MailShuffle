@@ -161,7 +161,7 @@ const copyLink = async () => {
   position: relative;
   z-index: 1001;
   width: 90%;
-  max-width: 350px;
+  max-width: 325px;
   margin: auto;
 }
 
@@ -287,8 +287,7 @@ input:checked + .slider:before {
 
 .toggle-label {
   font-weight: 600;
-  color: #344767;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   position: relative;
   top: -4px; 
 }

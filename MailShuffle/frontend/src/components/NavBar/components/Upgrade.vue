@@ -347,6 +347,7 @@ const isFeatureInFreePlan = (index) => {
                       <!-- Botón MaterialButton en amarillo premium -->
                       <MaterialButton
                         aria-label="Subscribe Now"
+                        disabled="true"
                         :disabled="isSubmitting"
                         :label="isSubmitting ? 'Processing...' : 'Subscribe Now'"
                         size="large"
@@ -436,6 +437,7 @@ const isFeatureInFreePlan = (index) => {
   border-radius: 50%;
   transition: all 0.2s;
   z-index: 10;
+  padding: 0;
 }
 
 .close-btn:hover {
@@ -472,7 +474,7 @@ const isFeatureInFreePlan = (index) => {
 .ribbon {
   position: absolute;
   top: 30px;
-  right: -50px;
+  right: -45px;
   width: 200px;
   background: #feb602;
   color: rgb(0, 0, 0);

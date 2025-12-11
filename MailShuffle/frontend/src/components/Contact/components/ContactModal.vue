@@ -139,9 +139,6 @@ const updateField = (field) => {
         <h5 class="header-title">Get in touch</h5>
         <p class="header-subtitle">We'll get back to you as soon as possible</p>
       </div>
-        <button type="button" class="close-btn" @click="close" aria-label="Close">
-          <i class="fas fa-times"></i>
-        </button>
     </div>
     
     <div class="dropdown-body">    
@@ -271,32 +268,6 @@ const updateField = (field) => {
 /* Body styling */
 .dropdown-body {
   padding: 15px 20px 20px;
-}
-
-/* Close button */
-.close-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #777;
-  font-size: 1.1rem;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s;
-  z-index: 10;
-  padding: 0;
-}
-
-.close-btn:hover {
-  background-color: #f5f5f5;
-  color: #333;
 }
 
 /* Form styling */
